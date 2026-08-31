@@ -203,6 +203,9 @@ a{color:var(--signal)}
 .ring .mid b{font-size:22px;font-weight:800;letter-spacing:-.02em;display:block}
 .ring .mid span{font-size:10.5px;color:var(--dim);font-weight:600}
 .combo{font-size:12.5px;font-weight:800;color:var(--signal)}
+.gap{display:inline-block;min-width:74px;border-bottom:2.5px solid var(--signal);margin:0 3px;height:1.05em;vertical-align:-2px}
+.sent{font-size:clamp(21px,5.6vw,27px);font-weight:700;letter-spacing:-.02em;line-height:1.45;margin:0 0 10px}
+.sent.wrong{text-decoration:line-through;text-decoration-color:var(--rose);opacity:.75;font-size:20px;font-weight:600}
 .ta{width:100%;min-height:190px;padding:14px;border-radius:14px;background:var(--surface2);
   border:1px solid var(--line);font-size:16px;line-height:1.55;resize:vertical;font-family:inherit}
 .ta::placeholder{color:var(--dim)}
@@ -966,13 +969,187 @@ const WRITING=[
  model:"1. Open a terminal on the server.\n2. Stop the container: docker stop mailer.\n3. Start it again: docker start mailer.\n4. Check that it responds on port 8080.\n\nNote: do not restart during business hours \u2014 users lose the connection."}
 ];
 
+
+/* ================== LE BASI: SCHEDE DA SCUOLA ==================
+   Tipi di esercizio:
+   f = completa lo spazio  [tipo, frase con ___, parola giusta, traduzione]
+   c = correggi l'errore   [tipo, frase sbagliata, frase giusta, traduzione]
+   t = traduci             [tipo, italiano, inglese]                        */
+const BASICS=[
+{id:1,t:"Io sono, tu sei",g:"am \u00b7 is \u00b7 are",
+ ex:[["f","I ___ Emanuele.","am","Io sono Emanuele."],
+     ["f","You ___ my friend.","are","Tu sei mio amico."],
+     ["f","He ___ at work.","is","Lui \u00e8 al lavoro."],
+     ["f","We ___ ready.","are","Noi siamo pronti."],
+     ["f","They ___ late.","are","Loro sono in ritardo."],
+     ["f","It ___ cold today.","is","Oggi fa freddo."],
+     ["c","She are Italian.","She is Italian.","Lei \u00e8 italiana."],
+     ["c","I is tired.","I am tired.","Sono stanco."],
+     ["t","Noi siamo qui.","We are here."],
+     ["t","Lui \u00e8 a casa.","He is at home."]]},
+
+{id:2,t:"Non sono, sei tu?",g:"negazione e domanda con to be",
+ ex:[["f","I ___ not tired.","am","Non sono stanco."],
+     ["f","She is ___ here.","not","Lei non \u00e8 qui."],
+     ["f","___ you ready?","Are","Sei pronto?"],
+     ["f","___ he your colleague?","Is","\u00c8 un tuo collega?"],
+     ["f","___ they at the office?","Are","Sono in ufficio?"],
+     ["c","You not are my boss.","You are not my boss.","Non sei il mio capo."],
+     ["c","Is you ready?","Are you ready?","Sei pronto?"],
+     ["t","Non sono stanco.","I am not tired."],
+     ["t","Lei non \u00e8 in ufficio.","She is not in the office."]]},
+
+{id:3,t:"Io ho, lui ha",g:"have \u00b7 has",
+ ex:[["f","I ___ a car.","have","Ho una macchina."],
+     ["f","She ___ a question.","has","Lei ha una domanda."],
+     ["f","We ___ time.","have","Abbiamo tempo."],
+     ["f","He ___ two children.","has","Lui ha due figli."],
+     ["f","They ___ a big office.","have","Hanno un ufficio grande."],
+     ["c","She have a dog.","She has a dog.","Lei ha un cane."],
+     ["c","I has a problem.","I have a problem.","Ho un problema."],
+     ["t","Ho una domanda.","I have a question."],
+     ["t","Lui ha una macchina.","He has a car."]]},
+
+{id:4,t:"Quello che faccio ogni giorno",g:"presente semplice e la -s",
+ ex:[["f","I ___ in IT. (work)","work","Lavoro nell'IT."],
+     ["f","He ___ in Munich. (live)","lives","Lui vive a Monaco."],
+     ["f","She ___ three languages. (speak)","speaks","Lei parla tre lingue."],
+     ["f","They ___ every day. (work)","work","Loro lavorano ogni giorno."],
+     ["f","It ___ well. (work)","works","Funziona bene."],
+     ["c","He work from home.","He works from home.","Lui lavora da casa."],
+     ["c","She speak German.","She speaks German.","Lei parla tedesco."],
+     ["t","Vivo a Speyer.","I live in Speyer."],
+     ["t","Lei vive in Germania.","She lives in Germany."]]},
+
+{id:5,t:"Non capisco",g:"don't \u00b7 doesn't",
+ ex:[["f","I ___ understand.","don't","Non capisco."],
+     ["f","She ___ know.","doesn't","Lei non lo sa."],
+     ["f","They ___ work on Sunday.","don't","Non lavorano di domenica."],
+     ["f","He ___ have time.","doesn't","Lui non ha tempo."],
+     ["c","She don't like coffee.","She doesn't like coffee.","A lei non piace il caff\u00e8."],
+     ["c","He doesn't works here.","He doesn't work here.","Lui non lavora qui."],
+     ["t","Non capisco.","I don't understand."],
+     ["t","Lui non lavora qui.","He doesn't work here."]]},
+
+{id:6,t:"Fare una domanda",g:"do \u00b7 does",
+ ex:[["f","___ you speak English?","Do","Parli inglese?"],
+     ["f","___ she work here?","Does","Lei lavora qui?"],
+     ["f","Where ___ you live?","do","Dove vivi?"],
+     ["f","What ___ he want?","does","Cosa vuole lui?"],
+     ["c","Do she know?","Does she know?","Lei lo sa?"],
+     ["c","Does you have time?","Do you have time?","Hai tempo?"],
+     ["t","Parli inglese?","Do you speak English?"],
+     ["t","Dove lavori?","Where do you work?"]]},
+
+{id:7,t:"Un, uno, il",g:"a \u00b7 an \u00b7 the",
+ ex:[["f","I have ___ question.","a","Ho una domanda."],
+     ["f","It's ___ email.","an","\u00c8 un'email."],
+     ["f","___ server is down.","The","Il server \u00e8 gi\u00f9."],
+     ["f","She is ___ engineer.","an","Lei \u00e8 un'ingegnere."],
+     ["f","I need ___ hour.","an","Mi serve un'ora."],
+     ["c","I have a email.","I have an email.","Ho un'email."],
+     ["c","He is a IT consultant.","He is an IT consultant.","\u00c8 un consulente IT."],
+     ["t","\u00c8 una macchina.","It is a car."],
+     ["t","Il file \u00e8 grande.","The file is big."]]},
+
+{id:8,t:"Uno, due, tanti",g:"i plurali",
+ ex:[["f","one car, two ___","cars","una macchina, due macchine"],
+     ["f","one man, two ___","men","un uomo, due uomini"],
+     ["f","one woman, two ___","women","una donna, due donne"],
+     ["f","one child, two ___","children","un bambino, due bambini"],
+     ["f","one person, two ___","people","una persona, due persone"],
+     ["c","I have two childs.","I have two children.","Ho due figli."],
+     ["c","Three peoples are waiting.","Three people are waiting.","Tre persone stanno aspettando."],
+     ["t","Ho due domande.","I have two questions."]]},
+
+{id:9,t:"Questo, quello, c'\u00e8",g:"this / these \u00b7 there is / there are",
+ ex:[["f","___ is my desk. (qui)","This","Questa \u00e8 la mia scrivania."],
+     ["f","___ are my keys. (qui)","These","Queste sono le mie chiavi."],
+     ["f","There ___ a problem.","is","C'\u00e8 un problema."],
+     ["f","There ___ two rooms.","are","Ci sono due stanze."],
+     ["c","There is two files.","There are two files.","Ci sono due file."],
+     ["c","This are my keys.","These are my keys.","Queste sono le mie chiavi."],
+     ["t","C'\u00e8 un problema.","There is a problem."],
+     ["t","Questo \u00e8 il mio computer.","This is my computer."]]},
+
+{id:10,t:"Posso, non posso",g:"can \u00b7 can't",
+ ex:[["f","___ you help me?","Can","Puoi aiutarmi?"],
+     ["f","I ___ hear you. (non)","can't","Non ti sento."],
+     ["f","She ___ speak four languages.","can","Lei sa parlare quattro lingue."],
+     ["f","___ I ask a question?","Can","Posso fare una domanda?"],
+     ["c","I can to help you.","I can help you.","Posso aiutarti."],
+     ["c","He cans drive.","He can drive.","Lui sa guidare."],
+     ["t","Puoi ripetere?","Can you repeat?"],
+     ["t","Non posso venire.","I can't come."]]},
+
+{id:11,t:"Il mio, il tuo",g:"possessivi e il genitivo 's",
+ ex:[["f","This is ___ car. (di me)","my","Questa \u00e8 la mia macchina."],
+     ["f","What is ___ name? (di te)","your","Come ti chiami?"],
+     ["f","___ name is Anna. (di lei)","Her","Lei si chiama Anna."],
+     ["f","___ office is closed. (di noi)","Our","Il nostro ufficio \u00e8 chiuso."],
+     ["c","The car of my friend is new.","My friend's car is new.","La macchina del mio amico \u00e8 nuova."],
+     ["c","This is the book of Marco.","This is Marco's book.","Questo \u00e8 il libro di Marco."],
+     ["t","Lui si chiama Tom.","His name is Tom."],
+     ["t","Il portatile di Anna.","Anna's laptop."]]},
+
+{id:12,t:"Sto facendo",g:"present continuous",
+ ex:[["f","I ___ working now.","am","Sto lavorando adesso."],
+     ["f","She ___ coming today. (non)","isn't","Lei oggi non viene."],
+     ["f","What ___ you doing?","are","Che stai facendo?"],
+     ["f","They ___ waiting outside.","are","Stanno aspettando fuori."],
+     ["c","I working now.","I am working now.","Sto lavorando adesso."],
+     ["c","He is work on it.","He is working on it.","Ci sta lavorando."],
+     ["t","Sto imparando l'inglese.","I am learning English."],
+     ["t","Che stai facendo?","What are you doing?"]]},
+
+{id:13,t:"Dove sono le cose",g:"in \u00b7 on \u00b7 at",
+ ex:[["f","I am ___ home.","at","Sono a casa."],
+     ["f","The keys are ___ the table.","on","Le chiavi sono sul tavolo."],
+     ["f","I live ___ Germany.","in","Vivo in Germania."],
+     ["f","See you ___ Monday.","on","Ci vediamo luned\u00ec."],
+     ["f","The meeting is ___ nine.","at","La riunione \u00e8 alle nove."],
+     ["c","I am in work.","I am at work.","Sono al lavoro."],
+     ["c","I live at Germany.","I live in Germany.","Vivo in Germania."],
+     ["t","Sono al lavoro.","I am at work."]]},
+
+{id:14,t:"Ieri ero",g:"was \u00b7 were",
+ ex:[["f","I ___ at home.","was","Ero a casa."],
+     ["f","They ___ late.","were","Erano in ritardo."],
+     ["f","It ___ not easy.","was","Non \u00e8 stato facile."],
+     ["f","Where ___ you yesterday?","were","Dov'eri ieri?"],
+     ["c","We was tired.","We were tired.","Eravamo stanchi."],
+     ["c","He were at the office.","He was at the office.","Era in ufficio."],
+     ["t","Ero a casa.","I was at home."],
+     ["t","\u00c8 stato facile.","It was easy."]]},
+
+{id:15,t:"Ieri ho fatto",g:"il passato con -ed",
+ ex:[["f","Yesterday I ___ the report. (finish)","finished","Ieri ho finito il report."],
+     ["f","She ___ me this morning. (call)","called","Mi ha chiamato stamattina."],
+     ["f","We ___ at nine. (start)","started","Abbiamo iniziato alle nove."],
+     ["f","They ___ a lot of questions. (ask)","asked","Hanno fatto molte domande."],
+     ["c","Yesterday I finish the work.","Yesterday I finished the work.","Ieri ho finito il lavoro."],
+     ["c","I didn't finished it.","I didn't finish it.","Non l'ho finito."],
+     ["t","Ho finito il report.","I finished the report."],
+     ["t","Abbiamo iniziato alle nove.","We started at nine."]]},
+
+{id:16,t:"Parlare di te",g:"il tuo primo testo",
+ ex:[["t","Mi chiamo Emanuele.","My name is Emanuele."],
+     ["t","Sono italiano.","I am Italian."],
+     ["t","Vivo in Germania.","I live in Germany."],
+     ["t","Lavoro nell'IT.","I work in IT."],
+     ["t","Parlo italiano e tedesco.","I speak Italian and German."],
+     ["t","Sto imparando l'inglese.","I am learning English."],
+     ["t","Ho un cane.","I have a dog."],
+     ["t","Mi piace il mio lavoro.","I like my job."]]}
+];
+
 /* ============================ MOTORE ============================ */
 const store={
   mem:{}, ok:true,
   get(k){ try{const v=localStorage.getItem(k);return v==null?this.mem[k]:v}catch(e){this.ok=false;return this.mem[k]} },
   set(k,v){ this.mem[k]=v; try{localStorage.setItem(k,v)}catch(e){this.ok=false} }
 };
-const DEF={xp:0,streak:0,last:"",done:[],srs:{},seen:[],rate:.85,voice:"",theme:"dark",de:true,lock:true,pin:"",best:0,dlg:[],wr:{},lvl:{},goal:40,sfx:true,dayLog:{}};
+const DEF={xp:0,streak:0,last:"",done:[],srs:{},seen:[],rate:.85,voice:"",theme:"dark",de:true,lock:true,pin:"",best:0,dlg:[],wr:{},bs:{},lvl:{},goal:40,sfx:true,dayLog:{}};
 let S=Object.assign({},DEF);
 try{ S=Object.assign({},DEF,JSON.parse(store.get("speakfirst")||"{}")) }catch(e){}
 const save=()=>store.set("speakfirst",JSON.stringify(S));
@@ -1059,12 +1236,22 @@ function norm(s){
   Object.keys(CONTR).forEach(k=>{ s=s.split(" "+k.replace(/'/g,"")+" ").join(" "+CONTR[k]+" "); });
   return s.replace(/\s+/g," ").trim();
 }
+/* Somiglianza fra due frasi che tiene conto dell'ORDINE delle parole:
+   la sottosequenza comune piu' lunga, rapportata alla frase piu' lunga.
+   Serve perche' "You not are my boss" non deve passare per "You are not my boss". */
 function similarity(a,b){
   const A=norm(a).split(" ").filter(Boolean), B=norm(b).split(" ").filter(Boolean);
   if(!A.length||!B.length) return 0;
-  const pool=[...B]; let hit=0;
-  A.forEach(w=>{ const i=pool.indexOf(w); if(i>-1){hit++;pool.splice(i,1);} });
-  return hit/Math.max(A.length,B.length);
+  const m=A.length, n=B.length;
+  let prev=new Array(n+1).fill(0), cur=new Array(n+1).fill(0);
+  for(let i=1;i<=m;i++){
+    cur[0]=0;
+    for(let j=1;j<=n;j++){
+      cur[j] = A[i-1]===B[j-1] ? prev[j-1]+1 : Math.max(prev[j],cur[j-1]);
+    }
+    const t=prev; prev=cur; cur=t;
+  }
+  return prev[n]/Math.max(m,n);
 }
 
 /* ---------------- ripetizione dilazionata (Leitner) ---------------- */
@@ -1747,6 +1934,91 @@ VIEWS.dialogs=()=>{
 
 
 /* ---------------- scrittura guidata ---------------- */
+
+/* ---------------- schede base ---------------- */
+function runSheet(sh){
+  const app=$("#app"); let i=0, right=0;
+  const items=sh.ex.slice();
+  const step=()=>{
+    app.innerHTML="";
+    const head=el("div","row between"); head.style.margin="14px 0 2px";
+    head.appendChild(el("div","sub","Scheda "+sh.id+" \u00b7 "+(i+1)+"/"+items.length));
+    const q=el("button","badge","Esci"); q.onclick=()=>go("writing"); head.appendChild(q);
+    app.appendChild(head);
+    const bar=el("div","bar"); bar.innerHTML='<i style="width:'+(i/items.length*100)+'%"></i>'; app.appendChild(bar);
+    if(i>=items.length) return finish();
+    const it=items[i], kind=it[0];
+    const box=el("div","fade"); app.appendChild(box);
+    const labels={f:"completa",c:"correggi l'errore",t:"traduci"};
+    box.appendChild(el("span","badge",labels[kind]));
+    let target, hint;
+    if(kind==="f"){
+      target=it[2]; hint=it[3];
+      box.appendChild(el("p","sent",esc(it[1]).replace("___",'<span class="gap"></span>')));
+      box.lastChild.style.marginTop="12px";
+    } else if(kind==="c"){
+      target=it[2]; hint=it[3];
+      box.appendChild(el("p","sent wrong",esc(it[1])));
+      box.lastChild.style.marginTop="12px";
+      box.appendChild(el("p","sub","Riscrivila giusta."));
+    } else {
+      target=it[2]; hint="";
+      box.appendChild(el("p","sent",esc(it[1])));
+      box.lastChild.style.marginTop="12px";
+    }
+    if(hint) box.appendChild(el("p","hero-it",esc(hint)));
+    const inp=el("input","tf");
+    inp.placeholder = kind==="f" ? "solo la parola mancante" : "scrivi la frase";
+    inp.autocapitalize="none"; inp.autocomplete="off"; inp.spellcheck=false;
+    inp.style.marginTop="14px"; box.appendChild(inp);
+    const btn=el("button","btn primary block","Controlla"); btn.style.marginTop="12px";
+    const check=()=>{
+      const val=inp.value.trim();
+      if(!val) return;
+      const ok = kind==="f" ? norm(val)===norm(target) : similarity(val,target)>=.9;
+      if(ok) right++;
+      beep(ok); addXp(ok?5:2);
+      btn.disabled=true; inp.disabled=true;
+      const f=el("div","card fade");
+      f.appendChild(el("div","row between",'<b style="color:'+(ok?"var(--mint)":"var(--rose)")+'">'+(ok?"Giusto":"Non ancora")+"</b>"));
+      const full = kind==="f" ? it[1].replace("___",target) : target;
+      f.appendChild(el("p","hero-en",esc(full))); f.lastChild.style.cssText="font-size:21px;margin:10px 0 4px";
+      if(hint) f.appendChild(el("p","hero-it",esc(hint)));
+      if(!ok) f.appendChild(el("p","tip","Tu hai scritto: <b>"+esc(val)+"</b>"));
+      const r=el("div","row"); r.style.marginTop="12px";
+      r.appendChild(speakBtn(full));
+      const nx=el("button","btn primary","Avanti"); nx.style.flex="1";
+      nx.onclick=()=>{ i++; step() }; r.appendChild(nx);
+      f.appendChild(r); app.appendChild(f);
+      if(!ok) TTS.say(full,{rate:Math.max(.6,S.rate-.15)});
+      f.scrollIntoView({block:"nearest"});
+    };
+    btn.onclick=check;
+    inp.addEventListener("keydown",e=>{ if(e.key==="Enter") check() });
+    box.appendChild(btn);
+    setTimeout(()=>inp.focus(),140);
+  };
+  const finish=()=>{
+    const pct=Math.round(right/items.length*100);
+    S.bs[sh.id]=Math.max(pct,S.bs[sh.id]||0);
+    addXp(12); touchStreak(); save();
+    app.innerHTML="";
+    const c=el("div","card fade center"); c.style.marginTop="26px";
+    c.appendChild(el("div","big-num",pct+"%"));
+    c.appendChild(el("p","sub",right+" giuste su "+items.length));
+    c.appendChild(el("hr","sep"));
+    c.appendChild(el("p","sub", pct>=80 ? "Questa regola ce l'hai. Passa alla scheda seguente."
+      : "Rifalla adesso: le schede base si ripetono finch\u00e9 non escono senza pensare."));
+    if(sh.id===16 && pct>=80) c.appendChild(el("p","tip","Ora prendi queste otto frasi e scrivile di seguito come un testo unico. \u00c8 la tua prima presentazione in inglese."));
+    const a=el("button","btn primary block","Rifai la scheda"); a.style.marginTop="12px";
+    a.onclick=()=>{ i=0; right=0; step() }; c.appendChild(a);
+    const b=el("button","btn ghost block","Torna all'elenco"); b.style.marginTop="8px";
+    b.onclick=()=>go("writing"); c.appendChild(b);
+    app.appendChild(c);
+  };
+  step();
+}
+
 function checkWriting(task,text){
   const n=norm(text);
   return task.need.map(([lbl,keys])=>[lbl, keys.some(k=>n.includes(norm(k)))]);
@@ -1832,12 +2104,28 @@ VIEWS.writing=()=>{
   const app=$("#app"); app.innerHTML="";
   const c=el("div","card fade");
   c.appendChild(el("h3",null,"Scrittura"));
-  c.appendChild(el("p","sub","Qui scrivi tu, non ricopi. Ogni compito ha una situazione e un elenco di cose che il testo deve contenere: il controllo te le spunta una per una, poi ti mostra un modello."));
+  c.appendChild(el("p","sub","Due gradini. Le <b>schede base</b> sono da banco di scuola: una regola per volta, frasi corte, si comincia da <i>io sono</i>. I <b>testi veri</b> vengono dopo, quando le basi escono senza pensarci."));
   app.appendChild(c);
+
+  const doneB=Object.keys(S.bs||{}).filter(k=>S.bs[k]>=80).length;
+  app.appendChild(el("div","phase-h","<b>Le basi</b><span>"+doneB+"/"+BASICS.length+" superate</span>"));
+  BASICS.forEach(sh=>{
+    const sc=S.bs[sh.id]||0, ok=sc>=80;
+    const b=el("button","dcard");
+    b.innerHTML='<div style="width:38px;height:38px;border-radius:11px;background:'+(ok?"var(--mint)":"var(--surface2)")+
+      ';display:grid;place-items:center;font-weight:800;flex:0 0 auto;border:1px solid var(--line);color:'+(ok?"#06281A":"var(--text)")+'">'+
+      (ok?"\u2713":sh.id)+'</div><div class="t"><b>'+esc(sh.t)+'</b><span>'+esc(sh.g)+" \u00b7 "+sh.ex.length+" esercizi"+(sc?" \u00b7 "+sc+"%":"")+"</span></div>";
+    b.onclick=()=>runSheet(sh);
+    app.appendChild(b);
+  });
+
+  const wrDone=Object.keys(S.wr||{}).filter(k=>S.wr[k].done).length;
+  app.appendChild(el("div","phase-h","<b>Testi veri</b><span>"+wrDone+"/"+WRITING.length+" completati</span>"));
+  if(doneB<6) app.appendChild(el("p","tip","Consiglio: fai prima almeno le schede da 1 a 6. Qui sotto si scrive senza rete, e senza le basi diventa frustrante invece che utile."));
   const cats={email:"Email",chat:"Messaggi brevi",lavoro:"Al lavoro",colloquio:"Colloquio"};
   Object.keys(cats).forEach(k=>{
     const list=WRITING.filter(w=>w.cat===k); if(!list.length) return;
-    app.appendChild(el("div","phase-h","<b>"+cats[k]+"</b>"));
+    app.appendChild(el("p","sub","<b>"+cats[k]+"</b>")); app.lastChild.style.margin="14px 2px 2px";
     list.forEach(w=>{
       const st=S.wr[w.id]||{}, done=st.done;
       const b=el("button","dcard");
@@ -1849,7 +2137,8 @@ VIEWS.writing=()=>{
       app.appendChild(b);
     });
   });
-  app.appendChild(el("div","card flat",'<p class="sub"><b>Il limite da conoscere</b><br>Questo controllo verifica che ci siano gli elementi giusti, non che la grammatica sia perfetta: nessun programma pu\u00f2 farlo restando offline. Per la correzione vera copia il tuo testo e fallo rileggere a una persona o a un assistente. Tre frasi al giorno sul tuo lavoro reale valgono pi\u00f9 di venti esercizi.</p>'));
+
+  app.appendChild(el("div","card flat",'<p class="sub"><b>Il limite da conoscere</b><br>Nei testi veri il controllo verifica che ci siano gli elementi giusti, non che la grammatica sia perfetta: nessun programma pu\u00f2 farlo restando offline. Per la correzione vera copia il tuo testo e fallo rileggere. Tre frasi al giorno sul tuo lavoro reale valgono pi\u00f9 di venti esercizi.</p>'));
 };
 
 VIEWS.practice=()=>{
@@ -1865,7 +2154,8 @@ VIEWS.practice=()=>{
   app.appendChild(el("p","sub","Le due cose che nessun quiz allena: rispondere a voce a qualcuno, e scrivere qualcosa di tuo."));
   app.lastChild.style.margin="16px 2px 4px";
   mk("Dialoghi","Situazioni reali, una battuta alla volta: il cliente che chiama, lo standup, il colloquio, la riunione.",dlgDone+"/"+DIALOGS.length,()=>go("dialogs"));
-  mk("Scrittura","Email, messaggi, ticket, pitch. Scrivi tu il testo e ti dico cosa manca.",wrDone+"/"+WRITING.length,()=>go("writing"));
+  const bsDone=Object.keys(S.bs||{}).filter(k=>S.bs[k]>=80).length;
+  mk("Scrittura","Si parte dalle schede base \u2014 io sono, tu sei, il presente \u2014 e si arriva a email e ticket scritti da te.",(bsDone+wrDone)+"/"+(BASICS.length+WRITING.length),()=>go("writing"));
 };
 
 VIEWS.me=()=>{

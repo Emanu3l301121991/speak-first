@@ -203,6 +203,17 @@ a{color:var(--signal)}
 .ring .mid b{font-size:22px;font-weight:800;letter-spacing:-.02em;display:block}
 .ring .mid span{font-size:10.5px;color:var(--dim);font-weight:600}
 .combo{font-size:12.5px;font-weight:800;color:var(--signal)}
+.ta{width:100%;min-height:190px;padding:14px;border-radius:14px;background:var(--surface2);
+  border:1px solid var(--line);font-size:16px;line-height:1.55;resize:vertical;font-family:inherit}
+.ta::placeholder{color:var(--dim)}
+.wc{font-size:12.5px;color:var(--dim);text-align:right;margin:6px 2px 0}
+.req{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.req:last-child{border-bottom:0}
+.req .m{width:20px;flex:0 0 auto;font-weight:800;font-size:16px;line-height:1.35}
+.req.ok .m{color:var(--mint)} .req.no .m{color:var(--rose)}
+.req.no .lbl{color:var(--dim)}
+.model{white-space:pre-wrap;font-size:15px;line-height:1.6;background:var(--surface2);
+  border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:10px}
 .bub{max-width:88%;padding:12px 15px;border-radius:17px;margin:9px 0;font-size:15.5px;line-height:1.45}
 .bub.them{background:var(--surface2);border:1px solid var(--line);border-bottom-left-radius:5px}
 .bub.me{background:var(--signal);color:#20160A;margin-left:auto;border-bottom-right-radius:5px;font-weight:600}
@@ -862,13 +873,106 @@ const DIALOGS=[
  ]}
 ];
 
+
+/* ================== SCRITTURA GUIDATA ==================
+   Scrivi tu il testo. Il controllo verifica che ci siano gli elementi
+   che quel testo deve avere, poi ti mostra un modello per confronto. */
+const WRITING=[
+{id:1,cat:"email",t:"Rimandare una consegna",min:35,
+ brief:"Scrivi un'email a Sarah. Il rilascio previsto per venerd\u00ec slitta a marted\u00ec, perch\u00e9 i test richiedono due giorni interi. Attutisci la notizia, dai il motivo, proponi la nuova data e resta disponibile.",
+ need:[["Apertura con il nome",["hi sarah","dear sarah","hello sarah"]],
+       ["Un modo per attutire",["i am afraid","unfortunately","sorry to say","i am sorry"]],
+       ["Il motivo",["test","testing"]],
+       ["La nuova data",["tuesday"]],
+       ["Una chiusura disponibile",["let me know","any questions","get in touch","reach out"]],
+       ["Un saluto finale",["best regards","kind regards","regards","best wishes"]]],
+ model:"Hi Sarah,\n\nUnfortunately we can't release on Friday. The tests take two full days, and I'd rather not go live without them.\n\nCould we agree on Tuesday instead? Everything else is ready.\n\nLet me know if that works for you.\n\nBest regards,\nEmanuele"},
+
+{id:2,cat:"email",t:"Rispondere con un allegato",min:30,
+ brief:"Un cliente ti ha chiesto la documentazione del backup. Rispondi: ringrazia, di' che il file \u00e8 in allegato, spiega in una riga cosa contiene, e offri aiuto.",
+ need:[["Un ringraziamento",["thank you","thanks"]],
+       ["L'allegato",["attached","attachment","find the file","i am sending"]],
+       ["Cosa contiene",["describes","contains","explains","shows","documentation","setup","steps"]],
+       ["Offerta di aiuto",["let me know","happy to help","any questions","if you need"]],
+       ["Un saluto finale",["best regards","kind regards","regards"]]],
+ model:"Hi Thomas,\n\nThanks for your email. Please find the backup documentation attached.\n\nIt describes the daily job, where the copies are stored and how to restore a single file.\n\nLet me know if anything is unclear \u2014 happy to walk you through it.\n\nBest regards,\nEmanuele"},
+
+{id:3,cat:"email",t:"Il messaggio dopo il colloquio",min:35,
+ brief:"Hai fatto il colloquio stamattina con Anna. Scrivi la thank-you email: ringrazia del tempo, cita una cosa concreta di cui avete parlato, aggiungi in una riga perch\u00e9 sei adatto, chiudi restando in attesa.",
+ need:[["Ringraziamento per il tempo",["thank you for your time","thanks for your time","thank you for the time"]],
+       ["Un dettaglio della conversazione",["enjoyed","interesting","we talked about","you mentioned","hearing about"]],
+       ["Perch\u00e9 sei adatto",["experience","my work","i have worked","background","fits","automation"]],
+       ["Restare in attesa",["look forward to hearing","looking forward to hearing","hear from you"]],
+       ["Un saluto finale",["best regards","kind regards","regards"]]],
+ model:"Dear Anna,\n\nThank you for your time this morning. I really enjoyed hearing about your plans for the automation platform.\n\nMy work with n8n and Docker fits that direction well, and I'd be glad to bring it to your team.\n\nI look forward to hearing from you.\n\nBest regards,\nEmanuele Romano"},
+
+{id:4,cat:"chat",t:"Avvisare il team di un rilascio",min:15,
+ brief:"Scrivi un messaggio breve in chat: stasera alle 18 c'\u00e8 un rilascio, il servizio sar\u00e0 gi\u00f9 circa dieci minuti, chiedi di non lavorarci durante.",
+ need:[["Un avviso di apertura",["heads up","fyi","quick note","just a note"]],
+       ["L'orario",["6pm","18:00","6 pm","six"]],
+       ["La durata dell'interruzione",["ten minutes","10 minutes","about ten","around ten"]],
+       ["La richiesta",["please","don't","do not","avoid"]]],
+ model:"Heads up \u2014 deployment tonight at 6pm. The service will be down for about ten minutes. Please don't run anything on it during that window. I'll post here when it's back up."},
+
+{id:5,cat:"lavoro",t:"Lo standup scritto",min:20,
+ brief:"Scrivi il tuo standup in tre righe: ieri hai finito la migrazione della posta, oggi lavori sullo script di backup, sei bloccato dalle regole del firewall.",
+ need:[["Ieri, al passato",["yesterday i finished","yesterday i completed","yesterday i did"]],
+       ["Oggi, con -ing",["today i am working","today i am","i am working on"]],
+       ["Il blocco",["blocked","blocker","waiting for","i need access"]],
+       ["Cosa ti serve",["firewall","network team","access","rules"]]],
+ model:"Yesterday I finished the mail migration.\nToday I'm working on the backup script.\nOne blocker: I'm blocked by the firewall rules and I need access from the network team."},
+
+{id:6,cat:"lavoro",t:"Aggiornamento su un guasto",min:30,
+ brief:"Il servizio di posta si \u00e8 fermato alle 14:20, gli utenti non riescono a inviare email. Ci state lavorando e manderai un aggiornamento tra un'ora. Scrivi le quattro righe da mettere nel ticket.",
+ need:[["Cosa \u00e8 successo",["stopped","went down","is down","failed"]],
+       ["Quando",["14:20","2:20","this afternoon","at 14"]],
+       ["L'impatto sugli utenti",["users","cannot send","can't send","are not able"]],
+       ["Lo stato",["we are working","i am working","investigating","looking into"]],
+       ["Il prossimo passo",["update","in one hour","within an hour","as soon as"]]],
+ model:"The mail service stopped at 14:20.\nImpact: users can't send emails. Incoming mail is queued, nothing is lost.\nStatus: we're working on it and checking the logs now.\nNext: I'll send an update in one hour, or earlier if it's fixed."},
+
+{id:7,cat:"lavoro",t:"Descrivere un problema in un ticket",min:25,
+ brief:"Apri un ticket al fornitore: dopo l'ultimo aggiornamento l'API restituisce errore 500 quando invii pi\u00f9 di cento righe. Con meno righe funziona. Hai gi\u00e0 provato a riavviare.",
+ need:[["Quando \u00e8 iniziato",["after the last update","since the last update","since the update","after updating","since version"]],
+       ["Il sintomo preciso",["500","error","fails","returns"]],
+       ["Quando succede",["more than","over 100","100 rows","large"]],
+       ["Cosa funziona",["works","fine","no problem","smaller"]],
+       ["Cosa hai gi\u00e0 provato",["i have already","i tried","restarted","we restarted"]]],
+ model:"Since the last update, the API returns a 500 error when we send more than 100 rows in one request.\nWith smaller batches it works fine.\nWe have already restarted the service and checked the logs \u2014 no useful message there.\nCould you tell us whether there is a new limit on the batch size?"},
+
+{id:8,cat:"colloquio",t:"Presentarti in cinque righe",min:40,
+ brief:"Scrivi il tuo pitch: cosa fai adesso, cosa facevi prima, con che strumenti lavori, cosa cerchi. Usa il presente per l'attuale e il passato per il prima.",
+ need:[["Il ruolo attuale",["i am an","i work as","i am a"]],
+       ["Da quanto o dove",["since","for","at","near"]],
+       ["Il prima, al passato",["before that","previously","i worked","i used to"]],
+       ["Gli strumenti",["docker","n8n","linux","automation","windows","powershell"]],
+       ["Cosa cerchi",["i am looking for","i would like to","i want to"]]],
+ model:"I'm an IT consultant and I work on automation for small and medium companies.\nBefore that, I worked in IT support and technical service for medical equipment.\nMy daily tools are n8n, Docker and Linux, mostly on self-hosted infrastructure.\nI enjoy taking a manual process and turning it into something that runs by itself.\nI'm looking for a role where I can go deeper on that, in a bigger team."},
+
+{id:9,cat:"chat",t:"Dire di no a un collega",min:25,
+ brief:"Un collega ti chiede di guardare il suo problema oggi, ma sei sotto scadenza. Rifiuta con garbo: attutisci, spiega, proponi un'alternativa concreta.",
+ need:[["Un attutente",["i am afraid","unfortunately","sorry","i would love to"]],
+       ["Il motivo",["deadline","busy","working on","have to finish"]],
+       ["L'alternativa",["tomorrow","later","after","monday","this afternoon"]],
+       ["Restare disponibile",["let me know","if it is urgent","ping me","in the meantime"]]],
+ model:"Sorry \u2014 I'd like to help, but I'm on a deadline until this evening.\nCould we look at it together tomorrow morning? I'll have time from nine.\nIf it's urgent, ping Marco \u2014 he set that part up."},
+
+{id:10,cat:"lavoro",t:"Tre istruzioni per la documentazione",min:20,
+ brief:"Scrivi le istruzioni per riavviare il servizio: aprire il terminale, fermare il container, riavviarlo, verificare che risponda. Imperativo, una frase per azione.",
+ need:[["Imperativo iniziale",["open","run","stop","start","check"]],
+       ["Il container",["container","docker","service"]],
+       ["La verifica",["check","make sure","verify","confirm"]],
+       ["Un'avvertenza o un default",["note","warning","by default","make sure","do not"]]],
+ model:"1. Open a terminal on the server.\n2. Stop the container: docker stop mailer.\n3. Start it again: docker start mailer.\n4. Check that it responds on port 8080.\n\nNote: do not restart during business hours \u2014 users lose the connection."}
+];
+
 /* ============================ MOTORE ============================ */
 const store={
   mem:{}, ok:true,
   get(k){ try{const v=localStorage.getItem(k);return v==null?this.mem[k]:v}catch(e){this.ok=false;return this.mem[k]} },
   set(k,v){ this.mem[k]=v; try{localStorage.setItem(k,v)}catch(e){this.ok=false} }
 };
-const DEF={xp:0,streak:0,last:"",done:[],srs:{},seen:[],rate:.85,voice:"",theme:"dark",de:true,lock:true,pin:"",best:0,dlg:[],lvl:{},goal:40,sfx:true,dayLog:{}};
+const DEF={xp:0,streak:0,last:"",done:[],srs:{},seen:[],rate:.85,voice:"",theme:"dark",de:true,lock:true,pin:"",best:0,dlg:[],wr:{},lvl:{},goal:40,sfx:true,dayLog:{}};
 let S=Object.assign({},DEF);
 try{ S=Object.assign({},DEF,JSON.parse(store.get("speakfirst")||"{}")) }catch(e){}
 const save=()=>store.set("speakfirst",JSON.stringify(S));
@@ -1332,10 +1436,11 @@ let CUR="home";
 function go(v){ CUR=v; paintNav(); window.scrollTo(0,0); VIEWS[v](); }
 function paintNav(){
   const n=$("#nav"); n.innerHTML="";
-  [["home","Oggi",ICON.today],["course","Corso",ICON.book],["dialogs","Dialoghi",ICON.chat],["review","Ripasso",ICON.cards],["me","Io",ICON.me]]
+  [["home","Oggi",ICON.today],["course","Corso",ICON.book],["practice","Pratica",ICON.chat],["review","Ripasso",ICON.cards],["me","Io",ICON.me]]
   .forEach(([k,t,ic])=>{
     const b=el("button",null,ic+"<span>"+t+"</span>");
-    b.setAttribute("aria-current",CUR===k?"true":"false");
+    const on = CUR===k || (k==="practice" && (CUR==="dialogs"||CUR==="writing"));
+    b.setAttribute("aria-current",on?"true":"false");
     b.onclick=()=>go(k); n.appendChild(b);
   });
 }
@@ -1387,7 +1492,8 @@ VIEWS.home=()=>{
     mk("\u23f1 Sfida lampo", runFlash);
     mk("\u270f\ufe0f Dettato", ()=>runSession(shuffle(seen.filter(x=>x.type==="p")).slice(0,6).map(it=>({k:"dict",it})),{title:"Dettato",back:"home"}));
     mk("\ud83c\udf99 Pronuncia", ()=>runSession(shuffle(seen).slice(0,6).map(it=>({k:"speak",it})),{title:"Pronuncia",back:"home"}));
-    mk("\u2328\ufe0f Scrittura", ()=>runSession(shuffle(seen).slice(0,8).map(it=>({k:"write",it})),{title:"Scrittura",back:"home"}));
+    mk("\u2328\ufe0f Traduci", ()=>runSession(shuffle(seen).slice(0,8).map(it=>({k:"write",it})),{title:"Traduzione",back:"home"}));
+    mk("\u2712\ufe0f Scrivi tu", ()=>go("writing"));
     c.appendChild(r);
     if(S.best) c.appendChild(el("p","sub","Record sfida lampo: <b>"+S.best+"</b> in 60 secondi"));
     app.appendChild(c);
@@ -1565,7 +1671,7 @@ function runDialog(d){
     app.innerHTML="";
     const head=el("div","row between"); head.style.margin="14px 0 2px";
     head.appendChild(el("div","sub",esc(d.t)+" \u00b7 "+Math.min(i+1,d.turns.length)+"/"+d.turns.length));
-    const q=el("button","badge","Esci"); q.onclick=()=>go("dialogs"); head.appendChild(q);
+    const q=el("button","badge","Esci"); q.onclick=()=>go("practice"); head.appendChild(q);
     app.appendChild(head);
     const bar=el("div","bar"); bar.innerHTML='<i style="width:'+(i/d.turns.length*100)+'%"></i>'; app.appendChild(bar);
     if(i===0) app.appendChild(el("p","tip",esc(d.intro)));
@@ -1613,7 +1719,7 @@ function runDialog(d){
     const a=el("button","btn primary block","Rifallo"); a.style.marginTop="12px";
     a.onclick=()=>{ i=0; good=0; hist.length=0; step() }; c.appendChild(a);
     const b=el("button","btn ghost block","Altri dialoghi"); b.style.marginTop="8px";
-    b.onclick=()=>go("dialogs"); c.appendChild(b);
+    b.onclick=()=>go("practice"); c.appendChild(b);
     $("#app").appendChild(c);
   };
   step();
@@ -1637,6 +1743,129 @@ VIEWS.dialogs=()=>{
       app.appendChild(b);
     });
   });
+};
+
+
+/* ---------------- scrittura guidata ---------------- */
+function checkWriting(task,text){
+  const n=norm(text);
+  return task.need.map(([lbl,keys])=>[lbl, keys.some(k=>n.includes(norm(k)))]);
+}
+function runWriting(task){
+  const app=$("#app"); app.innerHTML="";
+  const head=el("div","row between"); head.style.margin="14px 0 2px";
+  head.appendChild(el("div","sub","Scrittura \u00b7 "+esc(task.t)));
+  const q=el("button","badge","Esci"); q.onclick=()=>go("writing"); head.appendChild(q);
+  app.appendChild(head);
+
+  const c=el("div","card fade");
+  c.appendChild(el("p","sub",esc(task.brief)));
+  app.appendChild(c);
+
+  const ta=el("textarea","ta");
+  ta.placeholder="Scrivi qui in inglese\u2026";
+  ta.value=(S.wr[task.id]&&S.wr[task.id].text)||"";
+  app.appendChild(ta);
+  const wc=el("p","wc",""); app.appendChild(wc);
+  const count=()=>{ const w=ta.value.trim().split(/\s+/).filter(Boolean).length;
+    wc.innerHTML=w+" parole"+(w<task.min?" \u00b7 puntane almeno "+task.min:" \u00b7 lunghezza ok"); };
+  ta.addEventListener("input",count); count();
+
+  const go2=el("button","btn primary block","Controlla"); go2.style.marginTop="12px";
+  go2.onclick=()=>{
+    const res=checkWriting(task,ta.value);
+    const hit=res.filter(r=>r[1]).length, tot=res.length;
+    const words=ta.value.trim().split(/\s+/).filter(Boolean).length;
+    const pass = hit===tot && words>=task.min;
+    beep(pass);
+    S.wr[task.id]={text:ta.value,best:Math.max(hit,(S.wr[task.id]||{}).best||0),done:pass||((S.wr[task.id]||{}).done)};
+    addXp(hit*4); if(pass) addXp(15);
+    touchStreak(); save();
+
+    const f=el("div","card fade");
+    f.appendChild(el("div","row between",
+      '<b style="color:'+(pass?"var(--mint)":"var(--signal)")+'">'+hit+" su "+tot+' elementi</b>'+
+      '<span class="badge'+(words>=task.min?" mint":"")+'">'+words+" parole</span>"));
+    const list=el("div"); list.style.marginTop="8px";
+    res.forEach(([lbl,ok])=>{
+      const r=el("div","req "+(ok?"ok":"no"));
+      r.innerHTML='<span class="m">'+(ok?"\u2713":"\u2717")+'</span><span class="lbl">'+esc(lbl)+"</span>";
+      list.appendChild(r);
+    });
+    f.appendChild(list);
+    if(words<task.min) f.appendChild(el("p","tip","Troppo corto: puntane almeno "+task.min+". In inglese professionale la brevit\u00e0 aiuta, ma qui manca ancora della sostanza."));
+    app.appendChild(f);
+
+    const m=el("div","card");
+    m.appendChild(el("div","row between","<h3 style='margin:0'>Un modello</h3>"));
+    m.appendChild(el("div","model",esc(task.model)));
+    const rr=el("div","row"); rr.style.marginTop="12px";
+    rr.appendChild(speakBtn(task.model.replace(/\n+/g,". ")));
+    const cp=el("button","btn ghost","Copia il tuo testo"); cp.style.flex="1";
+    cp.onclick=()=>{ try{ navigator.clipboard.writeText(ta.value); toast("Testo copiato") }catch(e){ toast("Copia non disponibile") } };
+    rr.appendChild(cp); m.appendChild(rr);
+    m.appendChild(el("p","sub","Il modello non \u00e8 l'unica risposta giusta: confronta la <b>forma</b>, non le parole esatte."));
+    m.lastChild.style.marginTop="10px";
+    app.appendChild(m);
+
+    const sc=el("div","card");
+    sc.appendChild(el("h3",null,"Ricontrolla da solo"));
+    sc.appendChild(el("div","gram",`<p>Gli errori che gli italiani fanno pi\u00f9 spesso. Rileggi cercando questi:</p>
+     <table><tr><td>-s</td><td>terza persona: he work<b>s</b>, it need<b>s</b></td></tr>
+     <tr><td>the</td><td>non davanti ai concetti generali: <i>I work with</i> automation, non <i>the automation</i></td></tr>
+     <tr><td>since / for</td><td>since 2025 (momento) \u00b7 for two years (durata)</td></tr>
+     <tr><td>to</td><td>look forward to hear<b>ing</b>, non <i>to hear</i></td></tr>
+     <tr><td>info</td><td><i>information</i> \u00e8 sempre singolare: <i>this information is</i></td></tr></table>`));
+    app.appendChild(sc);
+
+    const again=el("button","btn block","Riscrivilo"); again.style.marginTop="4px";
+    again.onclick=()=>runWriting(task); app.appendChild(again);
+    const back=el("button","btn ghost block","Altri compiti"); back.style.marginTop="8px";
+    back.onclick=()=>go("writing"); app.appendChild(back);
+    f.scrollIntoView({block:"nearest"});
+  };
+  app.appendChild(go2);
+  setTimeout(()=>ta.focus(),150);
+}
+
+VIEWS.writing=()=>{
+  const app=$("#app"); app.innerHTML="";
+  const c=el("div","card fade");
+  c.appendChild(el("h3",null,"Scrittura"));
+  c.appendChild(el("p","sub","Qui scrivi tu, non ricopi. Ogni compito ha una situazione e un elenco di cose che il testo deve contenere: il controllo te le spunta una per una, poi ti mostra un modello."));
+  app.appendChild(c);
+  const cats={email:"Email",chat:"Messaggi brevi",lavoro:"Al lavoro",colloquio:"Colloquio"};
+  Object.keys(cats).forEach(k=>{
+    const list=WRITING.filter(w=>w.cat===k); if(!list.length) return;
+    app.appendChild(el("div","phase-h","<b>"+cats[k]+"</b>"));
+    list.forEach(w=>{
+      const st=S.wr[w.id]||{}, done=st.done;
+      const b=el("button","dcard");
+      b.innerHTML='<div style="width:38px;height:38px;border-radius:11px;background:'+(done?"var(--mint)":"var(--surface2)")+
+        ';display:grid;place-items:center;font-weight:800;flex:0 0 auto;border:1px solid var(--line);color:'+(done?"#06281A":"var(--text)")+'">'+
+        (done?"\u2713":w.id)+'</div><div class="t"><b>'+esc(w.t)+'</b><span>'+w.need.length+" elementi \u00b7 almeno "+w.min+" parole"+
+        (st.best?" \u00b7 finora "+st.best+"/"+w.need.length:"")+"</span></div>";
+      b.onclick=()=>runWriting(w);
+      app.appendChild(b);
+    });
+  });
+  app.appendChild(el("div","card flat",'<p class="sub"><b>Il limite da conoscere</b><br>Questo controllo verifica che ci siano gli elementi giusti, non che la grammatica sia perfetta: nessun programma pu\u00f2 farlo restando offline. Per la correzione vera copia il tuo testo e fallo rileggere a una persona o a un assistente. Tre frasi al giorno sul tuo lavoro reale valgono pi\u00f9 di venti esercizi.</p>'));
+};
+
+VIEWS.practice=()=>{
+  const app=$("#app"); app.innerHTML="";
+  const dlgDone=(S.dlg||[]).length, wrDone=Object.keys(S.wr||{}).filter(k=>S.wr[k].done).length;
+  const mk=(t,d,n,fn)=>{
+    const c=el("div","card fade");
+    c.appendChild(el("div","row between","<h3 style='margin:0'>"+t+"</h3><span class='badge'>"+n+"</span>"));
+    c.appendChild(el("p","sub",d)); c.lastChild.style.marginTop="6px";
+    const b=el("button","btn primary block","Apri"); b.style.marginTop="12px"; b.onclick=fn;
+    c.appendChild(b); app.appendChild(c);
+  };
+  app.appendChild(el("p","sub","Le due cose che nessun quiz allena: rispondere a voce a qualcuno, e scrivere qualcosa di tuo."));
+  app.lastChild.style.margin="16px 2px 4px";
+  mk("Dialoghi","Situazioni reali, una battuta alla volta: il cliente che chiama, lo standup, il colloquio, la riunione.",dlgDone+"/"+DIALOGS.length,()=>go("dialogs"));
+  mk("Scrittura","Email, messaggi, ticket, pitch. Scrivi tu il testo e ti dico cosa manca.",wrDone+"/"+WRITING.length,()=>go("writing"));
 };
 
 VIEWS.me=()=>{

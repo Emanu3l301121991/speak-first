@@ -7,6 +7,7 @@ Corso di inglese parlato e scritto da zero, per italiani. App web installabile
 - 384 parole, 288 frasi, ripetizione dilazionata a 7 livelli
 - Esercizi: scelta, ascolto, dettato, ricostruzione della frase, scrittura, pronuncia col microfono
 - Dialoghi a bivi: chiamata del cliente, standup, colloquio, riunione, small talk
+- Scrittura guidata: 10 compiti reali (email, chat, ticket, pitch) con controllo automatico degli elementi richiesti e modello di confronto
 - Sfida lampo: 60 secondi a cronometro, per allenare la velocità di richiamo
 - Percorso a nodi con tre livelli per lezione (riconoscere → produrre → senza rete)
 - Obiettivo giornaliero, serie di risposte consecutive, riscontro sonoro

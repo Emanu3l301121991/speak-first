@@ -1,6 +1,6 @@
 /* Speak First — service worker
    Alza VERSION a ogni aggiornamento dell'app: forza il rinnovo della cache. */
-const VERSION = "v4";
+const VERSION = "v5";
 const CACHE = "speak-first-" + VERSION;
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 

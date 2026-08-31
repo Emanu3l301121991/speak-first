@@ -5,7 +5,9 @@ Corso di inglese parlato e scritto da zero, per italiani. App web installabile
 
 - 48 lezioni in 4 fasi: sopravvivenza → conversazione → inglese al lavoro (IT) → sfumature
 - 384 parole, 288 frasi, ripetizione dilazionata a 7 livelli
-- Esercizi: scelta, ascolto, ricostruzione della frase, scrittura, pronuncia col microfono
+- Esercizi: scelta, ascolto, dettato, ricostruzione della frase, scrittura, pronuncia col microfono
+- Dialoghi a bivi: chiamata del cliente, standup, colloquio, riunione, small talk
+- Sfida lampo: 60 secondi a cronometro, per allenare la velocità di richiamo
 - Schede: pronuncia per italiani, falsi amici, 30 verbi irregolari
 
 ## Pubblicare su GitHub Pages

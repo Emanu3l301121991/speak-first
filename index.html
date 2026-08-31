@@ -61,13 +61,13 @@ main{padding:0 16px calc(96px + var(--safe-b));max-width:640px;margin:0 auto}
 /* ---------- bottom nav ---------- */
 #nav{
   position:fixed;left:0;right:0;bottom:0;z-index:30;
-  display:grid;grid-template-columns:repeat(4,1fr);
+  display:grid;grid-template-columns:repeat(5,1fr);
   background:color-mix(in srgb,var(--surface) 92%,transparent);
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   border-top:1px solid var(--line);
   padding-bottom:var(--safe-b);
 }
-#nav button{padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--dim);font-size:11px;font-weight:600}
+#nav button{padding:10px 2px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--dim);font-size:11px;font-weight:600}
 #nav button .ic{width:24px;height:24px;display:block}
 #nav button[aria-current="true"]{color:var(--text)}
 #nav button[aria-current="true"] .ic{color:var(--signal)}
@@ -181,6 +181,18 @@ html[data-theme="light"] .btn.mint{color:#fff}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 hr.sep{border:0;border-top:1px solid var(--line);margin:16px 0}
 a{color:var(--signal)}
+.bub{max-width:88%;padding:12px 15px;border-radius:17px;margin:9px 0;font-size:15.5px;line-height:1.45}
+.bub.them{background:var(--surface2);border:1px solid var(--line);border-bottom-left-radius:5px}
+.bub.me{background:var(--signal);color:#20160A;margin-left:auto;border-bottom-right-radius:5px;font-weight:600}
+html[data-theme="light"] .bub.me{color:#fff}
+.bub small{display:block;font-size:12.5px;opacity:.72;margin-top:5px;font-weight:400}
+.timer{height:7px;border-radius:99px;background:var(--surface2);border:1px solid var(--line);overflow:hidden}
+.timer i{display:block;height:100%;background:var(--signal);transition:width 1s linear}
+.timer.low i{background:var(--rose)}
+.dcard{display:flex;gap:12px;align-items:center;padding:14px;border-radius:16px;background:var(--surface);border:1px solid var(--line);margin:9px 0;width:100%;text-align:left}
+.dcard .t{flex:1;min-width:0}
+.dcard .t b{display:block;font-size:15px;letter-spacing:-.01em}
+.dcard .t span{display:block;color:var(--dim);font-size:12.5px}
 #lock{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;
   align-items:center;justify-content:center;padding:28px 22px calc(28px + var(--safe-b))}
 #lock .lbrand{font-size:26px;font-weight:800;letter-spacing:-.03em;margin-bottom:6px}
@@ -677,13 +689,164 @@ const CHECKLIST=[
 "Cambia la lingua del telefono in inglese: 300 parole gratis al giorno."
 ];
 
+
+/* ================== DIALOGHI A BIVI ==================
+   Ogni turno: loro dicono una battuta, tu scegli come rispondere.
+   Una sola opzione è quella che funziona davvero.                    */
+const DIALOGS=[
+{id:1,t:"Il cliente chiama: il sistema è giù",cat:"lavoro",
+ intro:"Sono le 9 del mattino. Squilla il telefono.",
+ turns:[
+  {them:"Hi, this is Sarah from Vogel. Our system is down \u2014 nobody can work.",
+   it:"Ciao, sono Sarah di Vogel. Il nostro sistema \u00e8 giù, nessuno riesce a lavorare.",
+   o:[["Okay, I'm on it. When did it stop working?",1,"Prendi in carico e chiedi subito il dato che ti serve. \u00c8 esattamente quello che vuole sentire."],
+      ["I don't know, it's not my problem.",0,"Mai scaricare. In inglese suona ancora pi\u00f9 duro che in italiano."],
+      ["Yes.",0,"Troppo secco: chi ascolta pensa che tu non abbia capito."]]},
+  {them:"About twenty minutes ago. Everything just froze.",
+   it:"Circa venti minuti fa. Si \u00e8 bloccato tutto.",
+   o:[["Thanks. Let me check the logs and I'll call you back in ten minutes.",1,"Ringrazi, dici cosa fai e dai un tempo. Tre cose in una frase."],
+      ["Maybe you restarted something?",0,"Dare la colpa al cliente all'inizio della chiamata chiude la conversazione."],
+      ["I will look at it sometime today.",0,"\u00abSometime today\u00bb non rassicura nessuno. Serve un orario."]]},
+  {them:"Okay. How long do you think it will take?",
+   it:"Va bene. Quanto pensi che ci vorr\u00e0?",
+   o:[["I'd say about an hour, but I'll update you as soon as I know more.",1,"Stima morbida pi\u00f9 promessa di aggiornamento: il modo professionale di non impegnarti troppo."],
+      ["It will be fixed in one hour.",0,"Promessa secca. Se sfori hai un problema in pi\u00f9."],
+      ["I cannot say.",0,"Vero ma inutile. Dai sempre un ordine di grandezza."]]},
+  {them:"Alright. Please keep me posted.",
+   it:"D'accordo. Tienimi aggiornata.",
+   o:[["Of course. I'll send you an email as soon as it's back up.",1,"Chiudi confermando il canale e il momento. Perfetto."],
+      ["Okay bye.",0,"Chiusura fredda. Con un cliente serve una riga in pi\u00f9."],
+      ["Don't worry, no problem, it's easy.",0,"Minimizzare un guasto che lo ha bloccato per venti minuti suona superficiale."]]}
+ ]},
+
+{id:2,t:"Daily standup",cat:"lavoro",
+ intro:"Videochiamata delle 9:15, hai trenta secondi.",
+ turns:[
+  {them:"Morning everyone. Emanuele, do you want to start?",
+   it:"Buongiorno a tutti. Emanuele, vuoi iniziare tu?",
+   o:[["Sure. Yesterday I finished the mail migration.",1,"Accetti e parti dal passato. \u00c8 lo schema standard."],
+      ["I don't know what to say.",0,"Anche se non hai fatto molto, lo standup ha una formula fissa: usala."],
+      ["Yesterday I am finishing the migration.",0,"Tempo verbale sbagliato: ieri vuole il passato."]]},
+  {them:"Great. And today?",
+   it:"Ottimo. E oggi?",
+   o:[["Today I'm working on the backup script.",1,"Oggi vuole il present continuous: sto lavorando su."],
+      ["Today I work on the backup script maybe.",0,"\u00abMaybe\u00bb qui indebolisce tutto. Nello standup si dichiara."],
+      ["Today I worked on the backup script.",0,"Passato per una cosa che devi ancora fare."]]},
+  {them:"Any blockers?",
+   it:"Ostacoli?",
+   o:[["Yes \u2014 I'm blocked by the firewall rules. I need access from the network team.",1,"Nomini il blocco e chiedi esattamente quello che ti serve."],
+      ["No, everything is fine.",0,"Se sei bloccato e dici di no, il problema esplode domani."],
+      ["It's complicated to explain.",0,"Nello standup si dice il blocco in una riga, i dettagli dopo."]]},
+  {them:"Okay, I'll ask them. Anything else?",
+   it:"Ok, glielo chiedo io. Altro?",
+   o:[["That's all from me, thanks.",1,"Chiusura pulita e standard."],
+      ["No.",0,"Non scorretto, ma brusco in un giro di parola."],
+      ["Wait, I also want to talk about the whole architecture.",0,"Lo standup non \u00e8 il posto: si dice \u00abcan we take that offline?\u00bb"]]}
+ ]},
+
+{id:3,t:"Colloquio: le prime domande",cat:"colloquio",
+ intro:"Videochiamata con la responsabile delle assunzioni.",
+ turns:[
+  {them:"Thanks for joining. So, tell me a bit about yourself.",
+   it:"Grazie per essere qui. Mi racconti un po' di lei?",
+   o:[["Sure. I'm an IT consultant, and I mainly work on automation for small companies.",1,"Presente, ruolo, ambito. Il resto lo costruisci sopra."],
+      ["What do you want to know?",0,"Rimandare la domanda a chi la fa toglie il controllo proprio all'inizio."],
+      ["I was born in Italy in 1991 and then I moved...",0,"Non \u00e8 una biografia: partono dal presente professionale."]]},
+  {them:"Interesting. What kind of automation exactly?",
+   it:"Interessante. Che tipo di automazione, di preciso?",
+   o:[["Mostly workflows that connect systems \u2014 for example, reading orders from emails and putting them into the ERP.",1,"Astratto seguito da un esempio concreto. \u00c8 il modo pi\u00f9 chiaro di spiegare."],
+      ["n8n, Docker, Traefik, Ollama, OpenWebUI, PowerShell...",0,"Un elenco di strumenti non dice cosa risolvi. Prima il problema, poi gli attrezzi."],
+      ["Normal automation, like everybody.",0,"Ti svaluti proprio dove dovresti distinguerti."]]},
+  {them:"And why are you looking for something new?",
+   it:"E perch\u00e9 sta cercando qualcosa di nuovo?",
+   o:[["I want to work on bigger systems and go deeper technically.",1,"Motivo in positivo, rivolto avanti. Sempre cos\u00ec."],
+      ["My current company is badly organised.",0,"Parlare male del datore attuale \u00e8 la risposta che fa perdere pi\u00f9 colloqui."],
+      ["I need more money.",0,"Anche se \u00e8 vero, non \u00e8 la risposta a questa domanda."]]},
+  {them:"How would you describe your English?",
+   it:"Come descriverebbe il suo inglese?",
+   o:[["I'm still improving, but I can work in English \u2014 I read and write technical English every day.",1,"Onesto e concreto. Ammetti il limite e dici cosa sai gi\u00e0 fare."],
+      ["My English is perfect.",0,"Si smonta da s\u00e9 nei dieci minuti successivi."],
+      ["Very bad, sorry.",0,"Stai facendo il colloquio in inglese: la prova che non \u00e8 vero \u00e8 in corso."]]}
+ ]},
+
+{id:4,t:"Colloquio: raccontare un progetto",cat:"colloquio",
+ intro:"Parte tecnica. Vogliono un caso concreto.",
+ turns:[
+  {them:"Can you tell me about a problem you solved recently?",
+   it:"Mi racconta un problema che ha risolto di recente?",
+   o:[["Sure. One client was typing delivery notes into the system by hand \u2014 about ten hours a week.",1,"Parti dalla situazione, con un numero. Apertura STAR perfetta."],
+      ["I solve problems every day, there are many.",0,"Generico. Vogliono una storia sola, raccontata bene."],
+      ["We had a bug in the code.",0,"Troppo vago: non si capisce n\u00e9 l'impatto n\u00e9 il contesto."]]},
+  {them:"That sounds painful. What did you do?",
+   it:"Sembra pesante. Cosa ha fatto?",
+   o:[["I built a workflow that reads the scanned notes and writes the data straight into the ERP.",1,"Azione al passato, in una frase, senza gergo inutile."],
+      ["I used n8n, OCR, Docker, a Python script and a webhook, and then...",0,"Troppi dettagli tutti insieme: si perde il filo. Prima cosa fa, poi come."],
+      ["My colleague did most of it.",0,"Modestia mal riposta: qui devono valutare te."]]},
+  {them:"And what was the result?",
+   it:"E il risultato?",
+   o:[["It saved about ten hours a week, and the errors basically disappeared.",1,"Numero e beneficio. \u00c8 la parte che ricordano."],
+      ["It worked well.",0,"Senza un dato non resta niente in mente."],
+      ["I don't remember exactly.",0,"Prepara i numeri prima: sono la parte pi\u00f9 forte della tua storia."]]},
+  {them:"Nice. Do you have any questions for us?",
+   it:"Bene. Ha domande per noi?",
+   o:[["Yes \u2014 could you tell me how the team is organised, and what the first three months would look like?",1,"Due domande vere. Chi non ne fa sembra disinteressato."],
+      ["No, everything is clear.",0,"\u00c8 la risposta che pi\u00f9 spesso fa scendere il giudizio finale."],
+      ["How much is the salary?",0,"Non come prima domanda. Arriva dopo, o quando la aprono loro."]]}
+ ]},
+
+{id:5,t:"Riunione: ti chiedono una scadenza",cat:"lavoro",
+ intro:"Riunione di progetto. Il capoprogetto guarda te.",
+ turns:[
+  {them:"Can we have this live by Friday?",
+   it:"Possiamo andare in produzione entro venerd\u00ec?",
+   o:[["Friday is tight. Testing alone takes two days \u2014 could we say Tuesday?",1,"Dici il problema, la ragione e un'alternativa. Il no professionale completo."],
+      ["Yes, no problem.",0,"Promettere una data che non reggi ti costa molto di pi\u00f9 di un no oggi."],
+      ["No.",0,"Un no senza motivo n\u00e9 alternativa mette gli altri contro di te."]]},
+  {them:"Tuesday is late for the client. What if we skip some tests?",
+   it:"Marted\u00ec \u00e8 tardi per il cliente. E se saltassimo qualche test?",
+   o:[["We could, but then there's a real risk of downtime. I'd rather deliver two days later than break production.",1,"Non ti opponi: mostri il rischio e lasci decidere. Molto forte."],
+      ["Okay, let's skip them.",0,"Cedere subito su una cosa tecnica che sai essere sbagliata."],
+      ["That's a stupid idea.",0,"In inglese professionale non si attacca mai l'idea in questo modo."]]},
+  {them:"Understood. What can we give the client on Friday?",
+   it:"Capito. Cosa possiamo dare al cliente venerd\u00ec?",
+   o:[["We could deliver the reporting part on Friday, and the rest on Tuesday.",1,"Consegna parziale: la risposta che salva le riunioni."],
+      ["Nothing.",0,"C'\u00e8 quasi sempre qualcosa di parziale da offrire."],
+      ["I don't know, you decide.",0,"Ti sei tolto dalla conversazione proprio quando servivi."]]}
+ ]},
+
+{id:6,t:"Il primo giorno: due chiacchiere",cat:"quotidiano",
+ intro:"Macchinetta del caff\u00e8, un collega che non conosci.",
+ turns:[
+  {them:"Hey, you're the new guy, right? I'm Tom.",
+   it:"Ehi, sei tu il nuovo, vero? Io sono Tom.",
+   o:[["Hi Tom, nice to meet you. I'm Emanuele, I started on Monday.",1,"Saluto, nome, un dettaglio che d\u00e0 all'altro qualcosa su cui continuare."],
+      ["Yes.",0,"Chiude la conversazione al primo scambio."],
+      ["Nice to meet you too, I am very happy to be here in this company today.",0,"Troppo formale: alla macchinetta suona rigido."]]},
+  {them:"Welcome! How's it going so far?",
+   it:"Benvenuto! Come va finora?",
+   o:[["Pretty good, thanks. A lot of new names to remember!",1,"Rispondi e rilanci con una battuta leggera. \u00c8 esattamente il rituale."],
+      ["It's going.",0,"Scortese senza volerlo: sembra che tu non voglia parlare."],
+      ["Fine.",0,"Non sbagliato, ma spegne lo scambio."]]},
+  {them:"Ha, I know that feeling. Where are you from?",
+   it:"Ah, so com'\u00e8. Di dove sei?",
+   o:[["I'm from Italy, but I've been living in Germany for a few years now.",1,"Present perfect per una cosa iniziata prima e ancora vera. Perfetto qui."],
+      ["I am from Italy since some years in Germany.",0,"Frase mescolata. \u00c8 l'errore tipico da \u00absince\u00bb usato come \u00abda\u00bb."],
+      ["Italy.",0,"Corretto ma secco: l'altro deve ricominciare da capo ogni volta."]]},
+  {them:"Cool. Well, let me know if you need anything.",
+   it:"Bello. Comunque, fammi sapere se ti serve qualcosa.",
+   o:[["Thanks, I will. Have a good one!",1,"Chiusura naturale, quella che usano davvero."],
+      ["Okay thank you very much for your kind offer.",0,"Troppo formale per il contesto: stona."],
+      ["I don't need anything.",0,"Rifiuti un'offerta di cortesia che non era un'offerta vera."]]}
+ ]}
+];
+
 /* ============================ MOTORE ============================ */
 const store={
   mem:{}, ok:true,
   get(k){ try{const v=localStorage.getItem(k);return v==null?this.mem[k]:v}catch(e){this.ok=false;return this.mem[k]} },
   set(k,v){ this.mem[k]=v; try{localStorage.setItem(k,v)}catch(e){this.ok=false} }
 };
-const DEF={xp:0,streak:0,last:"",done:[],srs:{},seen:[],rate:.85,voice:"",theme:"dark",de:true,lock:true,pin:"",dayLog:{}};
+const DEF={xp:0,streak:0,last:"",done:[],srs:{},seen:[],rate:.85,voice:"",theme:"dark",de:true,lock:true,pin:"",best:0,dlg:[],dayLog:{}};
 let S=Object.assign({},DEF);
 try{ S=Object.assign({},DEF,JSON.parse(store.get("speakfirst")||"{}")) }catch(e){}
 const save=()=>store.set("speakfirst",JSON.stringify(S));
@@ -809,6 +972,7 @@ const ICON={
  book:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4z"/><path d="M20 4h-7a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h7z"/></svg>',
  cards:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="6" width="13" height="14" rx="2"/><path d="M8 3h11a2 2 0 0 1 2 2v11"/></svg>',
  me:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>',
+ chat:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H7l-4 3v-5.2A8 8 0 0 1 11 4h2a8 8 0 0 1 8 8z"/></svg>',
  check:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
 };
 
@@ -839,6 +1003,7 @@ function buildExercises(u){
   shuffle(phr).forEach((it,i)=>ex.push(i%3===0?{k:"tiles",it}:(i%3===1?li(it):{k:"speak",it})));
   shuffle(phr).slice(0,2).forEach(it=>ex.push({k:"write",it}));
   shuffle(words).slice(0,2).forEach(it=>ex.push({k:"write",it}));
+  shuffle(phr).slice(0,2).forEach(it=>ex.push({k:"dict",it}));
   return shuffle(ex);
 }
 function reviewExercises(list){
@@ -847,7 +1012,8 @@ function reviewExercises(list){
     const roll=Math.random();
     if(roll<.3) return {k:"listen",it,options:shuffle([it.it].concat(distractors(pool,it.it,"it",3)))};
     if(roll<.6) return {k:"mc",it,options:shuffle([it.en].concat(distractors(pool,it.en,"en",3)))};
-    if(roll<.8) return {k:"write",it};
+    if(roll<.72) return {k:"write",it};
+    if(roll<.86) return {k:"dict",it};
     return {k:"speak",it};
   });
 }
@@ -870,7 +1036,7 @@ function paintSession(){
   const bar=el("div","bar"); bar.innerHTML='<i style="width:'+(i/ex.length*100)+'%"></i>'; app.appendChild(bar);
   const box=el("div","fade"); app.appendChild(box);
   const q=ex[i];
-  ({mc:exMc,listen:exListen,tiles:exTiles,write:exWrite,speak:exSpeak})[q.k](box,q);
+  ({mc:exMc,listen:exListen,tiles:exTiles,write:exWrite,speak:exSpeak,dict:exDict})[q.k](box,q);
 }
 function answered(good,q,extra){
   if(good) SESS.right++;
@@ -956,6 +1122,28 @@ function exWrite(box,q){
   inp.addEventListener("keydown",e=>{ if(e.key==="Enter") check() });
   box.appendChild(b);
   setTimeout(()=>inp.focus(),120);
+}
+function exDict(box,q){
+  box.appendChild(el("p","sub","Dettato \u2014 ascolta e scrivi quello che senti"));
+  const c=el("div","card"); const r=el("div","row");
+  const w=waveEl(); const b=speakBtn(q.it.en,true); const orig=b.onclick;
+  b.onclick=()=>{ wave(w,true,q.it.en.length*90); orig() };
+  r.appendChild(b); r.appendChild(w); c.appendChild(r);
+  const slow=el("button","btn ghost block","Riascolta lentamente"); slow.style.marginTop="10px";
+  slow.onclick=()=>{ wave(w,true,q.it.en.length*150); TTS.say(q.it.en,{rate:.55}) };
+  c.appendChild(slow); box.appendChild(c);
+  setTimeout(()=>{ wave(w,true,q.it.en.length*90); TTS.say(q.it.en) },300);
+  const inp=el("input","tf"); inp.placeholder="Scrivi quello che senti\u2026";
+  inp.autocapitalize="none"; inp.autocomplete="off"; inp.spellcheck=false;
+  box.appendChild(inp);
+  const go2=el("button","btn primary block","Controlla"); go2.style.marginTop="14px";
+  const check=()=>{ const ok=similarity(inp.value,q.it.en)>=.85;
+    go2.disabled=true; inp.disabled=true;
+    answered(ok,q, ok?null:"Tu hai scritto: <b>"+esc(inp.value||"\u2014")+"</b>"); };
+  go2.onclick=check;
+  inp.addEventListener("keydown",e=>{ if(e.key==="Enter") check() });
+  box.appendChild(go2);
+  setTimeout(()=>inp.focus(),150);
 }
 function exSpeak(box,q){
   box.appendChild(el("p","sub","Ascolta, poi ripeti ad alta voce"));
@@ -1059,7 +1247,7 @@ let CUR="home";
 function go(v){ CUR=v; paintNav(); window.scrollTo(0,0); VIEWS[v](); }
 function paintNav(){
   const n=$("#nav"); n.innerHTML="";
-  [["home","Oggi",ICON.today],["course","Corso",ICON.book],["review","Ripasso",ICON.cards],["me","Io",ICON.me]]
+  [["home","Oggi",ICON.today],["course","Corso",ICON.book],["dialogs","Dialoghi",ICON.chat],["review","Ripasso",ICON.cards],["me","Io",ICON.me]]
   .forEach(([k,t,ic])=>{
     const b=el("button",null,ic+"<span>"+t+"</span>");
     b.setAttribute("aria-current",CUR===k?"true":"false");
@@ -1103,11 +1291,14 @@ VIEWS.home=()=>{
     c.appendChild(el("h3",null,(due.length?"3":"2")+" · Sfide veloci"));
     c.appendChild(el("p","sub","Cinque minuti sul punto più difficile: produrre, non riconoscere."));
     const r=el("div","row wrap"); r.style.marginTop="12px";
-    const b1=el("button","btn","🎙 Pronuncia"); b1.style.flex="1";
-    b1.onclick=()=>runSession(shuffle(seen).slice(0,6).map(it=>({k:"speak",it})),{title:"Pronuncia",back:"home"});
-    const b2=el("button","btn","✍️ Scrittura"); b2.style.flex="1";
-    b2.onclick=()=>runSession(shuffle(seen).slice(0,8).map(it=>({k:"write",it})),{title:"Scrittura",back:"home"});
-    r.appendChild(b1); r.appendChild(b2); c.appendChild(r); app.appendChild(c);
+    const mk=(lbl,fn)=>{ const b=el("button","btn",lbl); b.style.flex="1 1 45%"; b.onclick=fn; r.appendChild(b) };
+    mk("\u23f1 Sfida lampo", runFlash);
+    mk("\u270f\ufe0f Dettato", ()=>runSession(shuffle(seen.filter(x=>x.type==="p")).slice(0,6).map(it=>({k:"dict",it})),{title:"Dettato",back:"home"}));
+    mk("\ud83c\udf99 Pronuncia", ()=>runSession(shuffle(seen).slice(0,6).map(it=>({k:"speak",it})),{title:"Pronuncia",back:"home"}));
+    mk("\u2328\ufe0f Scrittura", ()=>runSession(shuffle(seen).slice(0,8).map(it=>({k:"write",it})),{title:"Scrittura",back:"home"}));
+    c.appendChild(r);
+    if(S.best) c.appendChild(el("p","sub","Record sfida lampo: <b>"+S.best+"</b> in 60 secondi"));
+    app.appendChild(c);
   }
   const t=el("div","card flat");
   t.appendChild(el("p","sub","<b>Regola del giorno</b><br>"+CHECKLIST[new Date().getDate()%CHECKLIST.length]));
@@ -1167,10 +1358,140 @@ VIEWS.review=()=>{
     [["Misto",()=>reviewExercises(shuffle(seen).slice(0,15))],
      ["Solo ascolto",()=>shuffle(seen).slice(0,12).map(it=>({k:"listen",it,options:shuffle([it.it].concat(distractors(seen,it.it,"it",3)))}))],
      ["Solo scrittura",()=>shuffle(seen).slice(0,10).map(it=>({k:"write",it}))],
+     ["Dettato",()=>shuffle(seen.filter(x=>x.type==="p")).slice(0,8).map(it=>({k:"dict",it}))],
      ["Solo voce",()=>shuffle(seen).slice(0,8).map(it=>({k:"speak",it}))]
     ].forEach(([t,f])=>{ const b=el("button","btn",t); b.style.flex="1 1 45%"; b.onclick=()=>runSession(f(),{title:t,back:"review"}); r.appendChild(b) });
     c3.appendChild(r); app.appendChild(c3);
   }
+};
+
+
+/* ---------------- sfida lampo: 60 secondi ---------------- */
+function runFlash(){
+  const seen=allSeenItems();
+  if(seen.length<8){ toast("Fai almeno una lezione prima"); return }
+  const app=$("#app"); let score=0, left=60, tick=null, cur=null;
+  const stop=()=>{ clearInterval(tick); tick=null };
+  const next=()=>{
+    app.innerHTML="";
+    const head=el("div","row between"); head.style.margin="14px 0 8px";
+    head.appendChild(el("div","sub","Sfida lampo \u00b7 <b style='color:var(--text)'>"+score+"</b> giuste"));
+    const q=el("button","badge","Esci"); q.onclick=()=>{ stop(); go("home") }; head.appendChild(q);
+    app.appendChild(head);
+    const tm=el("div","timer"); tm.innerHTML='<i style="width:'+(left/60*100)+'%"></i>'; app.appendChild(tm);
+    if(!tick) tick=setInterval(()=>{
+      left--; const bar=$(".timer i"); if(bar) bar.style.width=(left/60*100)+"%";
+      const t=$(".timer"); if(t&&left<=10) t.classList.add("low");
+      if(left<=0){ stop(); end() }
+    },1000);
+    cur=seen[Math.random()*seen.length|0];
+    const box=el("div","fade"); app.appendChild(box);
+    box.appendChild(el("h2","hero-en",esc(cur.it))); box.lastChild.style.cssText="font-size:26px;margin:18px 0 14px";
+    shuffle([cur.en].concat(distractors(seen,cur.en,"en",3))).forEach(o=>{
+      const b=el("button","choice",esc(o));
+      b.onclick=()=>{ const ok=o===cur.en;
+        if(ok){ score++; srsGrade(cur.key,true) } else { srsGrade(cur.key,false); b.classList.add("bad") }
+        if(left>0) setTimeout(next,ok?60:520); };
+      box.appendChild(b);
+    });
+  };
+  const end=()=>{
+    const rec=score>(S.best||0); if(rec){ S.best=score; } addXp(score*3); touchStreak(); save();
+    app.innerHTML="";
+    const c=el("div","card fade center"); c.style.marginTop="26px";
+    c.appendChild(el("div","big-num",String(score)));
+    c.appendChild(el("p","sub","risposte giuste in 60 secondi"));
+    c.appendChild(el("hr","sep"));
+    c.appendChild(el("p","sub", rec?"Nuovo record personale.":"Il tuo record \u00e8 "+(S.best||0)+"."));
+    c.appendChild(el("p","tip","Qui non conta sapere le parole: conta quanto in fretta ti vengono. \u00c8 la differenza tra capire l'inglese e parlarlo."));
+    const a=el("button","btn primary block","Riprova"); a.style.marginTop="12px";
+    a.onclick=()=>{ score=0; left=60; next() }; c.appendChild(a);
+    const b=el("button","btn ghost block","Torna alla home"); b.style.marginTop="8px";
+    b.onclick=()=>go("home"); c.appendChild(b);
+    app.appendChild(c);
+  };
+  next();
+}
+
+/* ---------------- dialoghi a bivi ---------------- */
+function runDialog(d){
+  const app=$("#app"); let i=0, good=0; const hist=[];
+  const step=()=>{
+    app.innerHTML="";
+    const head=el("div","row between"); head.style.margin="14px 0 2px";
+    head.appendChild(el("div","sub",esc(d.t)+" \u00b7 "+Math.min(i+1,d.turns.length)+"/"+d.turns.length));
+    const q=el("button","badge","Esci"); q.onclick=()=>go("dialogs"); head.appendChild(q);
+    app.appendChild(head);
+    const bar=el("div","bar"); bar.innerHTML='<i style="width:'+(i/d.turns.length*100)+'%"></i>'; app.appendChild(bar);
+    if(i===0) app.appendChild(el("p","tip",esc(d.intro)));
+    hist.forEach(h=>{ const b=el("div","bub "+h.k, esc(h.en)+"<small>"+esc(h.it)+"</small>"); app.appendChild(b) });
+    if(i>=d.turns.length) return finish();
+    const t=d.turns[i];
+    const bb=el("div","bub them fade", esc(t.them)+"<small>"+esc(t.it)+"</small>");
+    app.appendChild(bb);
+    const r=el("div","row"); r.style.margin="4px 0 14px";
+    r.appendChild(speakBtn(t.them));
+    const slow=el("button","btn ghost","Pi\u00f9 lento"); slow.onclick=()=>TTS.say(t.them,{rate:.6});
+    r.appendChild(slow); app.appendChild(r);
+    setTimeout(()=>TTS.say(t.them),350);
+    app.appendChild(el("p","sub","Come rispondi?"));
+    shuffle(t.o.slice()).forEach(([en,ok,why])=>{
+      const b=el("button","choice",esc(en));
+      b.onclick=()=>{
+        lockChoices(app); b.classList.add(ok?"good":"bad");
+        if(ok) good++;
+        TTS.say(en);
+        const fb=el("div","card fade");
+        fb.appendChild(el("p","sub","<b style='color:"+(ok?"var(--mint)":"var(--rose)")+"'>"+(ok?"S\u00ec, cos\u00ec funziona":"Meglio evitare")+"</b><br>"+esc(why)));
+        if(!ok){ const right=t.o.find(x=>x[1]===1);
+          fb.appendChild(el("p","tip","La risposta che funziona: <b>"+esc(right[0])+"</b>")); }
+        const nx=el("button","btn primary block", i+1>=d.turns.length?"Vedi il risultato":"Continua");
+        nx.style.marginTop="12px";
+        nx.onclick=()=>{ const chosen=ok?en:t.o.find(x=>x[1]===1)[0];
+          hist.push({k:"them",en:t.them,it:t.it}); hist.push({k:"me",en:chosen,it:""});
+          i++; step(); };
+        fb.appendChild(nx); app.appendChild(fb); fb.scrollIntoView({block:"nearest"});
+      };
+      app.appendChild(b);
+    });
+  };
+  const finish=()=>{
+    addXp(good*8); touchStreak();
+    if(!S.dlg.includes(d.id)){ S.dlg.push(d.id) } save();
+    const c=el("div","card fade center");
+    c.appendChild(el("div","big-num",good+"/"+d.turns.length));
+    c.appendChild(el("p","sub","risposte azzeccate"));
+    c.appendChild(el("hr","sep"));
+    c.appendChild(el("p","sub", good===d.turns.length
+      ? "Tutto giusto. Ora rifai il dialogo dicendo le battute ad alta voce: \u00e8 l\u00ec che si fissa."
+      : "Ripetilo: la seconda volta noterai che le risposte buone hanno tutte la stessa forma."));
+    const a=el("button","btn primary block","Rifallo"); a.style.marginTop="12px";
+    a.onclick=()=>{ i=0; good=0; hist.length=0; step() }; c.appendChild(a);
+    const b=el("button","btn ghost block","Altri dialoghi"); b.style.marginTop="8px";
+    b.onclick=()=>go("dialogs"); c.appendChild(b);
+    $("#app").appendChild(c);
+  };
+  step();
+}
+
+VIEWS.dialogs=()=>{
+  const app=$("#app"); app.innerHTML="";
+  const c=el("div","card fade");
+  c.appendChild(el("h3",null,"Dialoghi"));
+  c.appendChild(el("p","sub","Situazioni vere, una battuta alla volta. Ascolti quello che ti dicono e scegli come rispondere: una sola opzione funziona davvero, e ti spiego sempre perch\u00e9."));
+  app.appendChild(c);
+  const cats={lavoro:"Al lavoro",colloquio:"Colloquio",quotidiano:"Vita di tutti i giorni"};
+  Object.keys(cats).forEach(k=>{
+    const list=DIALOGS.filter(d=>d.cat===k); if(!list.length) return;
+    app.appendChild(el("div","phase-h","<b>"+cats[k]+"</b>"));
+    list.forEach(d=>{
+      const done=(S.dlg||[]).includes(d.id);
+      const b=el("button","dcard");
+      b.innerHTML='<div class="n" style="width:38px;height:38px;border-radius:11px;background:'+(done?"var(--mint)":"var(--surface2)")+';display:grid;place-items:center;font-weight:800;flex:0 0 auto;border:1px solid var(--line);color:'+(done?"#06281A":"var(--text)")+'">'+(done?"\u2713":d.id)+'</div><div class="t"><b>'+esc(d.t)+'</b><span>'+d.turns.length+' battute</span></div>';
+      b.onclick=()=>runDialog(d);
+      app.appendChild(b);
+    });
+  });
 };
 
 VIEWS.me=()=>{

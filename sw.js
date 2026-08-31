@@ -1,6 +1,6 @@
 /* Speak First — service worker
-   Cambia VERSION a ogni aggiornamento dell'app: forza il rinnovo della cache. */
-const VERSION = "v2";
+   Alza VERSION a ogni aggiornamento dell'app: forza il rinnovo della cache. */
+const VERSION = "v3";
 const CACHE = "speak-first-" + VERSION;
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
@@ -20,27 +20,36 @@ self.addEventListener("activate", e => {
   );
 });
 
+/* Una risposta va accettata solo se è davvero valida.
+   Un 404 o un redirect di un proxy NON deve mai sovrascrivere la copia buona:
+   è così che una rete che blocca github.io cancellerebbe l'app dal telefono. */
+const usable = r => r && r.ok && r.status === 200 && r.type !== "opaque";
+
 self.addEventListener("fetch", e => {
   const req = e.request;
   if (req.method !== "GET") return;
 
-  /* pagina: prima la rete, così un aggiornamento arriva subito;
-     senza rete si cade sulla copia in cache */
+  const fallback = () =>
+    caches.match("./index.html").then(r => r || caches.match("./"));
+
+  /* pagina: prima la rete, ma solo se risponde bene */
   if (req.mode === "navigate") {
     e.respondWith(
       fetch(req).then(res => {
+        if (!usable(res)) return fallback().then(c => c || res);
         const copy = res.clone();
         caches.open(CACHE).then(c => c.put("./index.html", copy)).catch(() => {});
         return res;
-      }).catch(() => caches.match("./index.html").then(r => r || caches.match("./")))
+      }).catch(fallback)
     );
     return;
   }
 
-  /* risorse: prima la cache, aggiornata in sottofondo */
+  /* risorse: prima la cache, rinnovata in sottofondo */
   e.respondWith(
     caches.match(req).then(hit => {
       const net = fetch(req).then(res => {
+        if (!usable(res)) return hit || res;
         const copy = res.clone();
         caches.open(CACHE).then(c => c.put(req, copy)).catch(() => {});
         return res;

@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<title>Speak First — inglese da zero</title>
+<meta name="description" content="Corso di inglese parlato e scritto da zero, per italiani.">
+<meta name="theme-color" content="#131B33">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Speak First">
+<link id="manifest" rel="manifest" href="manifest.json">
+<link id="appleicon" rel="apple-touch-icon" href="icon-192.png">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#131B33; --surface:#1B2645; --surface2:#243155; --line:#35426E;
+  --text:#EAEEF9; --dim:#94A1C7;
+  --signal:#FFB13C; --mint:#54DDA3; --rose:#FF7E90; --violet:#A98BFF;
+  --shadow:0 10px 30px rgba(5,10,25,.45);
+  --r:18px;
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-t:env(safe-area-inset-top,0px);
+}
+html[data-theme="light"]{
+  --bg:#EDF0F7; --surface:#FFFFFF; --surface2:#F3F5FB; --line:#D5DCEC;
+  --text:#16203A; --dim:#5C6B92;
+  --signal:#C97B00; --mint:#0E9E68; --rose:#D6435A; --violet:#6E4BD8;
+  --shadow:0 8px 24px rgba(30,45,90,.10);
+}
+html,body{margin:0;padding:0;height:100%}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:16px; line-height:1.5;
+  overscroll-behavior-y:none;
+  -webkit-font-smoothing:antialiased;
+}
+button,input,select{font:inherit;color:inherit}
+button{border:0;background:none;cursor:pointer}
+:focus-visible{outline:3px solid var(--signal);outline-offset:2px;border-radius:8px}
+
+/* ---------- shell ---------- */
+#top{
+  position:sticky;top:0;z-index:20;padding:calc(var(--safe-t) + 10px) 16px 10px;
+  background:linear-gradient(var(--bg) 72%,transparent);
+  display:flex;align-items:center;gap:12px;
+}
+#top .brand{font-weight:800;letter-spacing:-.02em;font-size:17px}
+#top .brand span{color:var(--signal)}
+#top .spacer{flex:1}
+.pill{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--surface);border:1px solid var(--line);
+  padding:5px 11px;border-radius:999px;font-size:13px;font-weight:600;color:var(--dim)
+}
+.pill b{color:var(--text)}
+main{padding:0 16px calc(96px + var(--safe-b));max-width:640px;margin:0 auto}
+
+/* ---------- bottom nav ---------- */
+#nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:color-mix(in srgb,var(--surface) 92%,transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);
+  padding-bottom:var(--safe-b);
+}
+#nav button{padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--dim);font-size:11px;font-weight:600}
+#nav button .ic{width:24px;height:24px;display:block}
+#nav button[aria-current="true"]{color:var(--text)}
+#nav button[aria-current="true"] .ic{color:var(--signal)}
+
+/* ---------- cards ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:12px 0;box-shadow:var(--shadow)}
+.card.flat{box-shadow:none}
+.card h3{margin:0 0 4px;font-size:16px;letter-spacing:-.01em}
+.sub{color:var(--dim);font-size:13.5px;margin:0}
+.row{display:flex;align-items:center;gap:10px}
+.between{justify-content:space-between}
+.wrap{flex-wrap:wrap}
+
+/* ---------- hero: la frase inglese domina ---------- */
+.hero-en{
+  font-size:clamp(26px,7.6vw,38px);font-weight:800;line-height:1.15;
+  letter-spacing:-.03em;margin:0 0 8px;
+}
+.hero-it{color:var(--dim);font-size:15px;margin:0}
+.hero-de{color:var(--violet);font-size:13px;margin:8px 0 0;font-weight:600}
+
+/* ---------- waveform (elemento firma) ---------- */
+.wave{display:flex;align-items:center;gap:3px;height:34px}
+.wave i{width:3px;height:6px;border-radius:2px;background:var(--line);display:block;transition:height .09s ease,background .2s}
+.wave.on i{background:var(--signal)}
+.wave.mic.on i{background:var(--mint)}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px 18px;border-radius:14px;font-weight:700;font-size:15px;
+  background:var(--surface2);border:1px solid var(--line);color:var(--text);min-height:50px
+}
+.btn.primary{background:var(--signal);color:#20160A;border-color:transparent}
+html[data-theme="light"] .btn.primary{color:#fff}
+.btn.ghost{background:transparent}
+.btn.block{width:100%}
+.btn:disabled{opacity:.45}
+.btn.mint{background:var(--mint);color:#06281A;border-color:transparent}
+html[data-theme="light"] .btn.mint{color:#fff}
+.iconbtn{width:52px;height:52px;border-radius:50%;background:var(--surface2);border:1px solid var(--line);display:grid;place-items:center;flex:0 0 auto}
+.iconbtn.big{width:64px;height:64px}
+.iconbtn.live{background:var(--signal);border-color:transparent;color:#20160A}
+.iconbtn.rec{background:var(--mint);border-color:transparent;color:#06281A}
+
+/* ---------- choices ---------- */
+.choice{
+  display:block;width:100%;text-align:left;padding:15px 16px;border-radius:14px;
+  background:var(--surface2);border:1px solid var(--line);margin:9px 0;font-size:16px;font-weight:600;min-height:52px
+}
+.choice.good{background:color-mix(in srgb,var(--mint) 22%,var(--surface2));border-color:var(--mint)}
+.choice.bad{background:color-mix(in srgb,var(--rose) 20%,var(--surface2));border-color:var(--rose)}
+.choice small{display:block;font-weight:500;color:var(--dim);font-size:12.5px;margin-top:2px}
+
+/* ---------- input ---------- */
+.tf{
+  width:100%;padding:15px 16px;border-radius:14px;background:var(--surface2);
+  border:1px solid var(--line);font-size:17px;font-weight:600
+}
+.tf::placeholder{color:var(--dim);font-weight:500}
+
+/* ---------- tiles (ricostruzione frase) ---------- */
+.slot{min-height:64px;border:1.5px dashed var(--line);border-radius:14px;padding:8px;display:flex;flex-wrap:wrap;gap:7px;align-content:flex-start;background:var(--surface2)}
+.tile{padding:9px 13px;border-radius:11px;background:var(--surface);border:1px solid var(--line);font-weight:700;font-size:15px}
+.bank{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+
+/* ---------- progress ---------- */
+.bar{height:9px;border-radius:99px;background:var(--surface2);overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--signal);border-radius:99px;transition:width .4s ease}
+.bar.m i{background:var(--mint)}
+.dots{display:flex;gap:5px}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--signal)}
+
+/* ---------- lista lezioni ---------- */
+.unit{display:flex;gap:12px;align-items:center;padding:13px 14px;border-radius:15px;background:var(--surface);border:1px solid var(--line);margin:8px 0;width:100%;text-align:left}
+.unit .n{width:38px;height:38px;border-radius:11px;background:var(--surface2);display:grid;place-items:center;font-weight:800;font-size:14px;flex:0 0 auto;border:1px solid var(--line)}
+.unit.done .n{background:var(--mint);color:#06281A;border-color:transparent}
+.unit.next{border-color:var(--signal)}
+.unit .t{flex:1;min-width:0}
+.unit .t b{display:block;font-size:15px;letter-spacing:-.01em}
+.unit .t span{display:block;color:var(--dim);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.unit.locked{opacity:.55}
+
+.phase-h{display:flex;align-items:baseline;gap:9px;margin:22px 0 6px}
+.phase-h b{font-size:13px;color:var(--signal);font-weight:800}
+.phase-h span{font-size:13px;color:var(--dim)}
+
+/* ---------- misc ---------- */
+.k{background:var(--surface2);border:1px solid var(--line);border-radius:8px;padding:1px 7px;font-weight:700;font-size:14px;display:inline-block}
+.gram{font-size:14.5px;line-height:1.62}
+.gram p{margin:0 0 9px}
+.gram b{color:var(--signal)}
+.gram .ex{color:var(--dim)}
+.gram table{width:100%;border-collapse:collapse;margin:6px 0 10px;font-size:14px}
+.gram td{padding:6px 8px;border-bottom:1px solid var(--line)}
+.gram td:first-child{font-weight:700;white-space:nowrap}
+.tip{border-left:3px solid var(--violet);padding-left:12px;margin:10px 0;font-size:14px;color:var(--dim)}
+.tip b{color:var(--violet)}
+.badge{font-size:11px;font-weight:800;padding:3px 8px;border-radius:99px;background:var(--surface2);border:1px solid var(--line);color:var(--dim)}
+.badge.mint{color:var(--mint);border-color:var(--mint)}
+.badge.rose{color:var(--rose);border-color:var(--rose)}
+.center{text-align:center}
+.hidden{display:none!important}
+.big-num{font-size:44px;font-weight:800;letter-spacing:-.04em;line-height:1}
+.stat{flex:1;text-align:center;padding:12px 4px;background:var(--surface2);border-radius:14px;border:1px solid var(--line)}
+.stat b{display:block;font-size:22px;font-weight:800;letter-spacing:-.02em}
+.stat span{font-size:11.5px;color:var(--dim);font-weight:600}
+.fade{animation:fade .22s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+hr.sep{border:0;border-top:1px solid var(--line);margin:16px 0}
+a{color:var(--signal)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + var(--safe-b));background:var(--surface2);border:1px solid var(--line);padding:11px 16px;border-radius:14px;font-weight:600;font-size:14px;z-index:60;box-shadow:var(--shadow)}
+</style>
+</head>
+<body>
+<header id="top">
+  <div class="brand">Speak<span> First</span></div>
+  <div class="spacer"></div>
+  <div class="pill" id="streakPill">🔥 <b>0</b></div>
+  <div class="pill" id="xpPill"><b>0</b> xp</div>
+</header>
+<main id="app"></main>
+<nav id="nav"></nav>
+<script>
+/* =======================================================================
+   CORSO — 36 unità, 3 fasi.  w = parole [en, it, aggancio tedesco/nota]
+                              p = frasi  [en, it]
+   ======================================================================= */
+const PHASES=[
+ {n:1,t:"Sopravvivenza",d:"Farti capire in qualsiasi situazione"},
+ {n:2,t:"Conversazione",d:"Passato, futuro, discorso che scorre"},
+ {n:3,t:"Inglese al lavoro",d:"Email, riunioni, ticket, colloquio"}
+];
+
+const UNITS=[
+/* ---------------- FASE 1 ---------------- */
+{id:1,ph:1,t:"Io sono, tu sei",s:"il verbo essere",
+w:[["I","io","ich"],["you","tu / voi","du / ihr"],["he","lui","er"],["she","lei","sie"],["we","noi","wir"],["they","loro","sie (plurale)"],["name","nome","Name — identico"],["my","mio / mia","mein"]],
+p:[["I am Emanuele.","Sono Emanuele."],["You are my friend.","Tu sei mio amico."],["He is at work.","Lui è al lavoro."],["She is Italian.","Lei è italiana."],["We are here.","Noi siamo qui."],["They are ready.","Loro sono pronti."]],
+gr:`<p>Il verbo <b>to be</b> (essere) ha solo tre forme:</p>
+<table><tr><td>I</td><td><span class="k">am</span> — I am / I'm</td></tr>
+<tr><td>he, she, it</td><td><span class="k">is</span> — he is / he's</td></tr>
+<tr><td>you, we, they</td><td><span class="k">are</span> — you are / you're</td></tr></table>
+<p>In inglese il pronome <b>non si può mai togliere</b>. In italiano dici "sono stanco", in inglese devi dire <span class="k">I am tired</span>.</p>
+<div class="tip"><b>Ponte col tedesco:</b> è la stessa logica di ich <i>bin</i> / du <i>bist</i> / wir <i>sind</i>. Solo che l'inglese ne ha tre invece di sei. È più facile del tedesco.</div>`},
+
+{id:2,ph:1,t:"Io ho",s:"to have + a / an / the",
+w:[["have","avere","haben"],["has","ha (lui/lei)","hat"],["a","un / uno","ein"],["the","il / la / i / le","der, die, das → uno solo!"],["water","acqua","Wasser"],["house","casa","Haus"],["car","macchina","—"],["time","tempo","Zeit"]],
+p:[["I have a dog.","Ho un cane."],["She has a car.","Lei ha una macchina."],["I have a question.","Ho una domanda."],["We don't have time.","Non abbiamo tempo."],["The water is cold.","L'acqua è fredda."],["It's an apple.","È una mela."]],
+gr:`<p><b>a</b> davanti a consonante, <b>an</b> davanti a vocale: <span class="ex">a car / an email</span>.</p>
+<p><b>the</b> copre tutti i nostri articoli determinativi. Non cambia mai: the man, the woman, the cars.</p>
+<p>Attenzione: <span class="k">he / she / it → has</span>, tutti gli altri <span class="k">have</span>.</p>
+<div class="tip"><b>Ponte col tedesco:</b> have = haben, has = hat. Stessa famiglia, stesso suono.</div>`},
+
+{id:3,ph:1,t:"Quello che faccio ogni giorno",s:"presente semplice",
+w:[["work","lavorare / lavoro","Werk"],["live","vivere, abitare","leben"],["speak","parlare","sprechen"],["want","volere","—"],["need","avere bisogno","nötig"],["like","piacere","—"],["know","sapere, conoscere","kennen"],["go","andare","gehen"]],
+p:[["I work in IT.","Lavoro nell'IT."],["I live in Speyer.","Abito a Speyer."],["I speak Italian and German.","Parlo italiano e tedesco."],["I want to learn English.","Voglio imparare l'inglese."],["She works from home.","Lei lavora da casa."],["He speaks very fast.","Lui parla molto veloce."]],
+gr:`<p>Il presente inglese è il verbo nudo. Nessuna coniugazione... tranne una cosa:</p>
+<p><b>alla terza persona singolare si aggiunge -s</b>: I work → <span class="k">he works</span>, I live → <span class="k">she lives</span>.</p>
+<p>Regola pratica: <b>he / she / it = +s</b>. Tutto il resto niente.</p>
+<div class="tip"><b>Errore tipico italiano:</b> dimenticare quella -s. Chi ascolta lo nota subito. Esagera per due settimane e poi ti verrà naturale.</div>`},
+
+{id:4,ph:1,t:"Dire di no",s:"la negazione",
+w:[["not","non","nicht"],["don't","non (io/tu/noi/loro)","—"],["doesn't","non (lui/lei)","—"],["never","mai","nie"],["nothing","niente","nichts"],["but","ma","aber"],["also","anche","auch"],["very","molto","—"]],
+p:[["I don't understand.","Non capisco."],["I don't speak English well yet.","Non parlo ancora bene inglese."],["She doesn't know.","Lei non lo sa."],["It's not a problem.","Non è un problema."],["I never work on Sunday.","Non lavoro mai di domenica."],["He doesn't have time.","Lui non ha tempo."]],
+gr:`<p>Per negare un verbo normale serve l'aiutante <b>do</b>:</p>
+<table><tr><td>I / you / we / they</td><td><span class="k">don't</span> + verbo</td></tr>
+<tr><td>he / she / it</td><td><span class="k">doesn't</span> + verbo</td></tr></table>
+<p>Attenzione: dopo <b>doesn't</b> la -s sparisce. <span class="ex">She works → she doesn't work</span> (mai "doesn't works").</p>
+<p>Con <b>to be</b> invece niente do: <span class="k">I'm not</span>, <span class="k">it isn't</span>.</p>`},
+
+{id:5,ph:1,t:"Fare domande",s:"le sei parole chiave",
+w:[["what","che cosa","was"],["where","dove","wo"],["when","quando","wann"],["who","chi","wer"],["why","perché (domanda)","warum"],["how","come","wie"],["which","quale","welche"],["how much","quanto","wie viel"]],
+p:[["What is this?","Che cos'è questo?"],["Where are you from?","Di dove sei?"],["When does it start?","Quando comincia?"],["Why not?","Perché no?"],["How much is it?","Quanto costa?"],["How do you say this in English?","Come si dice questo in inglese?"]],
+gr:`<p>Domanda con <b>to be</b>: si gira. <span class="ex">You are ready → <span class="k">Are you ready?</span></span></p>
+<p>Domanda con gli altri verbi: si mette <b>do / does</b> davanti. <span class="ex">You work here → <span class="k">Do you work here?</span></span></p>
+<p>Con la parola interrogativa: <b>Where do you live?</b> — parola-domanda + do + soggetto + verbo. Sempre quest'ordine.</p>
+<div class="tip"><b>Ponte col tedesco:</b> what/was, where/wo, when/wann, who/wer, why/warum, how/wie. Sono le stesse parole invecchiate diversamente.</div>`},
+
+{id:6,ph:1,t:"Numeri, ore, giorni",s:"dire quando",
+w:[["number","numero","Nummer"],["hour","ora (60 min)","Uhr"],["day","giorno","Tag"],["week","settimana","Woche"],["month","mese","Monat"],["year","anno","Jahr"],["today","oggi","heute"],["tomorrow","domani","morgen"]],
+p:[["It's ten o'clock.","Sono le dieci."],["I work eight hours a day.","Lavoro otto ore al giorno."],["See you tomorrow.","Ci vediamo domani."],["How long does it take?","Quanto ci vuole?"],["It takes twenty minutes.","Ci vogliono venti minuti."],["Every Monday at nine.","Ogni lunedì alle nove."]],
+gr:`<p>1 one · 2 two · 3 three · 4 four · 5 five · 6 six · 7 seven · 8 eight · 9 nine · 10 ten<br>
+11 eleven · 12 twelve · 13 thirteen · 20 twenty · 30 thirty · 100 a hundred · 1000 a thousand</p>
+<p>Le ore: <b>at</b> + ora → <span class="ex">at seven, at half past seven (7:30)</span>.</p>
+<p>I giorni: <b>on</b> Monday. I mesi: <b>in</b> May. L'anno: <b>in</b> 2026.</p>
+<div class="tip">Regola meccanica: <b>at</b> per l'orario, <b>on</b> per il giorno, <b>in</b> per mese e anno. Dal più piccolo al più grande.</div>`},
+
+{id:7,ph:1,t:"Questo, quello, questi",s:"plurali e dimostrativi",
+w:[["this","questo","dies"],["that","quello","das"],["these","questi","diese"],["those","quelli","—"],["thing","cosa","Ding"],["people","persone, gente","—"],["man / men","uomo / uomini","Mann / Männer"],["woman / women","donna / donne","Frau"]],
+p:[["This is my desk.","Questa è la mia scrivania."],["That is not correct.","Quello non è corretto."],["These are my keys.","Queste sono le mie chiavi."],["Those people are waiting.","Quelle persone stanno aspettando."],["How many people are coming?","Quante persone vengono?"],["What's that?","Cos'è quello?"]],
+gr:`<p>Vicino → <b>this</b> (uno) / <b>these</b> (più di uno). Lontano → <b>that</b> / <b>those</b>.</p>
+<p>Il plurale è quasi sempre <b>-s</b>: car → cars. Ma: <span class="ex">man→men, woman→women, child→children, person→people, foot→feet</span>.</p>
+<p><b>people</b> è già plurale: <span class="k">people are</span>, mai "people is".</p>`},
+
+{id:8,ph:1,t:"C'è, ci sono",s:"there is / there are",
+w:[["there is","c'è","es gibt"],["there are","ci sono","es gibt"],["some","un po' di, alcuni","—"],["any","(in domande/negazioni)","—"],["problem","problema","Problem"],["room","stanza, spazio","Raum"],["door","porta","Tür"],["someone","qualcuno","jemand"]],
+p:[["There is a problem.","C'è un problema."],["There are two rooms.","Ci sono due stanze."],["Is there any coffee?","C'è del caffè?"],["There isn't much time.","Non c'è molto tempo."],["How many are there?","Quanti ce ne sono?"],["There's someone at the door.","C'è qualcuno alla porta."]],
+gr:`<p>Uno → <b>there is</b> (there's). Più di uno → <b>there are</b>.</p>
+<p><b>some</b> nelle frasi affermative, <b>any</b> nelle domande e nelle negazioni:</p>
+<p class="ex">I have some questions. / Do you have any questions? / I don't have any questions.</p>
+<div class="tip">Non tradurre "ci" letteralmente. "Ci sono io" non è "there am I", è <b>I'm here</b>.</div>`},
+
+{id:9,ph:1,t:"Chiedere aiuto",s:"can / can't",
+w:[["can","potere, sapere fare","können"],["can't","non potere","kann nicht"],["help","aiutare / aiuto","helfen"],["understand","capire","verstehen"],["hear","sentire","hören"],["come","venire","kommen"],["again","di nuovo","—"],["slowly","lentamente","langsam"]],
+p:[["Can you help me?","Puoi aiutarmi?"],["I can't hear you.","Non ti sento."],["Can you repeat that, please?","Puoi ripetere, per favore?"],["Can you say that again, more slowly?","Puoi ridirlo più lentamente?"],["I can come tomorrow.","Posso venire domani."],["She can speak four languages.","Lei sa parlare quattro lingue."]],
+gr:`<p><b>can</b> non cambia mai: I can, he can, we can. E dopo can il verbo è nudo, senza <i>to</i>: <span class="k">I can go</span>.</p>
+<p>Domanda: si gira. <span class="k">Can you...?</span> Negazione: <span class="k">can't</span>.</p>
+<div class="tip"><b>Le tre frasi che ti salvano la vita in ogni conversazione</b>, imparale a memoria oggi: <br>Sorry, I didn't catch that. · Could you repeat that, please? · Could you speak a bit more slowly?</div>`},
+
+{id:10,ph:1,t:"Di chi è",s:"possessivi e genitivo",
+w:[["your","tuo, vostro","dein"],["his","suo (di lui)","sein"],["her","suo (di lei)","ihr"],["our","nostro","unser"],["their","loro","ihr"],["friend","amico","Freund"],["family","famiglia","Familie"],["colleague","collega","Kollege"]],
+p:[["This is my car.","Questa è la mia macchina."],["What's your name?","Come ti chiami?"],["Her name is Anna.","Lei si chiama Anna."],["It's Marco's laptop.","È il portatile di Marco."],["Our office is closed.","Il nostro ufficio è chiuso."],["Their team is small.","Il loro team è piccolo."]],
+gr:`<p>In inglese il possesso si mette <b>prima</b>, e non concorda con l'oggetto ma con il proprietario:</p>
+<p class="ex">la macchina di lei = <b>her</b> car · la macchina di lui = <b>his</b> car</p>
+<p>"di" con le persone si fa con <b>'s</b>: <span class="ex">il capo di Anna = <b>Anna's</b> boss</span>. Al contrario dell'italiano: prima il proprietario, poi la cosa.</p>
+<div class="tip"><b>Errore tipico:</b> dire "the car of my friend". Si dice <b>my friend's car</b>.</div>`},
+
+{id:11,ph:1,t:"Sto facendo",s:"present continuous",
+w:[["now","adesso","nun"],["right now","proprio ora","—"],["waiting","aspettando","warten"],["looking for","cercando","—"],["learning","imparando","lernen"],["still","ancora","—"],["busy","occupato","—"],["almost","quasi","—"]],
+p:[["I'm learning English.","Sto imparando l'inglese."],["What are you doing?","Che stai facendo?"],["I'm working right now.","Sto lavorando proprio ora."],["She's not coming today.","Lei oggi non viene."],["We're waiting for you.","Ti stiamo aspettando."],["I'm still looking for it.","Lo sto ancora cercando."]],
+gr:`<p>Azione in corso adesso = <b>am / is / are + verbo-ing</b>.</p>
+<p class="ex">I work here (in generale) ≠ I'm working now (in questo momento)</p>
+<p>Serve anche per il futuro già deciso: <span class="k">I'm flying to Rome on Friday.</span></p>
+<div class="tip"><b>Vantaggio per te:</b> in tedesco questa forma non esiste, in italiano sì ("sto facendo"). Quindi qui parti avvantaggiato: è la stessa identica logica dell'italiano.</div>`},
+
+{id:12,ph:1,t:"Dove e come",s:"in / on / at e le altre",
+w:[["in","in, dentro","in"],["on","su, sopra","auf"],["at","a, presso","an"],["to","a, verso","zu"],["from","da","von"],["with","con","mit"],["for","per","für"],["about","riguardo a","über"]],
+p:[["I'm at home.","Sono a casa."],["The keys are on the table.","Le chiavi sono sul tavolo."],["I live in Germany.","Vivo in Germania."],["I'm going to Munich.","Vado a Monaco."],["I work with two colleagues.","Lavoro con due colleghi."],["It's about the new project.","Riguarda il nuovo progetto."]],
+gr:`<table><tr><td>in</td><td>dentro qualcosa: in the box, in Italy, in the room</td></tr>
+<tr><td>on</td><td>su una superficie: on the table, on the wall</td></tr>
+<tr><td>at</td><td>un punto preciso: at home, at work, at the station</td></tr></table>
+<p>Le preposizioni non si traducono mai una a una: si imparano attaccate al loro sostantivo. Memorizza <b>at home</b>, <b>at work</b>, <b>on the train</b> come se fossero parole singole.</p>`},
+
+/* ---------------- FASE 2 ---------------- */
+{id:13,ph:2,t:"Ieri ero",s:"was / were",
+w:[["was","ero, era","war"],["were","eri, eravamo, erano","waren"],["yesterday","ieri","gestern"],["last","scorso","letzte"],["ago","fa (tempo)","—"],["before","prima","bevor"],["then","allora, poi","dann"],["easy","facile","—"]],
+p:[["I was at home.","Ero a casa."],["It was great.","È stato fantastico."],["They were late.","Erano in ritardo."],["Where were you yesterday?","Dov'eri ieri?"],["It wasn't easy.","Non è stato facile."],["I was there two years ago.","Ero lì due anni fa."]],
+gr:`<p>Passato di <b>to be</b>: solo due forme.</p>
+<table><tr><td>I, he, she, it</td><td><span class="k">was</span></td></tr><tr><td>you, we, they</td><td><span class="k">were</span></td></tr></table>
+<p>Negazione: wasn't / weren't. Domanda: <span class="k">Were you...?</span></p>
+<p><b>ago</b> va sempre dopo: <span class="ex">three days ago</span> = tre giorni fa.</p>`},
+
+{id:14,ph:2,t:"Ieri ho fatto",s:"passato regolare -ed",
+w:[["worked","ho lavorato","—"],["finished","ho finito","—"],["called","ho chiamato","—"],["asked","ho chiesto","—"],["started","ho iniziato","—"],["needed","avevo bisogno","—"],["happened","è successo","—"],["decided","ho deciso","—"]],
+p:[["I finished the report.","Ho finito il report."],["She called me yesterday.","Mi ha chiamato ieri."],["We started at nine.","Abbiamo iniziato alle nove."],["I worked there for two years.","Ho lavorato lì per due anni."],["They asked a lot of questions.","Hanno fatto molte domande."],["It happened last week.","È successo la settimana scorsa."]],
+gr:`<p>Passato regolare = verbo + <b>-ed</b>. E vale per <b>tutte</b> le persone, senza eccezioni.</p>
+<p class="ex">work → worked · call → called · start → started</p>
+<p>Un solo passato copre due tempi italiani: <i>ho finito</i> e <i>finii</i> sono entrambi <b>I finished</b>.</p>
+<div class="tip">Pronuncia di -ed: quasi sempre è solo una <b>t</b> o una <b>d</b> attaccata, non "-ed". <span class="ex">worked → "wörkt", called → "cold"</span>. Solo dopo t/d si sente "id": wanted → "uontid".</div>`},
+
+{id:15,ph:2,t:"I verbi ribelli",s:"i 8 irregolari più usati",
+w:[["went","sono andato (go)","ging"],["had","ho avuto (have)","hatte"],["said","ho detto (say)","sagte"],["made","ho fatto (make)","machte"],["took","ho preso (take)","—"],["got","ho ricevuto (get)","—"],["saw","ho visto (see)","sah"],["came","sono venuto (come)","kam"]],
+p:[["I went to Berlin.","Sono andato a Berlino."],["He said no.","Ha detto di no."],["I took the train.","Ho preso il treno."],["We had a meeting.","Abbiamo avuto una riunione."],["I got your email.","Ho ricevuto la tua email."],["She came late.","È arrivata tardi."]],
+gr:`<p>Circa 100 verbi non seguono -ed. Ma i primi 20 coprono la stragrande maggioranza del parlato reale. Li trovi tutti nella scheda <b>Verbi irregolari</b> nella sezione Io.</p>
+<p>Impara la coppia <b>presente → passato</b> come una parola sola: go-went, take-took, come-came.</p>
+<div class="tip"><b>Ponte col tedesco:</b> l'inglese ha verbi forti come il tedesco, e spesso sono gli stessi: come-came / kommen-kam, see-saw / sehen-sah, give-gave / geben-gab.</div>`},
+
+{id:16,ph:2,t:"Hai fatto?",s:"domande al passato",
+w:[["did","hai / ho (aiutante)","—"],["didn't","non ho / non hai","—"],["really","davvero","—"],["maybe","forse","—"],["sure","sicuro, certo","—"],["anything","qualcosa","—"],["everything","tutto","—"],["something","qualcosa","—"]],
+p:[["Did you see my message?","Hai visto il mio messaggio?"],["Where did you go?","Dove sei andato?"],["I didn't understand.","Non ho capito."],["What did he say?","Cosa ha detto?"],["Did it work?","Ha funzionato?"],["How long did it take?","Quanto ci è voluto?"]],
+gr:`<p>Nelle domande e nelle negazioni al passato usi <b>did</b>, e il verbo principale <b>torna al presente</b>:</p>
+<p class="ex">You went → <b>Did you go?</b> / I <b>didn't go</b>. (mai "did you went")</p>
+<p>Il passato è già dentro <i>did</i>: non va segnato due volte. È l'errore numero uno degli italiani.</p>`},
+
+{id:17,ph:2,t:"Domani farò",s:"will e going to",
+w:[["will","forma del futuro","will (≠ volere!)"],["won't","non (futuro)","—"],["going to","sto per, ho intenzione","—"],["next","prossimo","nächste"],["soon","presto","—"],["later","più tardi","später"],["ready","pronto","—"],["until","fino a","bis"]],
+p:[["I'll call you later.","Ti chiamo dopo."],["It's going to rain.","Sta per piovere."],["I won't be there.","Non ci sarò."],["We'll see.","Vedremo."],["I'm going to start on Monday.","Comincerò lunedì."],["When will it be ready?","Quando sarà pronto?"]],
+gr:`<p><b>will</b> = decisione presa adesso, promessa, previsione. <span class="ex">I'll help you.</span></p>
+<p><b>going to</b> = piano già deciso prima. <span class="ex">I'm going to buy a new laptop.</span></p>
+<p>Dopo will il verbo è sempre nudo: <span class="k">will be</span>, <span class="k">will go</span>.</p>
+<div class="tip"><b>Falso amico col tedesco:</b> l'inglese <i>will</i> NON significa "volere" come il tedesco <i>ich will</i>. Volere in inglese è <b>want</b>.</div>`},
+
+{id:18,ph:2,t:"Devo, dovrei, vorrei",s:"i modali",
+w:[["must","devo (necessità forte)","muss"],["have to","devo (obbligo esterno)","—"],["should","dovrei (consiglio)","sollte"],["could","potrei","könnte"],["would","-ei (condizionale)","würde"],["may","posso (permesso)","—"],["might","potrebbe darsi","—"],["let","lasciare, permettere","lassen"]],
+p:[["I have to go.","Devo andare."],["You should try.","Dovresti provare."],["Could you help me?","Potresti aiutarmi?"],["I would like a coffee.","Vorrei un caffè."],["We must fix this today.","Dobbiamo sistemarlo oggi."],["You don't have to come.","Non sei obbligato a venire."]],
+gr:`<p>Il condizionale italiano (-ei) in inglese si fa con <b>would</b> + verbo:</p>
+<p class="ex">vorrei = <b>I would like</b> (I'd like) · farei = <b>I would do</b> · potresti = <b>could you</b></p>
+<p>Dopo un modale il verbo è sempre nudo e senza -s: <span class="k">she should go</span>.</p>
+<div class="tip"><b>Da usare ogni giorno:</b> "I would like" è la forma educata di "I want". In ufficio e al ristorante usa sempre <b>I'd like</b>.</div>`},
+
+{id:19,ph:2,t:"Meglio, peggio, il migliore",s:"comparativi",
+w:[["better","migliore, meglio","besser"],["worse","peggiore","—"],["more","più","mehr"],["less","meno","—"],["than","di, che (paragone)","als"],["best","il migliore","beste"],["difficult","difficile","—"],["cheap","economico","—"]],
+p:[["This is better.","Questo è meglio."],["It's more difficult than I thought.","È più difficile di quanto pensassi."],["That's the best solution.","È la soluzione migliore."],["It's cheaper than the other one.","È più economico dell'altro."],["As soon as possible.","Il prima possibile."],["It's the same for me.","Per me è uguale."]],
+gr:`<p>Parole corte → <b>-er / -est</b>: cheap → cheaper → the cheapest.</p>
+<p>Parole lunghe → <b>more / the most</b>: difficult → more difficult → the most difficult.</p>
+<p>Irregolari da sapere a memoria: good→<b>better</b>→<b>best</b>, bad→<b>worse</b>→<b>worst</b>.</p>
+<p>"di" nel paragone è sempre <b>than</b>: <span class="ex">better than</span>.</p>`},
+
+{id:20,ph:2,t:"Quanto, quanti, troppo",s:"le quantità",
+w:[["much","molto (non contabile)","—"],["many","molti (contabile)","—"],["a lot of","tanto, tanti","—"],["few","pochi","—"],["enough","abbastanza","genug"],["too","troppo","zu"],["only","solo","—"],["most","la maggior parte","meiste"]],
+p:[["I don't have much time.","Non ho molto tempo."],["There are too many emails.","Ci sono troppe email."],["That's enough.","Basta così."],["Only a few people came.","Sono venute solo poche persone."],["How much does it cost?","Quanto costa?"],["Most of the work is done.","La maggior parte del lavoro è fatta."]],
+gr:`<p>Se lo puoi <b>contare</b> → many / few. Se non lo puoi contare → much / little.</p>
+<p class="ex">many emails, many people · much time, much water</p>
+<p><b>a lot of</b> va bene per entrambi ed è quello che gli inglesi usano davvero nel parlato.</p>
+<p>Attenzione: <b>too</b> = troppo (negativo), <b>very</b> = molto. <span class="ex">too difficult</span> ≠ <span class="ex">very difficult</span>.</p>`},
+
+{id:21,ph:2,t:"L'ho già fatto",s:"present perfect",
+w:[["ever","mai (in domanda)","—"],["never","mai","nie"],["just","appena","—"],["yet","già / ancora","—"],["since","da (un momento)","seit"],["for","per (una durata)","—"],["already","già","schon"],["been","stato","gewesen"]],
+p:[["I've never been to London.","Non sono mai stato a Londra."],["Have you finished yet?","Hai già finito?"],["I've just sent it.","L'ho appena inviato."],["I've worked here since 2025.","Lavoro qui dal 2025."],["She hasn't answered yet.","Non ha ancora risposto."],["Have you ever tried it?","L'hai mai provato?"]],
+gr:`<p><b>have / has + participio</b>. Si usa quando il momento preciso non conta o l'azione tocca ancora l'adesso.</p>
+<p class="ex">I saw him yesterday (momento preciso → passato semplice)<br>I've seen him (quando non importa → present perfect)</p>
+<p><b>since</b> + punto di partenza (since Monday, since 2025). <b>for</b> + durata (for two years).</p>
+<div class="tip"><b>Attenzione, trappola italiana:</b> "lavoro qui da tre anni" NON è "I work here since three years". È <b>I've worked here for three years</b>.</div>`},
+
+{id:22,ph:2,t:"Legare le frasi",s:"i connettori",
+w:[["because","perché (risposta)","—"],["so","quindi, allora","also"],["although","anche se","obwohl"],["however","tuttavia","—"],["that's why","ecco perché","—"],["for example","per esempio","—"],["anyway","comunque","—"],["actually","in realtà (≠ attualmente!)","—"]],
+p:[["I'm late because of the traffic.","Sono in ritardo per il traffico."],["It's difficult, but possible.","È difficile, ma possibile."],["So, what do you think?","Allora, che ne pensi?"],["However, there's a problem.","Tuttavia c'è un problema."],["That's why I called you.","Ecco perché ti ho chiamato."],["Actually, I disagree.","In realtà non sono d'accordo."]],
+gr:`<p><b>because</b> + frase intera · <b>because of</b> + solo sostantivo.</p>
+<p class="ex">because it was late · because of the delay</p>
+<p>I connettori sono quello che fa suonare "adulto" il tuo inglese anche con poco vocabolario. Usarne tre o quattro bene vale più di 200 parole nuove.</p>
+<div class="tip"><b>Falso amico:</b> <b>actually</b> significa "in realtà", non "attualmente". Attualmente = <b>currently</b>.</div>`},
+
+{id:23,ph:2,t:"I verbi con la coda",s:"phrasal verbs essenziali",
+w:[["find out","scoprire","herausfinden"],["set up","configurare, allestire","—"],["give up","arrendersi","aufgeben"],["look for","cercare","—"],["turn on / off","accendere / spegnere","—"],["come back","tornare","—"],["figure out","capire, risolvere","—"],["deal with","occuparsi di","—"]],
+p:[["I'll find out.","Lo scopro io."],["Can you set it up?","Puoi configurarlo?"],["Don't give up.","Non mollare."],["I'm looking for a new job.","Sto cercando un nuovo lavoro."],["Turn it off and on again.","Spegnilo e riaccendilo."],["I'll deal with it tomorrow.","Me ne occupo domani."]],
+gr:`<p>Verbo + preposizione = significato nuovo. <span class="ex">look = guardare, ma <b>look for</b> = cercare</span>.</p>
+<p>Con un pronome, la particella va dopo: <span class="k">turn it off</span> (mai "turn off it").</p>
+<div class="tip"><b>Ponte col tedesco:</b> sono i tuoi verbi separabili. <i>aufgeben → give up</i>, <i>herausfinden → find out</i>, <i>anmachen → turn on</i>. Stessa identica meccanica.</div>`},
+
+{id:24,ph:2,t:"Se succede",s:"il periodo ipotetico",
+w:[["if","se","wenn"],["unless","a meno che","—"],["otherwise","altrimenti","—"],["in case","nel caso","falls"],["as soon as","appena","sobald"],["whether","se (oppure no)","ob"],["instead","invece","—"],["still","ancora, comunque","—"]],
+p:[["If it doesn't work, call me.","Se non funziona, chiamami."],["I would do it differently.","Lo farei diversamente."],["Let me know if you need help.","Fammi sapere se serve aiuto."],["As soon as I know, I'll tell you.","Appena lo so, te lo dico."],["Otherwise we lose time.","Altrimenti perdiamo tempo."],["Wait until I'm back.","Aspetta finché torno."]],
+gr:`<p>Regola d'oro: <b>dopo if non si mette mai will</b>.</p>
+<p class="ex">If it <b>rains</b>, I <b>will</b> stay home. (mai "if it will rain")</p>
+<p>Vale anche per when, as soon as, until: la parte del "se/quando" resta al presente.</p>
+<p>Ipotesi irreale: <b>if + passato → would</b>. <span class="ex">If I had more time, I would learn faster.</span></p>`},
+
+/* ---------------- FASE 3 ---------------- */
+{id:25,ph:3,t:"Scrivere una email",s:"aperture e chiusure che funzionano",
+w:[["attached","allegato","—"],["regards","cordiali saluti","—"],["reply","rispondere","—"],["deadline","scadenza","—"],["update","aggiornamento","—"],["forward","inoltrare","—"],["request","richiesta","—"],["by (Friday)","entro (venerdì)","bis"]],
+p:[["Hi Tom, thanks for your email.","Ciao Tom, grazie della tua email."],["Please find the file attached.","In allegato trovi il file."],["Let me know if you have any questions.","Fammi sapere se hai domande."],["I'll get back to you tomorrow.","Ti risponderò domani."],["Thanks in advance.","Grazie in anticipo."],["Best regards, Emanuele","Cordiali saluti, Emanuele"]],
+gr:`<p><b>Scheletro di ogni email di lavoro</b> — copialo e cambiaci dentro le parole:</p>
+<table><tr><td>Apertura</td><td>Hi [nome], / Dear [nome],</td></tr>
+<tr><td>Motivo</td><td>I'm writing about... / Quick update on...</td></tr>
+<tr><td>Richiesta</td><td>Could you please... / Would it be possible to...</td></tr>
+<tr><td>Chiusura</td><td>Let me know if you have any questions.</td></tr>
+<tr><td>Saluto</td><td>Best regards, / Kind regards,</td></tr></table>
+<div class="tip">L'email inglese è <b>più corta e più diretta</b> di quella italiana e tedesca. Niente "Spett.le", niente giri di parole. Vai al punto nella prima riga.</div>`},
+
+{id:26,ph:3,t:"Il daily standup",s:"dire cosa hai fatto in 30 secondi",
+w:[["blocker","ostacolo, blocco","—"],["progress","avanzamento","—"],["task","attività","—"],["done","fatto, finito","—"],["in progress","in corso","—"],["review","revisione","—"],["estimate","stima","—"],["by end of day","entro fine giornata","—"]],
+p:[["Yesterday I finished the migration.","Ieri ho finito la migrazione."],["Today I'm working on the API.","Oggi lavoro sull'API."],["I have no blockers.","Non ho blocchi."],["I'm blocked by the firewall rules.","Sono bloccato dalle regole del firewall."],["It's ready for review.","È pronto per la revisione."],["I need one more day for this.","Mi serve un altro giorno per questo."]],
+gr:`<p>Lo standup è sempre lo stesso schema. Imparalo come una formula e non dovrai più improvvisare:</p>
+<table><tr><td>1</td><td>Yesterday I <b>+ passato</b>...</td></tr>
+<tr><td>2</td><td>Today I'm <b>+ -ing</b>...</td></tr>
+<tr><td>3</td><td>I have no blockers. / I'm blocked by...</td></tr></table>
+<div class="tip">Se ti manca una parola tecnica, dilla in inglese così com'è: firewall, container, deployment, backup sono già inglesi. Non fermarti mai a cercare la traduzione.</div>`},
+
+{id:27,ph:3,t:"Quando qualcosa si rompe",s:"ticket e incidenti",
+w:[["issue","problema, ticket","—"],["fix","sistemare / correzione","—"],["deploy","rilasciare","—"],["down","fuori servizio","—"],["log","registro","—"],["restart","riavviare","—"],["root cause","causa principale","—"],["workaround","soluzione temporanea","—"]],
+p:[["The server is down.","Il server è giù."],["We have an issue in production.","Abbiamo un problema in produzione."],["I've restarted the service.","Ho riavviato il servizio."],["Can you check the logs?","Puoi controllare i log?"],["It's fixed now.","Ora è sistemato."],["I'll escalate it to the vendor.","Lo escalo al fornitore."]],
+gr:`<p><b>Struttura di un aggiornamento su un incidente</b> (usala anche scritta nel ticket):</p>
+<p class="ex">1. What happened: <b>The mail service stopped at 14:20.</b><br>
+2. Impact: <b>Users can't send emails.</b><br>
+3. Status: <b>We're working on it. / It's fixed.</b><br>
+4. Next: <b>I'll send an update in one hour.</b></p>
+<div class="tip">Quattro righe, quattro tempi verbali che già conosci. Non serve altro per essere professionale in inglese.</div>`},
+
+{id:28,ph:3,t:"Parlare in riunione",s:"prendere la parola senza panico",
+w:[["agenda","ordine del giorno","—"],["decision","decisione","—"],["follow up","dare seguito","—"],["agree","essere d'accordo","—"],["clarify","chiarire","—"],["point","punto, osservazione","—"],["move on","andare avanti","—"],["make sense","avere senso","—"]],
+p:[["Sorry, can I add something?","Scusate, posso aggiungere una cosa?"],["I agree with you.","Sono d'accordo con te."],["I see it a bit differently.","La vedo un po' diversamente."],["Could you clarify that?","Puoi chiarire quel punto?"],["Let's follow up by email.","Ci sentiamo via email."],["Does that make sense?","Ha senso? / Mi sono spiegato?"]],
+gr:`<p>Tre frasi che ti comprano tempo mentre pensi — usale senza vergogna, le usano tutti i madrelingua:</p>
+<p class="ex"><b>That's a good question.</b><br><b>Let me think for a second.</b><br><b>Just to make sure I understand — you mean...?</b></p>
+<div class="tip">In inglese professionale il disaccordo è morbido: non "you are wrong" ma <b>I see it differently</b> o <b>I'm not sure about that</b>. La durezza tedesca in inglese suona aggressiva.</div>`},
+
+{id:29,ph:3,t:"Spiegare come funziona",s:"descrivere un sistema",
+w:[["workflow","flusso di lavoro","—"],["trigger","far partire / evento","—"],["container","container","—"],["database","banca dati","—"],["endpoint","endpoint","—"],["script","script","—"],["run","girare, eseguire","—"],["self-hosted","ospitato in proprio","—"]],
+p:[["The workflow runs every night.","Il flusso gira ogni notte."],["It triggers a script on the server.","Fa partire uno script sul server."],["The data goes into the database.","I dati finiscono nel database."],["We run it in a Docker container.","Lo eseguiamo in un container Docker."],["It calls the API endpoint.","Chiama l'endpoint dell'API."],["Everything is self-hosted.","È tutto ospitato da noi."]],
+gr:`<p>Per descrivere un sistema in inglese usi <b>solo il presente semplice</b>. Niente tempi complicati:</p>
+<p class="ex">The user <b>uploads</b> a file → n8n <b>picks</b> it up → the script <b>converts</b> it → the result <b>goes</b> to the CRM.</p>
+<p>Verbi che ti servono davvero: <b>run, call, send, receive, store, check, trigger, return, handle</b>.</p>
+<div class="tip">Questa è la tua arma: sai già spiegare architetture in tedesco. Ti mancano 20 verbi, non la lingua intera.</div>`},
+
+{id:30,ph:3,t:"Sopravvivere al telefono",s:"quando non vedi la faccia",
+w:[["speaking","parla (al telefono)","—"],["hold on","attendere","—"],["line","linea","Leitung"],["break up","cadere la linea","—"],["catch","afferrare, capire","—"],["put through","passare (una chiamata)","—"],["call back","richiamare","zurückrufen"],["in writing","per iscritto","—"]],
+p:[["Hello, this is Emanuele speaking.","Pronto, sono Emanuele."],["Sorry, could you repeat that?","Scusa, puoi ripetere?"],["I didn't catch that.","Non ho afferrato."],["The line is breaking up.","La linea sta cadendo."],["Can you hold on a second?","Puoi attendere un secondo?"],["I'll send it to you in writing.","Te lo mando per iscritto."]],
+gr:`<p>Il telefono è la parte più difficile per tutti, anche per chi parla bene. Non è colpa tua: manca il labiale.</p>
+<p><b>Kit di emergenza</b>, da avere sempre a portata:</p>
+<p class="ex">Sorry, the line is bad — could you say that again?<br>
+Let me repeat that back to you, just to be sure.<br>
+Could you send me an email with the details?</p>
+<div class="tip">L'ultima frase è legittima e professionale: sposta la conversazione dove sei più forte, lo scritto.</div>`},
+
+{id:31,ph:3,t:"Colloquio: parlare di te",s:"i tuoi due minuti",
+w:[["experience","esperienza","Erfahrung"],["background","formazione, percorso","—"],["role","ruolo","Rolle"],["responsible for","responsabile di","—"],["skills","competenze","—"],["current","attuale","aktuell"],["challenge","sfida","—"],["environment","ambiente","—"]],
+p:[["I'm an IT consultant.","Sono consulente IT."],["I have five years of experience in automation.","Ho cinque anni di esperienza nell'automazione."],["I'm responsible for our clients' infrastructure.","Sono responsabile dell'infrastruttura dei nostri clienti."],["I work mainly with Docker, n8n and Linux.","Lavoro soprattutto con Docker, n8n e Linux."],["I'm looking for a new challenge.","Sto cercando una nuova sfida."],["I speak Italian, German and English.","Parlo italiano, tedesco e inglese."]],
+gr:`<p><b>"Tell me about yourself"</b> è sempre la prima domanda. Prepara 60 secondi in tre blocchi:</p>
+<table><tr><td>Ora</td><td>I'm an IT consultant at a company near Heidelberg.</td></tr>
+<tr><td>Prima</td><td>Before that, I worked in IT support and technical service.</td></tr>
+<tr><td>Perché qui</td><td>I'm looking for a role where I can work more on automation.</td></tr></table>
+<div class="tip">Scrivi la tua versione, falla correggere, poi <b>ripetila ad alta voce 30 volte</b> finché non ti serve più pensarci. Un pitch imparato bene compensa moltissimo inglese imperfetto.</div>`},
+
+{id:32,ph:3,t:"Colloquio: raccontare un caso",s:"il metodo STAR",
+w:[["situation","situazione","—"],["task","compito","—"],["action","azione","—"],["result","risultato","Resultat"],["solve","risolvere","—"],["improve","migliorare","—"],["save","far risparmiare","sparen"],["manual","manuale (a mano)","—"]],
+p:[["We had a problem with manual data entry.","Avevamo un problema di inserimento dati manuale."],["My task was to automate the process.","Il mio compito era automatizzare il processo."],["I built a workflow with n8n.","Ho costruito un flusso con n8n."],["It saved about ten hours a week.","Ha fatto risparmiare circa dieci ore a settimana."],["The client was very happy.","Il cliente era molto soddisfatto."],["I learned a lot from that project.","Ho imparato molto da quel progetto."]],
+gr:`<p>Per ogni domanda del tipo "raccontami una volta in cui...", rispondi in quattro frasi:</p>
+<table><tr><td>S</td><td>We had a problem with...</td></tr>
+<tr><td>T</td><td>My task was to...</td></tr>
+<tr><td>A</td><td>I built / I set up / I automated...</td></tr>
+<tr><td>R</td><td>It saved / It reduced / The result was...</td></tr></table>
+<div class="tip">Prepara <b>tre</b> storie STAR dai tuoi progetti reali. Coprono il 90% delle domande comportamentali, in qualunque colloquio.</div>`},
+
+{id:33,ph:3,t:"Colloquio: le tue domande",s:"e il discorso soldi",
+w:[["salary","stipendio","Gehalt"],["expectation","aspettativa","—"],["notice period","preavviso","Kündigungsfrist"],["remote","da remoto","—"],["next steps","prossimi passi","—"],["offer","offerta","Angebot"],["range","fascia","—"],["negotiable","trattabile","—"]],
+p:[["Could you tell me more about the team?","Puoi dirmi di più sul team?"],["What would a typical day look like?","Com'è una giornata tipo?"],["My notice period is three months.","Il mio preavviso è di tre mesi."],["My salary expectation is in the range of...","La mia aspettativa salariale è intorno a..."],["Is remote work possible?","È possibile lavorare da remoto?"],["What are the next steps?","Quali sono i prossimi passi?"]],
+gr:`<p>Sul denaro l'inglese usa formule fisse. Impara queste e non improvvisare:</p>
+<p class="ex">I'm looking for something <b>in the range of</b> X.<br>
+That's <b>negotiable</b>, depending on the whole package.<br>
+Could you tell me the <b>budget</b> for this role?</p>
+<div class="tip">Fare domande alla fine non è opzionale: in un colloquio anglosassone chi non fa domande sembra non interessato. Preparane tre e scrivile su un foglio davanti a te.</div>`},
+
+{id:34,ph:3,t:"Scrivere documentazione",s:"istruzioni chiare",
+w:[["overview","panoramica","Übersicht"],["requirement","requisito","—"],["step","passo","Schritt"],["note","nota","Notiz"],["warning","avvertenza","Warnung"],["default","predefinito","—"],["make sure","assicurarsi","—"],["following","seguente","folgende"]],
+p:[["This document describes the setup.","Questo documento descrive la configurazione."],["Follow these steps.","Segui questi passi."],["Make sure the service is running.","Assicurati che il servizio sia attivo."],["By default, the port is 8080.","Di default la porta è 8080."],["Note: this requires admin rights.","Nota: servono i diritti di amministratore."],["If it fails, check the log file.","Se fallisce, controlla il file di log."]],
+gr:`<p>Le istruzioni in inglese si scrivono all'<b>imperativo nudo</b>: verbo all'inizio, senza soggetto.</p>
+<p class="ex"><b>Open</b> the file. <b>Run</b> the script. <b>Check</b> the output. <b>Do not</b> restart the server.</p>
+<p>Una frase = un'azione. Frasi corte. Niente subordinate.</p>
+<div class="tip">La documentazione è il posto migliore per allenare lo scritto: è la forma d'inglese più semplice che esista, e la fai già in tedesco.</div>`},
+
+{id:35,ph:3,t:"Le chiacchiere",s:"small talk professionale",
+w:[["weekend","fine settimana","Wochenende"],["holiday","vacanza, festivo","—"],["weather","tempo (meteo)","Wetter"],["busy","impegnato","—"],["sounds good","mi sembra ottimo","—"],["take care","stammi bene","—"],["catch up","aggiornarsi","—"],["by the way","a proposito","—"]],
+p:[["How's it going?","Come va?"],["How was your weekend?","Com'è andato il fine settimana?"],["Sounds good.","Mi sembra ottimo."],["It's been a busy week.","È stata una settimana intensa."],["Nice to meet you.","Piacere di conoscerti."],["Have a nice weekend!","Buon fine settimana!"]],
+gr:`<p>Lo small talk è un rituale, non una conversazione vera. Le risposte sono quasi fisse:</p>
+<table><tr><td>How are you?</td><td>Good, thanks — and you?</td></tr>
+<tr><td>How's it going?</td><td>Not bad. Busy week!</td></tr>
+<tr><td>How was your weekend?</td><td>Pretty good, thanks. We went to...</td></tr></table>
+<div class="tip">Non serve essere brillante. Serve <b>rispondere e rilanciare</b>: due parole tue, poi "and you?". È tutto quello che ci si aspetta.</div>`},
+
+{id:36,ph:3,t:"Dire di no con eleganza",s:"negoziare e dare brutte notizie",
+w:[["unfortunately","purtroppo","leider"],["I'm afraid","temo che","—"],["instead","invece","stattdessen"],["priority","priorità","—"],["realistic","realistico","—"],["propose","proporre","—"],["agree on","accordarsi su","—"],["delay","ritardo","—"]],
+p:[["Unfortunately that's not possible.","Purtroppo non è possibile."],["I'm afraid we can't do that by Friday.","Temo che non ce la faremo per venerdì."],["Can we agree on next Wednesday?","Possiamo accordarci per mercoledì prossimo?"],["What's the priority here?","Qual è la priorità qui?"],["I'd propose a different approach.","Proporrei un approccio diverso."],["Let's find a solution together.","Troviamo una soluzione insieme."]],
+gr:`<p>Il no in inglese professionale ha tre pezzi. Mai solo il primo:</p>
+<p class="ex">1. Ammortizza: <b>I'm afraid / Unfortunately</b><br>
+2. Il no e il perché: <b>we can't do that by Friday, the tests take two days</b><br>
+3. L'alternativa: <b>but we could deliver it on Tuesday</b></p>
+<div class="tip">Chiudere sempre con un'alternativa è ciò che distingue un no professionale da un no che crea problemi. E ti fa parlare più a lungo su terreno sicuro.</div>`}
+];
+
+/* ------------------ schede di riferimento ------------------ */
+const IRREG=[["be","was/were","essere"],["have","had","avere"],["do","did","fare"],["go","went","andare"],["say","said","dire"],["make","made","fare/creare"],["get","got","ottenere"],["take","took","prendere"],["come","came","venire"],["see","saw","vedere"],["know","knew","sapere"],["give","gave","dare"],["find","found","trovare"],["think","thought","pensare"],["tell","told","dire a"],["become","became","diventare"],["leave","left","lasciare"],["put","put","mettere"],["mean","meant","significare"],["keep","kept","tenere"],["send","sent","inviare"],["build","built","costruire"],["run","ran","correre/eseguire"],["write","wrote","scrivere"],["read","read","leggere"],["speak","spoke","parlare"],["understand","understood","capire"],["pay","paid","pagare"],["buy","bought","comprare"],["begin","began","iniziare"]];
+
+const FALSE_FRIENDS=[
+["actually","in realtà","attualmente = currently"],
+["eventually","alla fine","eventualmente = possibly / if needed"],
+["library","biblioteca","libreria = bookshop"],
+["sensible","assennato","sensibile = sensitive"],
+["agenda","ordine del giorno","agenda = diary / calendar"],
+["argument","litigio","argomento = topic"],
+["factory","fabbrica","fattoria = farm"],
+["education","istruzione","educazione = manners"],
+["pretend","fingere","pretendere = to expect / demand"],
+["annoy","infastidire","annoiare = to bore"],
+["comprehensive","completo","comprensivo = understanding"],
+["estate","proprietà","estate = summer"],
+["parents","genitori","parenti = relatives"],
+["preservative","conservante","preservativo = condom"],
+["confront","affrontare","confrontare = to compare"],
+["attend","partecipare","attendere = to wait"],
+["realize","rendersi conto","realizzare = to achieve"],
+["support","sostenere","sopportare = to bear / put up with"]
+];
+
+const PRON=[
+["th","Non esiste in italiano né in tedesco. Lingua <b>tra i denti</b>. Sordo in <i>think, three</i>, sonoro in <i>this, the</i>. Se proprio non ci riesci, usa una <b>d</b> per <i>the</i> e una <b>t</b> per <i>think</i>: si capisce lo stesso."],
+["h","In inglese la <b>h si sente sempre</b>: <i>have, house, here</i>. Come in tedesco <i>Haus</i>. Non farla sparire all'italiana."],
+["-e finale","Non si pronuncia mai: <i>name</i> = \"neim\", non \"neime\". Le parole inglesi finiscono quasi tutte in consonante secca."],
+["ship / sheep","Due <b>i</b> diverse: corta e rilassata (<i>ship, it, bit</i>) contro lunga e tesa (<i>sheep, eat, beat</i>). Confonderle cambia le parole."],
+["w / v","<i>w</i> = labbra a bacio (<b>w</b>ater), <i>v</i> = denti sul labbro (<b>v</b>ery). Il tedesco ti frega qui: <i>Wasser</i> ha la v, l'inglese <i>water</i> no."],
+["r","La r inglese <b>non si arrotola</b> e non raschia in gola. La lingua si alza e non tocca niente. In britannico, a fine parola quasi sparisce: <i>car</i> = \"caa\"."],
+["accento","In ogni parola una sillaba è forte e le altre si mangiano: <b>COM</b>-for-ta-ble, <b>NE</b>-ce-ssa-ry. Sbagliare l'accento rende una parola incomprensibile più che sbagliare i suoni."],
+["ritmo","L'inglese schiaccia le parole grammaticali: <i>I'm going to the office</i> suona \"aim-gonna-the-office\". Non pronunciare tutto con la stessa forza come in italiano."]
+];
+
+const CHECKLIST=[
+"20 minuti al giorno, ogni giorno. Meglio 20 al giorno che 3 ore la domenica.",
+"Parla sempre ad alta voce. Se lo leggi in silenzio, non ti resta.",
+"Non tradurre nella testa: impara le frasi intere come blocchi.",
+"Sbagliare parlando vale dieci volte capire in silenzio.",
+"Cambia la lingua del telefono in inglese: 300 parole gratis al giorno."
+];
+
+/* ============================ MOTORE ============================ */
+const store={
+  mem:{}, ok:true,
+  get(k){ try{const v=localStorage.getItem(k);return v==null?this.mem[k]:v}catch(e){this.ok=false;return this.mem[k]} },
+  set(k,v){ this.mem[k]=v; try{localStorage.setItem(k,v)}catch(e){this.ok=false} }
+};
+const DEF={xp:0,streak:0,last:"",done:[],srs:{},seen:[],rate:.85,voice:"",theme:"dark",de:true,dayLog:{}};
+let S=Object.assign({},DEF);
+try{ S=Object.assign({},DEF,JSON.parse(store.get("speakfirst")||"{}")) }catch(e){}
+const save=()=>store.set("speakfirst",JSON.stringify(S));
+const todayKey=()=>new Date().toISOString().slice(0,10);
+
+function touchStreak(){
+  const t=todayKey(); if(S.last===t) return;
+  const y=new Date(Date.now()-864e5).toISOString().slice(0,10);
+  S.streak = (S.last===y)? S.streak+1 : 1;
+  S.last=t; save();
+}
+function addXp(n){ S.xp+=n; const t=todayKey(); S.dayLog[t]=(S.dayLog[t]||0)+n; save(); paintTop(); }
+
+/* ---------------- voce: sintesi ---------------- */
+const TTS={
+  voices:[], ready:false,
+  init(){
+    const load=()=>{ this.voices=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang)); this.ready=true; };
+    load(); if(speechSynthesis.onvoiceschanged!==undefined) speechSynthesis.onvoiceschanged=load;
+  },
+  pick(){
+    if(!this.voices.length) return null;
+    if(S.voice){ const f=this.voices.find(v=>v.name===S.voice); if(f) return f; }
+    return this.voices.find(v=>/en-GB/i.test(v.lang)) || this.voices.find(v=>/en-US/i.test(v.lang)) || this.voices[0];
+  },
+  say(text,opt){
+    opt=opt||{};
+    try{
+      speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(text);
+      const v=this.pick(); if(v){u.voice=v;u.lang=v.lang;} else u.lang="en-GB";
+      u.rate=opt.rate||S.rate; u.pitch=1;
+      if(opt.el) wave(opt.el,true,(text.length*70)/u.rate);
+      u.onend=()=>{ if(opt.done) opt.done(); };
+      speechSynthesis.speak(u);
+    }catch(e){ toast("La voce non è disponibile su questo browser"); }
+  }
+};
+
+/* ---------------- voce: riconoscimento ---------------- */
+const SR = window.SpeechRecognition||window.webkitSpeechRecognition;
+function listen(cb){
+  if(!SR){ toast("Il microfono non è supportato qui. Usa Chrome su Android."); cb(null); return null; }
+  const r=new SR(); r.lang="en-US"; r.interimResults=false; r.maxAlternatives=3;
+  let got=false;
+  r.onresult=e=>{ got=true; const alts=[...e.results[0]].map(a=>a.transcript); cb(alts); };
+  r.onerror=()=>{ if(!got) cb(null) };
+  r.onend=()=>{ if(!got) cb(null) };
+  try{ r.start() }catch(e){ cb(null) }
+  return r;
+}
+
+/* ---------------- confronto testi ---------------- */
+const CONTR={"i'm":"i am","you're":"you are","he's":"he is","she's":"she is","it's":"it is","we're":"we are","they're":"they are","don't":"do not","doesn't":"does not","didn't":"did not","can't":"cannot","won't":"will not","isn't":"is not","aren't":"are not","wasn't":"was not","weren't":"were not","i've":"i have","you've":"you have","we've":"we have","i'll":"i will","you'll":"you will","we'll":"we will","it'll":"it will","that's":"that is","what's":"what is","let's":"let us","i'd":"i would","hasn't":"has not","haven't":"have not","there's":"there is","how's":"how is"};
+function norm(s){
+  s=(s||"").toLowerCase().replace(/[\u2019\u00b4`]/g,"'").trim().replace(/'/g,"");
+  s=" "+s.replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim()+" ";
+  Object.keys(CONTR).forEach(k=>{ s=s.split(" "+k.replace(/'/g,"")+" ").join(" "+CONTR[k]+" "); });
+  return s.replace(/\s+/g," ").trim();
+}
+function similarity(a,b){
+  const A=norm(a).split(" ").filter(Boolean), B=norm(b).split(" ").filter(Boolean);
+  if(!A.length||!B.length) return 0;
+  const pool=[...B]; let hit=0;
+  A.forEach(w=>{ const i=pool.indexOf(w); if(i>-1){hit++;pool.splice(i,1);} });
+  return hit/Math.max(A.length,B.length);
+}
+
+/* ---------------- ripetizione dilazionata (Leitner) ---------------- */
+const STEPS=[0,1,2,4,8,16,32];
+function srsKey(u,type,i){ return u+":"+type+":"+i }
+function srsItem(k){ return S.srs[k]||(S.srs[k]={box:0,due:todayKey()}) }
+function srsGrade(k,good){
+  const it=srsItem(k);
+  it.box = good ? Math.min(it.box+1,STEPS.length-1) : 0;
+  const d=new Date(); d.setDate(d.getDate()+STEPS[it.box]);
+  it.due=d.toISOString().slice(0,10); save();
+}
+function dueItems(){
+  const t=todayKey(), out=[];
+  Object.keys(S.srs).forEach(k=>{ if(S.srs[k].due<=t){ const it=fromKey(k); if(it) out.push(it) } });
+  return out;
+}
+function fromKey(k){
+  const [u,type,i]=k.split(":"); const un=UNITS.find(x=>x.id==u); if(!un) return null;
+  const arr = type==="w"?un.w:un.p; const row=arr[+i]; if(!row) return null;
+  return {key:k,en:row[0],it:row[1],de:row[2]||"",unit:un,type};
+}
+function allSeenItems(){
+  const out=[];
+  S.done.forEach(id=>{ const u=UNITS.find(x=>x.id===id); if(!u) return;
+    u.w.forEach((r,i)=>out.push({key:srsKey(u.id,"w",i),en:r[0],it:r[1],de:r[2]||"",unit:u,type:"w"}));
+    u.p.forEach((r,i)=>out.push({key:srsKey(u.id,"p",i),en:r[0],it:r[1],de:"",unit:u,type:"p"}));
+  });
+  return out;
+}
+function nextUnit(){ return UNITS.find(u=>!S.done.includes(u.id)) || null }
+
+/* ---------------- utility UI ---------------- */
+const $=(s,r)=>(r||document).querySelector(s);
+const el=(t,c,h)=>{const e=document.createElement(t); if(c)e.className=c; if(h!=null)e.innerHTML=h; return e};
+function toast(m){ const t=el("div","toast",m); document.body.appendChild(t); setTimeout(()=>t.remove(),2200) }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]} return a }
+function esc(s){ return (s+"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;") }
+function waveEl(cls){ const w=el("div","wave "+(cls||"")); for(let i=0;i<22;i++) w.appendChild(el("i")); return w }
+function wave(w,on,ms){
+  if(!w) return; const bars=[...w.children];
+  clearInterval(w._t); w.classList.toggle("on",!!on);
+  if(!on){ bars.forEach(b=>b.style.height="6px"); return }
+  w._t=setInterval(()=>bars.forEach(b=>b.style.height=(6+Math.random()*26)+"px"),110);
+  if(ms) setTimeout(()=>wave(w,false),ms);
+}
+function speakBtn(text,big){
+  const b=el("button","iconbtn"+(big?" big":""),ICON.sound);
+  b.setAttribute("aria-label","Ascolta");
+  b.onclick=()=>{ b.classList.add("live"); TTS.say(text,{done:()=>b.classList.remove("live")}); setTimeout(()=>b.classList.remove("live"),text.length*90) };
+  return b;
+}
+const ICON={
+ sound:'<svg class="ic" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+ mic:'<svg class="ic" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg>',
+ today:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+ book:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h7a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4z"/><path d="M20 4h-7a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h7z"/></svg>',
+ cards:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="6" width="13" height="14" rx="2"/><path d="M8 3h11a2 2 0 0 1 2 2v11"/></svg>',
+ me:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>',
+ check:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
+};
+
+/* ============================ ESERCIZI ============================ */
+function distractors(pool,correct,field,n){
+  const out=[]; const p=shuffle(pool).filter(x=>x[field]!==correct);
+  for(const x of p){ if(out.length>=n) break; if(!out.includes(x[field])) out.push(x[field]) }
+  return out;
+}
+function unitItems(u){
+  const a=[];
+  u.w.forEach((r,i)=>a.push({key:srsKey(u.id,"w",i),en:r[0],it:r[1],de:r[2]||"",type:"w"}));
+  u.p.forEach((r,i)=>a.push({key:srsKey(u.id,"p",i),en:r[0],it:r[1],de:"",type:"p"}));
+  return a;
+}
+function poolFor(u){
+  let p=unitItems(u);
+  const others=UNITS.filter(x=>x.id!==u.id);
+  shuffle(others).slice(0,4).forEach(o=>{ p=p.concat(unitItems(o)) });
+  return p;
+}
+function buildExercises(u){
+  const items=unitItems(u), pool=poolFor(u), ex=[];
+  const words=items.filter(i=>i.type==="w"), phr=items.filter(i=>i.type==="p");
+  const mc=it=>({k:"mc",it,options:shuffle([it.en].concat(distractors(pool,it.en,"en",3)))});
+  const li=it=>({k:"listen",it,options:shuffle([it.it].concat(distractors(pool,it.it,"it",3)))});
+  shuffle(words).forEach((it,i)=>ex.push(i%2?li(it):mc(it)));
+  shuffle(phr).forEach((it,i)=>ex.push(i%3===0?{k:"tiles",it}:(i%3===1?li(it):{k:"speak",it})));
+  shuffle(phr).slice(0,2).forEach(it=>ex.push({k:"write",it}));
+  shuffle(words).slice(0,2).forEach(it=>ex.push({k:"write",it}));
+  return shuffle(ex);
+}
+function reviewExercises(list){
+  const pool=allSeenItems().concat(unitItems(UNITS[0]));
+  return shuffle(list).map(it=>{
+    const roll=Math.random();
+    if(roll<.3) return {k:"listen",it,options:shuffle([it.it].concat(distractors(pool,it.it,"it",3)))};
+    if(roll<.6) return {k:"mc",it,options:shuffle([it.en].concat(distractors(pool,it.en,"en",3)))};
+    if(roll<.8) return {k:"write",it};
+    return {k:"speak",it};
+  });
+}
+
+/* ============================ SESSIONE ============================ */
+let SESS=null;
+function runSession(ex,opts){
+  opts=opts||{};
+  SESS={ex,i:0,right:0,opts};
+  paintSession();
+}
+function paintSession(){
+  const app=$("#app"); app.innerHTML="";
+  const {ex,i}=SESS;
+  if(i>=ex.length) return endSession();
+  const head=el("div","row between"); head.style.margin="14px 0 2px";
+  head.appendChild(el("div","sub",(SESS.opts.title||"Esercizio")+" · "+(i+1)+"/"+ex.length));
+  const quit=el("button","badge","Esci"); quit.onclick=()=>go(SESS.opts.back||"home"); head.appendChild(quit);
+  app.appendChild(head);
+  const bar=el("div","bar"); bar.innerHTML='<i style="width:'+(i/ex.length*100)+'%"></i>'; app.appendChild(bar);
+  const box=el("div","fade"); app.appendChild(box);
+  const q=ex[i];
+  ({mc:exMc,listen:exListen,tiles:exTiles,write:exWrite,speak:exSpeak})[q.k](box,q);
+}
+function answered(good,q,extra){
+  if(good) SESS.right++;
+  if(q.it.key) srsGrade(q.it.key,good);
+  addXp(good?6:2);
+  const app=$("#app");
+  const f=el("div","card fade");
+  f.appendChild(el("div","row between",'<b style="color:'+(good?"var(--mint)":"var(--rose)")+'">'+(good?"Giusto":"Quasi")+'</b>'));
+  const line=el("div"); line.style.margin="8px 0 4px";
+  line.appendChild(el("div","hero-en",esc(q.it.en))); line.firstChild.style.fontSize="22px";
+  f.appendChild(line);
+  f.appendChild(el("p","hero-it",esc(q.it.it)));
+  if(extra) f.appendChild(el("p","tip",extra));
+  const r=el("div","row"); r.style.marginTop="12px";
+  r.appendChild(speakBtn(q.it.en));
+  const nx=el("button","btn primary","Continua"); nx.style.flex="1";
+  nx.onclick=()=>{ SESS.i++; paintSession() };
+  r.appendChild(nx); f.appendChild(r);
+  app.appendChild(f);
+  f.scrollIntoView({block:"nearest"});
+  if(!good) TTS.say(q.it.en,{rate:Math.max(.6,S.rate-.15)});
+}
+function lockChoices(box){ [...box.querySelectorAll(".choice")].forEach(c=>c.disabled=true) }
+
+function exMc(box,q){
+  box.appendChild(el("p","sub","Come si dice in inglese?"));
+  box.appendChild(el("h2","hero-en",esc(q.it.it)));
+  q.options.forEach(o=>{
+    const b=el("button","choice",esc(o));
+    b.onclick=()=>{ const ok=o===q.it.en; b.classList.add(ok?"good":"bad"); lockChoices(box); TTS.say(q.it.en); setTimeout(()=>answered(ok,q),320) };
+    box.appendChild(b);
+  });
+}
+function exListen(box,q){
+  box.appendChild(el("p","sub","Ascolta e scegli il significato"));
+  const c=el("div","card"); const r=el("div","row");
+  const w=waveEl(); const b=speakBtn(q.it.en,true);
+  const orig=b.onclick; b.onclick=()=>{ wave(w,true,q.it.en.length*90); orig() };
+  r.appendChild(b); r.appendChild(w); c.appendChild(r);
+  const slow=el("button","btn ghost","Più lento");
+  slow.onclick=()=>{ wave(w,true,q.it.en.length*130); TTS.say(q.it.en,{rate:.6}) };
+  slow.style.marginTop="10px"; c.appendChild(slow);
+  box.appendChild(c);
+  setTimeout(()=>{ wave(w,true,q.it.en.length*90); TTS.say(q.it.en) },250);
+  q.options.forEach(o=>{
+    const bb=el("button","choice",esc(o));
+    bb.onclick=()=>{ const ok=o===q.it.it; bb.classList.add(ok?"good":"bad"); lockChoices(box); setTimeout(()=>answered(ok,q),300) };
+    box.appendChild(bb);
+  });
+}
+function exTiles(box,q){
+  box.appendChild(el("p","sub","Rimetti la frase nell'ordine giusto"));
+  box.appendChild(el("h2","hero-en",esc(q.it.it))); box.lastChild.style.fontSize="20px";
+  const slot=el("div","slot"), bank=el("div","bank");
+  box.appendChild(slot); box.appendChild(bank);
+  const words=q.it.en.split(" ");
+  shuffle(words).forEach(w=>{
+    const t=el("button","tile",esc(w));
+    t.onclick=()=>{ if(t.parentNode===bank){slot.appendChild(t)} else {bank.appendChild(t)} };
+    bank.appendChild(t);
+  });
+  const go2=el("button","btn primary block","Controlla"); go2.style.marginTop="16px";
+  go2.onclick=()=>{
+    const said=[...slot.children].map(t=>t.textContent).join(" ");
+    const ok=norm(said)===norm(q.it.en);
+    go2.disabled=true; answered(ok,q, ok?null:"La tua versione: "+esc(said));
+  };
+  box.appendChild(go2);
+}
+function exWrite(box,q){
+  box.appendChild(el("p","sub","Scrivilo in inglese"));
+  box.appendChild(el("h2","hero-en",esc(q.it.it))); box.lastChild.style.fontSize="24px";
+  const inp=el("input","tf"); inp.placeholder="Scrivi qui…"; inp.autocapitalize="none"; inp.autocomplete="off"; inp.spellcheck=false;
+  box.appendChild(inp);
+  const b=el("button","btn primary block","Controlla"); b.style.marginTop="14px";
+  const check=()=>{
+    const s=similarity(inp.value,q.it.en);
+    const ok=s>=.85;
+    b.disabled=true; inp.disabled=true;
+    answered(ok,q, ok?null:"Tu hai scritto: <b>"+esc(inp.value||"—")+"</b>");
+  };
+  b.onclick=check;
+  inp.addEventListener("keydown",e=>{ if(e.key==="Enter") check() });
+  box.appendChild(b);
+  setTimeout(()=>inp.focus(),120);
+}
+function exSpeak(box,q){
+  box.appendChild(el("p","sub","Ascolta, poi ripeti ad alta voce"));
+  box.appendChild(el("h2","hero-en",esc(q.it.en)));
+  box.appendChild(el("p","hero-it",esc(q.it.it)));
+  const c=el("div","card"); const r=el("div","row");
+  const w=waveEl("mic");
+  const play=speakBtn(q.it.en,true); const orig=play.onclick;
+  play.onclick=()=>{ wave(w,true,q.it.en.length*90); orig() };
+  const mic=el("button","iconbtn big",ICON.mic); mic.setAttribute("aria-label","Parla");
+  r.appendChild(play); r.appendChild(w); r.appendChild(mic); c.appendChild(r); box.appendChild(c);
+  setTimeout(()=>{ wave(w,true,q.it.en.length*90); TTS.say(q.it.en) },250);
+  const skip=el("button","btn ghost block","Salta / non ho il microfono"); skip.style.marginTop="10px";
+  skip.onclick=()=>answered(true,q,"Ripetila comunque tre volte ad alta voce prima di continuare.");
+  box.appendChild(skip);
+  mic.onclick=()=>{
+    mic.classList.add("rec"); w.classList.add("mic"); wave(w,true,6000);
+    listen(alts=>{
+      mic.classList.remove("rec"); wave(w,false);
+      if(!alts){ toast("Non ho sentito nulla"); return }
+      const best=Math.max(...alts.map(a=>similarity(a,q.it.en)));
+      answered(best>=.7,q,"Ho sentito: <b>"+esc(alts[0])+"</b>");
+    });
+  };
+}
+function endSession(){
+  const {ex,right,opts}=SESS;
+  const pct=Math.round(right/ex.length*100);
+  touchStreak();
+  if(opts.onEnd) opts.onEnd(pct);
+  const app=$("#app"); app.innerHTML="";
+  const c=el("div","card fade center"); c.style.marginTop="26px";
+  c.appendChild(el("div","big-num",pct+"%"));
+  c.appendChild(el("p","sub",right+" risposte giuste su "+ex.length));
+  c.appendChild(el("hr","sep"));
+  c.appendChild(el("p","sub", pct>=80 ? "Solido. Domani il ripasso te le rimette davanti al momento giusto."
+    : pct>=50 ? "Va bene così: quello che hai sbagliato torna presto nel ripasso."
+    : "Rifai questa unità domani. Ripetere la stessa cosa è la parte che funziona."));
+  const b=el("button","btn primary block","Torna alla home"); b.style.marginTop="14px";
+  b.onclick=()=>go("home"); c.appendChild(b);
+  app.appendChild(c);
+}
+
+/* ============================ LEZIONE ============================ */
+function studyUnit(u){
+  const items=unitItems(u); let i=0;
+  const app=$("#app");
+  const step=()=>{
+    app.innerHTML="";
+    const head=el("div","row between"); head.style.margin="14px 0 2px";
+    head.appendChild(el("div","sub","Lezione "+u.id+" · parola "+(i+1)+"/"+items.length));
+    const quit=el("button","badge","Esci"); quit.onclick=()=>go("course"); head.appendChild(quit);
+    app.appendChild(head);
+    const bar=el("div","bar"); bar.innerHTML='<i style="width:'+(i/items.length*100)+'%"></i>'; app.appendChild(bar);
+    if(i>=items.length) return grammarStep();
+    const it=items[i];
+    const c=el("div","card fade");
+    c.appendChild(el("span","badge",it.type==="w"?"parola":"frase"));
+    const h=el("h2","hero-en",esc(it.en)); h.style.marginTop="10px"; c.appendChild(h);
+    c.appendChild(el("p","hero-it",esc(it.it)));
+    if(it.de && S.de!==false) c.appendChild(el("p","hero-de","Aggancio per ricordarla \u2014 in tedesco: "+esc(it.de)));
+    const r=el("div","row"); r.style.marginTop="14px";
+    const w=waveEl(); const b=speakBtn(it.en,true); const orig=b.onclick;
+    b.onclick=()=>{ wave(w,true,it.en.length*90); orig() };
+    r.appendChild(b); r.appendChild(w); c.appendChild(r);
+    const slow=el("button","btn ghost block","Ascolta lentamente"); slow.style.marginTop="10px";
+    slow.onclick=()=>{ wave(w,true,it.en.length*140); TTS.say(it.en,{rate:.6}) };
+    c.appendChild(slow);
+    app.appendChild(c);
+    setTimeout(()=>{ wave(w,true,it.en.length*90); TTS.say(it.en) },220);
+    const nx=el("button","btn primary block","Ripetuta ad alta voce →");
+    nx.onclick=()=>{ i++; step() };
+    app.appendChild(nx);
+  };
+  const grammarStep=()=>{
+    app.innerHTML="";
+    const c=el("div","card fade");
+    c.appendChild(el("span","badge","grammatica in pillole"));
+    c.appendChild(el("h2","hero-en",esc(u.s))); c.lastChild.style.cssText="font-size:24px;margin:10px 0 12px";
+    c.appendChild(el("div","gram",u.gr));
+    app.appendChild(c);
+    const b=el("button","btn primary block","Vai agli esercizi");
+    b.onclick=()=>runSession(buildExercises(u),{
+      title:"Lezione "+u.id, back:"course",
+      onEnd:pct=>{ if(!S.done.includes(u.id)){ S.done.push(u.id); }
+        unitItems(u).forEach(it=>{ if(!S.srs[it.key]) srsGrade(it.key,true) });
+        addXp(20); save(); }
+    });
+    app.appendChild(b);
+  };
+  step();
+}
+
+/* ============================ VISTE ============================ */
+function paintTop(){
+  $("#streakPill").innerHTML="🔥 <b>"+S.streak+"</b>";
+  $("#xpPill").innerHTML="<b>"+S.xp+"</b> xp";
+}
+const VIEWS={};
+let CUR="home";
+function go(v){ CUR=v; paintNav(); window.scrollTo(0,0); VIEWS[v](); }
+function paintNav(){
+  const n=$("#nav"); n.innerHTML="";
+  [["home","Oggi",ICON.today],["course","Corso",ICON.book],["review","Ripasso",ICON.cards],["me","Io",ICON.me]]
+  .forEach(([k,t,ic])=>{
+    const b=el("button",null,ic+"<span>"+t+"</span>");
+    b.setAttribute("aria-current",CUR===k?"true":"false");
+    b.onclick=()=>go(k); n.appendChild(b);
+  });
+}
+
+VIEWS.home=()=>{
+  const app=$("#app"); app.innerHTML="";
+  const u=nextUnit(), due=dueItems(), seen=allSeenItems();
+  const c0=el("div","card fade");
+  c0.appendChild(el("p","sub","Sessione di oggi · circa 20 minuti"));
+  const st=el("div","row"); st.style.marginTop="10px";
+  [[S.done.length+"/"+UNITS.length,"lezioni"],[seen.length,"in memoria"],[due.length,"da ripassare"]]
+   .forEach(([a,b])=>{ const s=el("div","stat","<b>"+a+"</b><span>"+b+"</span>"); st.appendChild(s) });
+  c0.appendChild(st);
+  app.appendChild(c0);
+
+  if(due.length){
+    const c=el("div","card");
+    c.appendChild(el("h3",null,"1 · Ripasso"));
+    c.appendChild(el("p","sub",due.length+" cose tornano oggi. È qui che si costruisce la memoria a lungo termine."));
+    const b=el("button","btn mint block","Ripassa "+Math.min(due.length,15)+" carte"); b.style.marginTop="12px";
+    b.onclick=()=>runSession(reviewExercises(shuffle(due).slice(0,15)),{title:"Ripasso",back:"home"});
+    c.appendChild(b); app.appendChild(c);
+  }
+  if(u){
+    const c=el("div","card");
+    c.appendChild(el("h3",null,(due.length?"2":"1")+" · Lezione "+u.id+": "+esc(u.t)));
+    c.appendChild(el("p","sub",esc(u.s)+" · "+u.w.length+" parole, "+u.p.length+" frasi"));
+    const b=el("button","btn primary block","Inizia la lezione"); b.style.marginTop="12px";
+    b.onclick=()=>studyUnit(u); c.appendChild(b); app.appendChild(c);
+  } else {
+    const c=el("div","card");
+    c.appendChild(el("h3",null,"Corso completato"));
+    c.appendChild(el("p","sub","Ora il lavoro è tutto nel ripasso e nelle sfide. Continua ogni giorno: la lingua si perde più in fretta di quanto si impara."));
+    app.appendChild(c);
+  }
+  if(seen.length>=6){
+    const c=el("div","card");
+    c.appendChild(el("h3",null,(due.length?"3":"2")+" · Sfide veloci"));
+    c.appendChild(el("p","sub","Cinque minuti sul punto più difficile: produrre, non riconoscere."));
+    const r=el("div","row wrap"); r.style.marginTop="12px";
+    const b1=el("button","btn","🎙 Pronuncia"); b1.style.flex="1";
+    b1.onclick=()=>runSession(shuffle(seen).slice(0,6).map(it=>({k:"speak",it})),{title:"Pronuncia",back:"home"});
+    const b2=el("button","btn","✍️ Scrittura"); b2.style.flex="1";
+    b2.onclick=()=>runSession(shuffle(seen).slice(0,8).map(it=>({k:"write",it})),{title:"Scrittura",back:"home"});
+    r.appendChild(b1); r.appendChild(b2); c.appendChild(r); app.appendChild(c);
+  }
+  const t=el("div","card flat");
+  t.appendChild(el("p","sub","<b>Regola del giorno</b><br>"+CHECKLIST[new Date().getDate()%CHECKLIST.length]));
+  app.appendChild(t);
+};
+
+VIEWS.course=()=>{
+  const app=$("#app"); app.innerHTML="";
+  const nx=nextUnit();
+  PHASES.forEach(ph=>{
+    const h=el("div","phase-h","<b>Fase "+ph.n+" — "+ph.t+"</b><span>"+ph.d+"</span>");
+    app.appendChild(h);
+    UNITS.filter(u=>u.ph===ph.n).forEach(u=>{
+      const done=S.done.includes(u.id), isNext=nx&&nx.id===u.id;
+      const b=el("button","unit"+(done?" done":"")+(isNext?" next":"")+(!done&&!isNext?" locked":""));
+      b.innerHTML='<div class="n">'+(done?ICON.check:u.id)+'</div><div class="t"><b>'+esc(u.t)+'</b><span>'+esc(u.s)+'</span></div>';
+      b.onclick=()=>studyUnit(u);
+      app.appendChild(b);
+    });
+  });
+};
+
+VIEWS.review=()=>{
+  const app=$("#app"); app.innerHTML="";
+  const due=dueItems(), seen=allSeenItems();
+  const boxes=[0,0,0,0,0,0,0];
+  Object.keys(S.srs).forEach(k=>boxes[S.srs[k].box]++);
+  const c=el("div","card fade");
+  c.appendChild(el("h3",null,"Cosa c'è nella tua memoria"));
+  c.appendChild(el("p","sub","Ogni cosa che impari sale di livello quando la ricordi e torna a zero quando la sbagli. Il livello 6 è memoria stabile."));
+  const g=el("div"); g.style.marginTop="12px";
+  boxes.forEach((n,i)=>{
+    const row=el("div","row"); row.style.margin="7px 0";
+    row.appendChild(el("span","badge","liv "+i));
+    const bar=el("div","bar m"); bar.style.flex="1";
+    bar.innerHTML='<i style="width:'+(seen.length?Math.max(n?4:0,n/Math.max(1,seen.length)*100):0)+'%"></i>';
+    row.appendChild(bar); row.appendChild(el("span","sub",String(n)));
+    g.appendChild(row);
+  });
+  c.appendChild(g); app.appendChild(c);
+  const c2=el("div","card");
+  if(due.length){
+    c2.appendChild(el("h3",null,due.length+" da ripassare adesso"));
+    c2.appendChild(el("p","sub","Il ripasso al momento giusto vale più di un'ora di lezione nuova."));
+    const b=el("button","btn mint block","Inizia il ripasso"); b.style.marginTop="12px";
+    b.onclick=()=>runSession(reviewExercises(shuffle(due).slice(0,20)),{title:"Ripasso",back:"review"});
+    c2.appendChild(b);
+  } else {
+    c2.appendChild(el("h3",null,"Niente in scadenza"));
+    c2.appendChild(el("p","sub",seen.length?"Tutto ripassato. Fai una lezione nuova, oppure allenati liberamente qui sotto.":"Fai la prima lezione e qui comincerà a riempirsi."));
+  }
+  app.appendChild(c2);
+  if(seen.length){
+    const c3=el("div","card");
+    c3.appendChild(el("h3",null,"Allenamento libero"));
+    const r=el("div","row wrap"); r.style.marginTop="10px";
+    [["Misto",()=>reviewExercises(shuffle(seen).slice(0,15))],
+     ["Solo ascolto",()=>shuffle(seen).slice(0,12).map(it=>({k:"listen",it,options:shuffle([it.it].concat(distractors(seen,it.it,"it",3)))}))],
+     ["Solo scrittura",()=>shuffle(seen).slice(0,10).map(it=>({k:"write",it}))],
+     ["Solo voce",()=>shuffle(seen).slice(0,8).map(it=>({k:"speak",it}))]
+    ].forEach(([t,f])=>{ const b=el("button","btn",t); b.style.flex="1 1 45%"; b.onclick=()=>runSession(f(),{title:t,back:"review"}); r.appendChild(b) });
+    c3.appendChild(r); app.appendChild(c3);
+  }
+};
+
+VIEWS.me=()=>{
+  const app=$("#app"); app.innerHTML="";
+  /* --- metodo --- */
+  const m=el("div","card fade");
+  m.appendChild(el("h3",null,"Il piano, in breve"));
+  m.appendChild(el("div","gram",`
+   <p><b>12 settimane, 20 minuti al giorno.</b> Tre fasi da 12 lezioni.</p>
+   <table>
+    <tr><td>Sett. 1–4</td><td>Sopravvivenza: farti capire in qualsiasi situazione</td></tr>
+    <tr><td>Sett. 5–8</td><td>Conversazione: passato, futuro, discorso che scorre</td></tr>
+    <tr><td>Sett. 9–12</td><td>Lavoro: email, riunioni, ticket, colloquio</td></tr>
+   </table>
+   <p>Ogni giorno: <b>prima il ripasso</b> (quello che sta per uscirti dalla testa), <b>poi la lezione nuova</b>, poi due sfide di produzione.</p>
+   <p>Tre lezioni a settimana bastano. I giorni senza lezione fai solo ripasso: sono i più importanti.</p>
+   <div class="tip"><b>Perché parti avvantaggiato:</b> parli tedesco. L'inglese è la stessa famiglia linguistica, con una grammatica molto più semplice: niente casi, niente generi, niente verbo a fine frase. Dove vedi il riquadro viola, la parola inglese è parente di quella tedesca che già usi.</div>`));
+  app.appendChild(m);
+
+  /* --- pronuncia --- */
+  const p=el("div","card");
+  p.appendChild(el("h3",null,"Pronuncia: gli otto punti che tradiscono un italiano"));
+  const pl=el("div","gram");
+  PRON.forEach(([k,v])=>{ pl.innerHTML+='<p><span class="k">'+k+'</span> '+v+'</p>' });
+  p.appendChild(pl); app.appendChild(p);
+
+  /* --- falsi amici --- */
+  const f=el("div","card");
+  f.appendChild(el("h3",null,"Falsi amici"));
+  f.appendChild(el("p","sub","Parole che sembrano italiane e non lo sono. Toccale per sentirle."));
+  const ft=el("div","gram"); const tb=el("table");
+  FALSE_FRIENDS.forEach(([en,it,warn])=>{
+    const tr=el("tr"); const td1=el("td"); const bt=el("button","k",esc(en));
+    bt.onclick=()=>TTS.say(en); td1.appendChild(bt);
+    tr.appendChild(td1); tr.appendChild(el("td","",'<b style="color:var(--mint)">'+esc(it)+'</b><br><span class="ex" style="font-size:12.5px">'+esc(warn)+'</span>'));
+    tb.appendChild(tr);
+  });
+  ft.appendChild(tb); f.appendChild(ft); app.appendChild(f);
+
+  /* --- verbi irregolari --- */
+  const v=el("div","card");
+  v.appendChild(el("h3",null,"I 30 verbi irregolari che coprono quasi tutto"));
+  const vt=el("div","gram"); const vb=el("table");
+  IRREG.forEach(([a,b,c])=>{
+    const tr=el("tr"); const td=el("td"); const bt=el("button","k",esc(a)+" → "+esc(b));
+    bt.onclick=()=>TTS.say(a+", "+b); td.appendChild(bt);
+    tr.appendChild(td); tr.appendChild(el("td","",'<span class="ex">'+esc(c)+'</span>'));
+    vb.appendChild(tr);
+  });
+  vt.appendChild(vb); v.appendChild(vt); app.appendChild(v);
+
+  /* --- impostazioni --- */
+  const s=el("div","card");
+  s.appendChild(el("h3",null,"Impostazioni"));
+  const vr=el("div"); vr.style.margin="12px 0";
+  vr.appendChild(el("p","sub","Voce inglese"));
+  const sel=el("select","tf"); sel.style.marginTop="6px";
+  const fill=()=>{
+    sel.innerHTML="";
+    if(!TTS.voices.length){ sel.appendChild(el("option",null,"Nessuna voce inglese trovata")); return }
+    TTS.voices.forEach(x=>{ const o=el("option",null,x.name+" ("+x.lang+")"); o.value=x.name; if(S.voice===x.name)o.selected=true; sel.appendChild(o) });
+  };
+  fill(); setTimeout(fill,700);
+  sel.onchange=()=>{ S.voice=sel.value; save(); TTS.say("This is your new voice. Let's start.") };
+  vr.appendChild(sel); s.appendChild(vr);
+
+  const rr=el("div"); rr.style.margin="14px 0";
+  rr.appendChild(el("p","sub","Velocità · <b id='rv'>"+S.rate.toFixed(2)+"</b>"));
+  const rng=el("input"); rng.type="range"; rng.min=".5"; rng.max="1.1"; rng.step=".05"; rng.value=S.rate; rng.style.width="100%";
+  rng.oninput=()=>{ S.rate=+rng.value; $("#rv").textContent=S.rate.toFixed(2); save() };
+  rng.onchange=()=>TTS.say("The server is down, but I already fixed it.");
+  rr.appendChild(rng); s.appendChild(rr);
+
+  const th=el("button","btn block",S.theme==="dark"?"Passa al tema chiaro":"Passa al tema scuro");
+  th.onclick=()=>{ S.theme=S.theme==="dark"?"light":"dark"; save(); document.documentElement.dataset.theme=S.theme; go("me") };
+  s.appendChild(th);
+
+  const dt=el("button","btn block",(S.de!==false)?"Nascondi gli agganci col tedesco":"Mostra gli agganci col tedesco");
+  dt.style.marginTop="10px";
+  dt.onclick=()=>{ S.de=!(S.de!==false); save(); go("me") };
+  s.appendChild(dt);
+  s.appendChild(el("p","sub","Gli agganci col tedesco compaiono solo nelle schede di studio, mai durante gli esercizi."));
+  s.lastChild.style.marginTop="8px";
+  app.appendChild(s);
+
+  /* --- installazione --- */
+  const i=el("div","card");
+  i.appendChild(el("h3",null,"Installare sul telefono"));
+  i.appendChild(el("div","gram",`<p><b>Android / Chrome:</b> menù ⋮ → <span class="k">Aggiungi a schermata Home</span>.</p>
+  <p><b>iPhone / Safari:</b> tasto Condividi → <span class="k">Aggiungi alla schermata Home</span>.</p>
+  <p>Dopo l'installazione si apre a schermo intero, come un'app, e funziona anche senza rete. Il microfono per gli esercizi di pronuncia funziona meglio su Chrome Android.</p>`));
+  app.appendChild(i);
+
+  /* --- reset --- */
+  const r=el("div","card");
+  r.appendChild(el("h3",null,"Ricominciare da capo"));
+  r.appendChild(el("p","sub","Cancella lezioni completate, ripassi e punti. Non si può annullare."));
+  const rb=el("button","btn block","Azzera i progressi"); rb.style.marginTop="12px"; rb.style.color="var(--rose)";
+  rb.onclick=()=>{ if(confirm("Azzerare tutti i progressi?")){ S=Object.assign({},DEF); save(); document.documentElement.dataset.theme=S.theme; paintTop(); go("home") } };
+  r.appendChild(rb); app.appendChild(r);
+
+  if(!store.ok){
+    const w=el("div","card");
+    w.appendChild(el("p","sub","<b style='color:var(--signal)'>Nota</b><br>Qui l'archiviazione del browser è bloccata, quindi i progressi durano solo per questa sessione. Scarica il file e aprilo dal telefono: lì i progressi restano salvati."));
+    app.appendChild(w);
+  }
+};
+
+/* ============================ AVVIO ============================ */
+function makeIcon(size){
+  const c=document.createElement("canvas"); c.width=c.height=size;
+  const x=c.getContext("2d");
+  x.fillStyle="#131B33"; x.fillRect(0,0,size,size);
+  const u=size/512, bars=[.28,.52,.78,1,.66,.4,.86,.55,.3];
+  x.fillStyle="#FFB13C";
+  bars.forEach((h,i)=>{
+    const w=26*u, gap=44*u, tot=bars.length*gap-(gap-w);
+    const bx=(size-tot)/2+i*gap, bh=200*u*h;
+    x.beginPath();
+    if(x.roundRect) x.roundRect(bx,size/2-bh/2,w,bh,w/2); else x.rect(bx,size/2-bh/2,w,bh);
+    x.fill();
+  });
+  return c.toDataURL("image/png");
+}
+function setupPWA(){
+  try{
+    const i512=makeIcon(512), i192=makeIcon(192);
+    const mf={name:"Speak First — inglese da zero",short_name:"Speak First",start_url:".",scope:".",
+      display:"standalone",orientation:"portrait",background_color:"#131B33",theme_color:"#131B33",lang:"it",
+      icons:[{src:i192,sizes:"192x192",type:"image/png",purpose:"any"},{src:i512,sizes:"512x512",type:"image/png",purpose:"any maskable"}]};
+  }catch(e){}
+  if("serviceWorker" in navigator && location.protocol.startsWith("http")){
+    navigator.serviceWorker.register("sw.js").catch(()=>{});
+  }
+}
+document.documentElement.dataset.theme=S.theme||"dark";
+TTS.init(); setupPWA(); paintTop(); paintNav(); go("home");
+document.addEventListener("visibilitychange",()=>{ if(document.hidden) try{speechSynthesis.cancel()}catch(e){} });
+</script>
+</body>
+</html>

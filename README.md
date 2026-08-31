@@ -3,8 +3,8 @@
 Corso di inglese parlato e scritto da zero, per italiani. App web installabile
 (PWA), un solo file, nessuna dipendenza esterna, funziona offline.
 
-- 36 lezioni in 3 fasi: sopravvivenza → conversazione → inglese al lavoro (IT)
-- 288 parole, 216 frasi, ripetizione dilazionata a 7 livelli
+- 48 lezioni in 4 fasi: sopravvivenza → conversazione → inglese al lavoro (IT) → sfumature
+- 384 parole, 288 frasi, ripetizione dilazionata a 7 livelli
 - Esercizi: scelta, ascolto, ricostruzione della frase, scrittura, pronuncia col microfono
 - Schede: pronuncia per italiani, falsi amici, 30 verbi irregolari
 
@@ -32,6 +32,17 @@ continuano a usare la copia in cache.
 | `manifest.json` | nome, icone, avvio a schermo intero |
 | `sw.js` | cache offline |
 | `icon-192.png`, `icon-512.png` | icone di installazione |
+
+## Blocco con codice
+
+All'avvio l'app chiede un codice numerico. Quello predefinito è `2026`.
+Si cambia dall'app: **Io → Cambia codice**, e resta salvato su quel dispositivo.
+Si può disattivare da **Io → Disattiva il blocco con codice**.
+
+Non è una misura di sicurezza: il codice è verificato nel browser e questo
+repository è pubblico. Serve a evitare che l'app venga aperta per caso da chi
+ha in mano il telefono, niente di più. Nessun dato sensibile è coinvolto:
+i progressi restano nel browser del dispositivo.
 
 ## Dati e privacy
 

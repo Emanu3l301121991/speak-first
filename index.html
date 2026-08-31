@@ -181,6 +181,22 @@ html[data-theme="light"] .btn.mint{color:#fff}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 hr.sep{border:0;border-top:1px solid var(--line);margin:16px 0}
 a{color:var(--signal)}
+#lock{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:28px 22px calc(28px + var(--safe-b))}
+#lock .lbrand{font-size:26px;font-weight:800;letter-spacing:-.03em;margin-bottom:6px}
+#lock .lbrand span{color:var(--signal)}
+#lock .lsub{color:var(--dim);font-size:14px;margin:0 0 26px}
+#lock .pins{display:flex;gap:12px;height:16px;align-items:center;margin-bottom:6px}
+#lock .pins i{width:13px;height:13px;border-radius:50%;background:var(--surface2);border:1.5px solid var(--line);display:block}
+#lock .pins i.f{background:var(--signal);border-color:var(--signal)}
+#lock .lerr{color:var(--rose);font-size:13.5px;font-weight:600;height:20px;margin:8px 0 0}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;width:100%;max-width:290px;margin-top:20px}
+.keypad button{height:62px;border-radius:17px;background:var(--surface);border:1px solid var(--line);
+  font-size:23px;font-weight:700;color:var(--text)}
+.keypad button:active{background:var(--surface2)}
+.keypad button.alt{font-size:16px;font-weight:600;color:var(--dim)}
+.shake{animation:shk .38s}
+@keyframes shk{10%,90%{transform:translateX(-5px)}30%,70%{transform:translateX(7px)}50%{transform:translateX(-7px)}}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + var(--safe-b));background:var(--surface2);border:1px solid var(--line);padding:11px 16px;border-radius:14px;font-weight:600;font-size:14px;z-index:60;box-shadow:var(--shadow)}
 </style>
 </head>
@@ -201,7 +217,8 @@ a{color:var(--signal)}
 const PHASES=[
  {n:1,t:"Sopravvivenza",d:"Farti capire in qualsiasi situazione"},
  {n:2,t:"Conversazione",d:"Passato, futuro, discorso che scorre"},
- {n:3,t:"Inglese al lavoro",d:"Email, riunioni, ticket, colloquio"}
+ {n:3,t:"Inglese al lavoro",d:"Email, riunioni, ticket, colloquio"},
+ {n:4,t:"Inglese che scorre",d:"Passivo, sfumature, presentazioni, colloquio avanzato"}
 ];
 
 const UNITS=[
@@ -507,6 +524,114 @@ gr:`<p>Il no in inglese professionale ha tre pezzi. Mai solo il primo:</p>
 2. Il no e il perché: <b>we can't do that by Friday, the tests take two days</b><br>
 3. L'alternativa: <b>but we could deliver it on Tuesday</b></p>
 <div class="tip">Chiudere sempre con un'alternativa è ciò che distingue un no professionale da un no che crea problemi. E ti fa parlare più a lungo su terreno sicuro.</div>`}
+,
+
+/* ---------------- FASE 4 ---------------- */
+{id:37,ph:4,t:"È stato fatto",s:"la forma passiva",
+w:[["was fixed","è stato sistemato",""],["has been deployed","è stato rilasciato",""],["will be done","sarà fatto",""],["by","da (chi l'ha fatto)","von"],["approved","approvato","genehmigt"],["released","rilasciato",""],["scheduled","programmato",""],["required","richiesto, necessario",""]],
+p:[["The server was restarted this morning.","Il server è stato riavviato stamattina."],["The ticket has been closed.","Il ticket è stato chiuso."],["It will be deployed on Friday.","Sarà rilasciato venerdì."],["This was approved by the client.","Questo è stato approvato dal cliente."],["The meeting has been moved to Tuesday.","La riunione è stata spostata a martedì."],["A restart is required.","È necessario un riavvio."]],
+gr:`<p>Passivo = <b>to be + participio passato</b>. Si usa quando conta la cosa, non chi l'ha fatta.</p>
+<p class="ex">Someone restarted the server → <b>The server was restarted.</b></p>
+<p>Chi lo ha fatto, se serve, va in fondo con <b>by</b>: <span class="ex">approved by the client</span>.</p>
+<div class="tip"><b>Perché ti serve subito:</b> ticket, documentazione e report sono scritti quasi tutti al passivo. Impararlo qui vale più di dieci parole nuove.</div>`},
+
+{id:38,ph:4,t:"Ha detto che",s:"riferire le parole altrui",
+w:[["said","ha detto",""],["told me","mi ha detto",""],["asked","ha chiesto",""],["mentioned","ha accennato",""],["according to","secondo",""],["apparently","a quanto pare",""],["confirm","confermare",""],["hear back","ricevere risposta",""]],
+p:[["He said it was urgent.","Ha detto che era urgente."],["She told me she would call back.","Mi ha detto che avrebbe richiamato."],["They asked if we could help.","Hanno chiesto se potevamo aiutare."],["According to the client, it's still broken.","Secondo il cliente è ancora rotto."],["I'll let you know as soon as I hear back.","Ti faccio sapere appena ricevo risposta."],["Can you confirm that in writing?","Puoi confermarlo per iscritto?"]],
+gr:`<p>Dopo <b>said</b> e <b>told</b> il verbo fa un passo indietro nel tempo:</p>
+<table><tr><td>"It is urgent"</td><td>He said it <b>was</b> urgent</td></tr>
+<tr><td>"I will call"</td><td>She said she <b>would</b> call</td></tr>
+<tr><td>"We finished"</td><td>They said they <b>had</b> finished</td></tr></table>
+<p><b>tell</b> vuole sempre la persona (tell <b>me</b>), <b>say</b> no.</p>`},
+
+{id:39,ph:4,t:"Voglio fare, mi piace fare",s:"verbo + to o -ing",
+w:[["want to","volere",""],["need to","avere bisogno di",""],["decide to","decidere di",""],["enjoy","piacere fare",""],["avoid","evitare",""],["keep","continuare a",""],["manage to","riuscire a",""],["look forward to","non vedere l'ora di",""]],
+p:[["I want to improve my English.","Voglio migliorare il mio inglese."],["We decided to change the approach.","Abbiamo deciso di cambiare approccio."],["I enjoy working on automation.","Mi piace lavorare sull'automazione."],["Try to avoid restarting in production.","Cerca di evitare riavvii in produzione."],["I managed to fix it.","Sono riuscito a sistemarlo."],["I look forward to hearing from you.","Resto in attesa di sue notizie."]],
+gr:`<p>Due gruppi, da imparare a blocchi:</p>
+<table><tr><td>+ to</td><td>want, need, decide, try, hope, manage, promise, learn</td></tr>
+<tr><td>+ -ing</td><td>enjoy, avoid, keep, finish, mind, suggest, practise</td></tr></table>
+<div class="tip"><b>Trappola:</b> <b>look forward to</b> vuole <b>-ing</b>, non l'infinito: <span class="ex">look forward to hear<b>ing</b> from you</span>. È la chiusura di email più usata in assoluto, e quasi tutti gli italiani la sbagliano.</div>`},
+
+{id:40,ph:4,t:"Sì, no, anch'io",s:"risposte brevi naturali",
+w:[["Yes, I do.","Sì (verbi normali)",""],["No, I haven't.","No (con have)",""],["So do I.","Anch'io",""],["Neither do I.","Nemmeno io",""],["right?","vero?",""],["I think so.","Credo di sì",""],["I hope not.","Spero di no",""],["Not really.","Non proprio",""]],
+p:[["Do you speak English? — Yes, I do.","Parli inglese? — Sì."],["Have you finished? — No, not yet.","Hai finito? — No, non ancora."],["It's ready, right?","È pronto, vero?"],["I don't like meetings. — Neither do I.","Non mi piacciono le riunioni. — Nemmeno a me."],["Is it urgent? — Not really.","È urgente? — Non proprio."],["Will it work? — I think so.","Funzionerà? — Credo di sì."]],
+gr:`<p>Rispondere solo <i>Yes</i> o <i>No</i> suona brusco. Si ripete l'ausiliare della domanda:</p>
+<table><tr><td>Do you...?</td><td>Yes, I <b>do</b>. / No, I <b>don't</b>.</td></tr>
+<tr><td>Are you...?</td><td>Yes, I <b>am</b>. / No, I'm <b>not</b>.</td></tr>
+<tr><td>Have you...?</td><td>Yes, I <b>have</b>. / No, I <b>haven't</b>.</td></tr>
+<tr><td>Can you...?</td><td>Yes, I <b>can</b>. / No, I <b>can't</b>.</td></tr></table>
+<p>Per concordare: <b>So do I</b> (positivo), <b>Neither do I</b> (negativo).</p>`},
+
+{id:41,ph:4,t:"Circa, almeno, fino a",s:"numeri e approssimazione",
+w:[["about","circa",""],["roughly","all'incirca",""],["at least","almeno","mindestens"],["up to","fino a",""],["around","intorno a",""],["twice","due volte",""],["per","a, per (per week)","pro"],["half","metà","halb"]],
+p:[["It takes about twenty minutes.","Ci vogliono circa venti minuti."],["We have roughly two hundred users.","Abbiamo all'incirca duecento utenti."],["At least three people are affected.","Almeno tre persone sono coinvolte."],["Up to ten gigabytes per day.","Fino a dieci gigabyte al giorno."],["We meet twice a week.","Ci vediamo due volte a settimana."],["Half of the tickets are duplicates.","Metà dei ticket sono doppioni."]],
+gr:`<p>Numeri grandi: <span class="ex">1.500 = one thousand five hundred · 2026 = twenty twenty-six</span></p>
+<p>Percentuali: <span class="ex">30% = thirty percent</span> · Date: <span class="ex">on the third of March</span></p>
+<p>Frequenza: <b>once / twice / three times</b> a week.</p>
+<div class="tip">Attenzione al punto e alla virgola: in inglese <b>1,500</b> è millecinquecento e <b>1.5</b> è uno virgola cinque. Al contrario di italiano e tedesco.</div>`},
+
+{id:42,ph:4,t:"Probabilmente, dipende",s:"non impegnarsi troppo",
+w:[["likely","probabile",""],["unlikely","improbabile",""],["it depends","dipende",""],["I'd say","direi",""],["so far","finora",""],["worst case","nel caso peggiore",""],["rough estimate","stima approssimativa",""],["I'm not sure","non sono sicuro",""]],
+p:[["It's likely to take two days.","Probabilmente ci vorranno due giorni."],["That's unlikely.","È improbabile."],["It depends on the client.","Dipende dal cliente."],["I'd say two or three days.","Direi due o tre giorni."],["So far everything works.","Finora funziona tutto."],["Worst case, we roll back.","Nel caso peggiore torniamo indietro."]],
+gr:`<p>In ambito professionale non si promette mai in modo secco. Si smorza:</p>
+<p class="ex">It will take two days → <b>It should take about two days.</b><br>
+That's wrong → <b>I'm not sure that's right.</b><br>
+No → <b>I don't think that's realistic.</b></p>
+<div class="tip">Questo è il registro che distingue un inglese da ufficio da uno da manuale. Con le stesse parole di base, cambia solo il modo di attutire.</div>`},
+
+{id:43,ph:4,t:"Presentare davanti a qualcuno",s:"struttura e passaggi",
+w:[["slide","diapositiva",""],["overview","panoramica","Übersicht"],["as you can see","come vedete",""],["move on","passare oltre",""],["in short","in breve",""],["to sum up","per riassumere",""],["highlight","evidenziare",""],["walk you through","guidarvi passo passo",""]],
+p:[["Today I'll show you how the system works.","Oggi vi mostro come funziona il sistema."],["Let me walk you through the process.","Vi guido attraverso il processo."],["As you can see on this slide...","Come vedete in questa slide..."],["Let's move on to the next point.","Passiamo al punto successivo."],["To sum up, we saved ten hours a week.","Per riassumere, abbiamo risparmiato dieci ore a settimana."],["Thanks for your attention. Any questions?","Grazie dell'attenzione. Domande?"]],
+gr:`<p>Regola classica delle presentazioni in inglese, in tre tempi:</p>
+<table><tr><td>1</td><td>Dico cosa dirò — <i>Today I'll cover three things.</i></td></tr>
+<tr><td>2</td><td>Lo dico — <i>First... Second... Finally...</i></td></tr>
+<tr><td>3</td><td>Dico cosa ho detto — <i>To sum up...</i></td></tr></table>
+<div class="tip">Le frasi di passaggio (<i>let's move on, as you can see, finally</i>) sono quelle che tengono in piedi la presentazione. Impara quelle sei e puoi presentare qualsiasi cosa.</div>`},
+
+{id:44,ph:4,t:"Scrivere in chat di lavoro",s:"Slack, Teams, registro breve",
+w:[["heads up","avviso, preavviso",""],["FYI","per informazione",""],["ASAP","al più presto",""],["on it","ci sto lavorando",""],["ping","scrivere a",""],["no rush","senza fretta",""],["EOD","fine giornata",""],["shipped","rilasciato, mandato",""]],
+p:[["Quick question: is the server up?","Domanda veloce: il server è attivo?"],["Heads up — deployment at 6pm.","Avviso: rilascio alle 18."],["On it.","Ci sto lavorando."],["FYI, the client called this morning.","Per informazione, il cliente ha chiamato stamattina."],["Can you ping me when it's done?","Mi scrivi quando è fatto?"],["No rush, whenever you have time.","Senza fretta, quando puoi."]],
+gr:`<p>In chat il registro è corto e diretto. Niente "Dear", niente formule lunghe.</p>
+<p class="ex">I would like to kindly ask you whether... → <b>Quick question:</b></p>
+<p>Sigle che vedrai ogni giorno: <b>FYI</b> (per info), <b>ASAP</b> (al più presto), <b>EOD</b> (fine giornata), <b>PTO</b> (ferie), <b>LGTM</b> (per me va bene).</p>
+<div class="tip">Qui puoi permetterti frasi incomplete. "On it." e "Will do." sono risposte perfette e complete in chat.</div>`},
+
+{id:45,ph:4,t:"Spiegare a chi non è tecnico",s:"cliente, capo, utente",
+w:[["basically","in pratica",""],["in other words","in altre parole",""],["think of it as","pensalo come",""],["the point is","il punto è",""],["impact","impatto",""],["downtime","interruzione del servizio",""],["safe","al sicuro",""],["make sure","assicurarsi",""]],
+p:[["Basically, the system stopped talking to the database.","In pratica il sistema ha smesso di comunicare con il database."],["Think of it as a bridge that broke.","Pensalo come un ponte che si è rotto."],["The point is, no data was lost.","Il punto è che non si è perso nessun dato."],["There will be about ten minutes of downtime.","Ci saranno circa dieci minuti di interruzione."],["Your data is safe.","I vostri dati sono al sicuro."],["I'll make sure it doesn't happen again.","Farò in modo che non succeda più."]],
+gr:`<p>Con chi non è tecnico si parla di <b>effetti</b>, non di cause. Tre passaggi:</p>
+<p class="ex">1. Cosa vede lui: <b>You couldn't send emails for two hours.</b><br>
+2. Perché, in una riga: <b>The mail server ran out of space.</b><br>
+3. Cosa hai fatto: <b>It's fixed, and we added an alert.</b></p>
+<div class="tip">Questa è anche la struttura giusta per il colloquio: non descrivere la tecnologia, descrivi il problema risolto.</div>`},
+
+{id:46,ph:4,t:"Riunioni difficili",s:"interrompere, rimandare, dire di no",
+w:[["interrupt","interrompere","unterbrechen"],["go back to","tornare a",""],["run out of time","finire il tempo",""],["park it","rimandare, accantonare",""],["realistic","realistico",""],["commit to","impegnarsi a",""],["align","allinearsi",""],["take a step back","fare un passo indietro",""]],
+p:[["Sorry to interrupt, but I think we're missing something.","Scusate se interrompo, ma credo ci sfugga qualcosa."],["Can we go back to the previous point?","Possiamo tornare al punto precedente?"],["We're running out of time.","Stiamo finendo il tempo."],["Let's park that for now.","Accantoniamolo per ora."],["I don't think that's realistic.","Non credo sia realistico."],["I can't commit to that date.","Non posso impegnarmi per quella data."]],
+gr:`<p>Interrompere in inglese richiede sempre un cuscinetto davanti:</p>
+<p class="ex"><b>Sorry to jump in, but...</b><br><b>Can I add one thing here?</b><br><b>Just to build on that...</b></p>
+<p>Per rimandare senza chiudere la porta: <b>Let's park it</b> / <b>Let's take that offline</b>.</p>
+<div class="tip">Non serve avere ragione in fretta. Serve una frase pronta per prendere la parola: senza quella, resti in silenzio anche quando hai la risposta giusta.</div>`},
+
+{id:47,ph:4,t:"Colloquio: le domande scomode",s:"debolezze, buchi, motivi",
+w:[["weakness","punto debole","Schwäche"],["strength","punto di forza","Stärke"],["gap","periodo scoperto",""],["growth","crescita",""],["feedback","riscontro",""],["handle","gestire",""],["under pressure","sotto pressione",""],["delegate","delegare",""]],
+p:[["My biggest strength is problem solving.","Il mio punto di forza è risolvere problemi."],["I sometimes take on too much.","A volte mi carico di troppo."],["I'm working on delegating more.","Sto lavorando a delegare di più."],["I'm leaving because I want to grow technically.","Vado via perché voglio crescere tecnicamente."],["I work well under pressure.","Lavoro bene sotto pressione."],["I take feedback seriously.","Prendo sul serio i riscontri."]],
+gr:`<p>Schema per ogni domanda scomoda, in due tempi:</p>
+<p class="ex">1. Ammetti qualcosa di vero e non fatale: <b>I sometimes take on too much.</b><br>
+2. Mostra cosa fai: <b>I've started planning my week on Mondays and saying no earlier.</b></p>
+<p>Mai criticare il datore precedente. Il motivo si gira sempre in positivo: non "non mi trovavo bene", ma <b>I want to work more on X</b>.</p>
+<div class="tip">Prepara <b>una</b> debolezza e <b>due</b> punti di forza, scritti e ripetuti ad alta voce. Improvvisare qui è dove si perdono i colloqui.</div>`},
+
+{id:48,ph:4,t:"Dopo il colloquio",s:"ringraziare e ricontattare",
+w:[["follow up","ricontattare",""],["appreciate","apprezzare",""],["opportunity","opportunità",""],["available","disponibile","verfügbar"],["reach out","farsi vivo, contattare",""],["position","posizione, ruolo",""],["further","ulteriore",""],["consideration","considerazione",""]],
+p:[["Thank you for your time today.","Grazie per il tempo che mi ha dedicato oggi."],["I really appreciate the opportunity.","Apprezzo molto questa opportunità."],["I'm available for a second interview any time.","Sono disponibile per un secondo colloquio quando volete."],["I wanted to follow up on my application.","Volevo avere notizie sulla mia candidatura."],["Please feel free to reach out if you need anything.","Non esiti a contattarmi se le serve qualcosa."],["I look forward to hearing from you.","Resto in attesa di sue notizie."]],
+gr:`<p>La <b>thank-you email</b> si manda entro 24 ore. Quattro righe, non di più:</p>
+<p class="ex">1. <b>Thank you for your time today.</b><br>
+2. Un dettaglio della conversazione: <b>I enjoyed hearing about your automation roadmap.</b><br>
+3. Perché sei adatto, in una riga: <b>My work with n8n and Docker fits that well.</b><br>
+4. <b>I look forward to hearing from you.</b></p>
+<div class="tip">Quasi nessuno la manda. Mandarla ti fa ricordare, e ti dà una seconda occasione per far vedere che scrivi bene in inglese.</div>`}
+
 ];
 
 /* ------------------ schede di riferimento ------------------ */
@@ -558,7 +683,7 @@ const store={
   get(k){ try{const v=localStorage.getItem(k);return v==null?this.mem[k]:v}catch(e){this.ok=false;return this.mem[k]} },
   set(k,v){ this.mem[k]=v; try{localStorage.setItem(k,v)}catch(e){this.ok=false} }
 };
-const DEF={xp:0,streak:0,last:"",done:[],srs:{},seen:[],rate:.85,voice:"",theme:"dark",de:true,dayLog:{}};
+const DEF={xp:0,streak:0,last:"",done:[],srs:{},seen:[],rate:.85,voice:"",theme:"dark",de:true,lock:true,pin:"",dayLog:{}};
 let S=Object.assign({},DEF);
 try{ S=Object.assign({},DEF,JSON.parse(store.get("speakfirst")||"{}")) }catch(e){}
 const save=()=>store.set("speakfirst",JSON.stringify(S));
@@ -1054,11 +1179,12 @@ VIEWS.me=()=>{
   const m=el("div","card fade");
   m.appendChild(el("h3",null,"Il piano, in breve"));
   m.appendChild(el("div","gram",`
-   <p><b>12 settimane, 20 minuti al giorno.</b> Tre fasi da 12 lezioni.</p>
+   <p><b>16 settimane, 20 minuti al giorno.</b> Quattro fasi da 12 lezioni.</p>
    <table>
     <tr><td>Sett. 1–4</td><td>Sopravvivenza: farti capire in qualsiasi situazione</td></tr>
     <tr><td>Sett. 5–8</td><td>Conversazione: passato, futuro, discorso che scorre</td></tr>
     <tr><td>Sett. 9–12</td><td>Lavoro: email, riunioni, ticket, colloquio</td></tr>
+    <tr><td>Sett. 13–16</td><td>Sfumature: passivo, presentazioni, colloquio avanzato</td></tr>
    </table>
    <p>Ogni giorno: <b>prima il ripasso</b> (quello che sta per uscirti dalla testa), <b>poi la lezione nuova</b>, poi due sfide di produzione.</p>
    <p>Tre lezioni a settimana bastano. I giorni senza lezione fai solo ripasso: sono i più importanti.</p>
@@ -1127,6 +1253,24 @@ VIEWS.me=()=>{
   dt.style.marginTop="10px";
   dt.onclick=()=>{ S.de=!(S.de!==false); save(); go("me") };
   s.appendChild(dt);
+
+  const lk=el("button","btn block",(S.lock===false)?"Attiva il blocco con codice":"Disattiva il blocco con codice");
+  lk.style.marginTop="10px";
+  lk.onclick=()=>{ S.lock=(S.lock===false); save(); go("me"); toast(S.lock?"Blocco attivo al prossimo avvio":"Blocco disattivato") };
+  s.appendChild(lk);
+
+  const cp=el("button","btn block","Cambia codice");
+  cp.style.marginTop="10px";
+  cp.onclick=()=>{
+    const a=prompt("Nuovo codice (almeno 4 cifre):");
+    if(a===null) return;
+    if(!/^[0-9]{4,12}$/.test(a)){ toast("Servono da 4 a 12 cifre"); return }
+    const b=prompt("Ripeti il nuovo codice:");
+    if(b!==a){ toast("I due codici non coincidono"); return }
+    S.pin=pinHash(a); save(); toast("Codice aggiornato");
+  };
+  s.appendChild(cp);
+
   s.appendChild(el("p","sub","Gli agganci col tedesco compaiono solo nelle schede di studio, mai durante gli esercizi."));
   s.lastChild.style.marginTop="8px";
   app.appendChild(s);
@@ -1181,8 +1325,51 @@ function setupPWA(){
     navigator.serviceWorker.register("sw.js").catch(()=>{});
   }
 }
+/* ---------------- blocco con PIN ----------------
+   Non è una vera protezione: il codice sta in questo file, che è pubblico.
+   Serve solo a impedire l'apertura casuale da parte di chi ha in mano il telefono.
+   Il PIN si cambia dall'app: Io -> Cambia PIN. */
+const PIN_DEFAULT="hsvxxv"; /* impronta di 2026 */
+function pinHash(t){let h=2166136261>>>0;for(let i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,16777619)>>>0}return h.toString(36)}
+function pinOk(t){ return pinHash(t)===(S.pin||PIN_DEFAULT) }
+
+function boot(){ paintTop(); paintNav(); go("home"); }
+
+function lockScreen(){
+  const L=el("div"); L.id="lock";
+  L.innerHTML='<div class="lbrand">Speak<span> First</span></div><p class="lsub">Inserisci il codice</p>';
+  const dots=el("div","pins"); L.appendChild(dots);
+  const err=el("p","lerr",""); L.appendChild(err);
+  const pad=el("div","keypad"); L.appendChild(pad);
+  let buf="";
+  const draw=()=>{ dots.innerHTML=""; for(let i=0;i<Math.max(4,buf.length);i++){ const d=el("i"); if(i<buf.length)d.className="f"; dots.appendChild(d) } };
+  draw();
+  const tap=v=>{
+    err.textContent="";
+    if(v==="del"){ buf=buf.slice(0,-1); draw(); return }
+    if(buf.length>=12) return;
+    buf+=v; draw();
+    if(buf.length>=4 && pinOk(buf)){
+      L.remove(); document.body.style.overflow="";
+      $("#top").classList.remove("hidden"); $("#nav").classList.remove("hidden");
+      boot();
+    }
+  };
+  ["1","2","3","4","5","6","7","8","9"].forEach(n=>{ const b=el("button",null,n); b.onclick=()=>tap(n); pad.appendChild(b) });
+  const empty=el("button","alt",""); empty.disabled=true; pad.appendChild(empty);
+  const zero=el("button",null,"0"); zero.onclick=()=>tap("0"); pad.appendChild(zero);
+  const del=el("button","alt","canc"); del.onclick=()=>tap("del"); pad.appendChild(del);
+  const check=el("button","btn ghost","Verifica"); check.style.marginTop="18px";
+  check.onclick=()=>{ if(pinOk(buf)){ tap("") } else { err.textContent="Codice errato"; L.classList.add("shake"); setTimeout(()=>L.classList.remove("shake"),400); buf=""; draw() } };
+  L.appendChild(check);
+  $("#top").classList.add("hidden"); $("#nav").classList.add("hidden");
+  document.body.style.overflow="hidden";
+  document.body.appendChild(L);
+}
+
 document.documentElement.dataset.theme=S.theme||"dark";
-TTS.init(); setupPWA(); paintTop(); paintNav(); go("home");
+TTS.init(); setupPWA();
+if(S.lock===false) boot(); else lockScreen();
 document.addEventListener("visibilitychange",()=>{ if(document.hidden) try{speechSynthesis.cancel()}catch(e){} });
 </script>
 </body>

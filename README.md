@@ -8,6 +8,9 @@ Corso di inglese parlato e scritto da zero, per italiani. App web installabile
 - Esercizi: scelta, ascolto, dettato, ricostruzione della frase, scrittura, pronuncia col microfono
 - Dialoghi a bivi: chiamata del cliente, standup, colloquio, riunione, small talk
 - Sfida lampo: 60 secondi a cronometro, per allenare la velocità di richiamo
+- Percorso a nodi con tre livelli per lezione (riconoscere → produrre → senza rete)
+- Obiettivo giornaliero, serie di risposte consecutive, riscontro sonoro
+- Prova di livello: salta una lezione che già conosci superandone il test
 - Schede: pronuncia per italiani, falsi amici, 30 verbi irregolari
 
 ## Pubblicare su GitHub Pages
